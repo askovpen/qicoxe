@@ -1,0 +1,14 @@
+# default: off
+# description: The qico server accepts requests
+# for access to a fido node via the network (ifc).
+service fido
+{
+	port		= 60179
+	socket_type	= stream
+	wait		= no
+	user		= fido
+	group		= fido
+	server		= /usr/sbin/qico
+	server_args	= -a auto
+	disable		= yes
+}
