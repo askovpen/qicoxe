@@ -2,12 +2,12 @@
 
 start() {
 	ebegin "Starting qico daemon"
-	start-stop-daemon --start -c fido:fido --pidfile /var/run/qico/qico.pid --exec /usr/sbin/qico -- -d
+	start-stop-daemon --start -c fido:fido --pidfile /var/run/ftn/qico.pid --exec /usr/sbin/qico -- -d
 	eend $?
 }
 
 stop() {
 	ebegin "Stopping qico daemon"
-	start-stop-daemon --stop --pidfile /var/run/qico/qico.pid
+	start-stop-daemon --stop --pidfile /var/run/ftn/qico.pid
 	eend $?
 }
