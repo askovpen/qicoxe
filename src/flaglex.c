@@ -2,7 +2,6 @@
 
 /* Scanner skeleton version:
  * $Header: /home/daffy/u0/vern/flex/RCS/flex.skl,v 2.91 96/09/10 16:58:48 vern Exp $
- * $FreeBSD: src/usr.bin/lex/flex.skl,v 1.4 1999/10/27 07:56:44 obrien Exp $
  */
 
 #define FLEX_SCANNER
@@ -10,6 +9,7 @@
 #define YY_FLEX_MINOR_VERSION 5
 
 #include <stdio.h>
+#include <unistd.h>
 
 
 /* cfront 1.2 defines "c_plusplus" instead of "__cplusplus" */
@@ -23,7 +23,6 @@
 #ifdef __cplusplus
 
 #include <stdlib.h>
-#include <unistd.h>
 
 /* Use prototypes in function declarations. */
 #define YY_USE_PROTOS
@@ -1081,7 +1080,7 @@ char *yytext;
 #define INITIAL 0
 /**********************************************************
  * lexical parser
- * $Id: flaglex.l,v 1.5 2005/05/11 13:22:40 mitry Exp $
+ * $Id: flaglex.l,v 1.6 2005/12/31 15:27:14 mitry Exp $
  **********************************************************/
 #define YY_NEVER_INTERACTIVE 1
 #define YY_NO_UNPUT 1
@@ -1136,7 +1135,7 @@ static int chkgaps(char*);
 extern int yylval;
 char *yyPTR=NULL;
 int yyBUFL;
-#line 1140 "flaglex.c"
+#line 1139 "flaglex.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -1284,12 +1283,12 @@ YY_MALLOC_DECL
 YY_DECL
 	{
 	register yy_state_type yy_current_state;
-	register char *yy_cp, *yy_bp;
+	register char *yy_cp = NULL, *yy_bp = NULL;
 	register int yy_act;
 
 #line 74 "flaglex.l"
 
-#line 1293 "flaglex.c"
+#line 1292 "flaglex.c"
 
 	if ( yy_init )
 		{
@@ -1572,7 +1571,7 @@ YY_RULE_SETUP
 #line 114 "flaglex.l"
 ECHO;
 	YY_BREAK
-#line 1576 "flaglex.c"
+#line 1575 "flaglex.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2136,11 +2135,6 @@ YY_BUFFER_STATE b;
 	}
 
 
-#ifndef YY_ALWAYS_INTERACTIVE
-#ifndef YY_NEVER_INTERACTIVE
-extern int isatty YY_PROTO(( int ));
-#endif
-#endif
 
 #ifdef YY_USE_PROTOS
 void yy_init_buffer( YY_BUFFER_STATE b, FILE *file )
@@ -2587,6 +2581,6 @@ static int chkdate(char *str)
 		DEBUG(('Y',1,"chkdate: %d > %d",d1,d2));
 		return 0;
 	}
-	DEBUG(('Y',3,"chkdate: %d",now->tm_yday>=d1 && now->tm_yday<=d2));
-	return now->tm_yday>=d1 && now->tm_yday<=d2;
+	DEBUG(('Y',3,"chkdate: %d",now->tm_mday>=d1 && now->tm_mday<=d2));
+	return now->tm_mday>=d1 && now->tm_mday<=d2;
 }

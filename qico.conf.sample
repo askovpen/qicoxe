@@ -1,7 +1,7 @@
 ###############################################################################
 ########################  qico configuration file  ############################
 ###############################################################################
-# $Id: qico.conf.sample,v 1.13 2005/08/21 01:28:11 mitry Exp $
+# $Id: qico.conf.sample,v 1.14 2005/08/24 13:31:01 mitry Exp $
 # for 0.57.1xe
 #
 # config structure:
@@ -206,11 +206,12 @@ chatlog		$(logz)/chat.log
 #  Q -- Queue management
 #  R -- File requests
 #  S -- Session
+#  T -- TTY routines
 #  X -- Max debug level for send to clients
 #  Y -- Config `if' expressions parsing and executing
 #  Z -- ZModem
 #
-loglevels	B0,C0,E0,H0,I0,J0,M0,N0,P0,Q0,R0,S0,X0,Y0,Z0
+loglevels	B0,C0,E0,H0,I0,J0,M0,N0,P0,Q0,R0,S0,T0,X0,Y0,Z0
 
 # Show estimated transfer time before each file transfer
 estimatedtime	no

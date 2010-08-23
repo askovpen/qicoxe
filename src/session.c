@@ -2,9 +2,12 @@
  * Session control.
  **********************************************************/
 /*
- * $Id: session.c,v 1.25 2005/08/11 19:06:53 mitry Exp $
+ * $Id: session.c,v 1.26 2005/09/06 20:42:04 mitry Exp $
  *
  * $Log: session.c,v $
+ * Revision 1.26  2005/09/06 20:42:04  mitry
+ * Added macros to qpreset() calls
+ *
  * Revision 1.25  2005/08/11 19:06:53  mitry
  * Added new macro MAILHOURS
  *
@@ -351,7 +354,7 @@ static int wazoosend(int zap)
 
     sline("Done zsend...");
     rc=zmodem_senddone();
-    qpreset(1);
+    qpreset( QPR_SEND );
     return(rc<0);
 }
 
@@ -360,7 +363,7 @@ static int wazoorecv(int zap)
     int rc;
     write_log("wazoo receive");
     rc=zmodem_receive(cfgs(CFG_INBOUND),zap);
-    qpreset(0);
+    qpreset( QPR_RECV );
     return(rc==RCDO||rc==ERROR);
 }
 
@@ -827,8 +830,8 @@ static int emsisession(int originator, ftnaddr_t *calladdr, int speed)
         if( rc != S_OK ) { flkill( &fl, 0 ); return rc; } );
 
     qemsisend( rnode );
-    qpreset( 0 );
-    qpreset( 1 );
+    qpreset( QPR_RECV );
+    qpreset( QPR_SEND );
 
     switch ( proto ) {
         case P_ZEDZAP:

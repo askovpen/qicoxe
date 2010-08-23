@@ -1,6 +1,6 @@
 /**********************************************************
  * lexical parser
- * $Id: flaglex.l,v 1.5 2005/05/11 13:22:40 mitry Exp $
+ * $Id: flaglex.l,v 1.6 2005/12/31 15:27:14 mitry Exp $
  **********************************************************/
 %option noyywrap case-insensitive never-interactive nounput
 %{
@@ -239,6 +239,6 @@ static int chkdate(char *str)
 		DEBUG(('Y',1,"chkdate: %d > %d",d1,d2));
 		return 0;
 	}
-	DEBUG(('Y',3,"chkdate: %d",now->tm_yday>=d1 && now->tm_yday<=d2));
-	return now->tm_yday>=d1 && now->tm_yday<=d2;
+	DEBUG(('Y',3,"chkdate: %d",now->tm_mday>=d1 && now->tm_mday<=d2));
+	return now->tm_mday>=d1 && now->tm_mday<=d2;
 }

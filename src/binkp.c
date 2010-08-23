@@ -2,9 +2,15 @@
  * Binkp protocol implementation.
  ******************************************************************/
 /*
- * $Id: binkp.c,v 1.20 2005/08/22 17:19:41 mitry Exp $
+ * $Id: binkp.c,v 1.22 2005/12/03 02:44:19 mitry Exp $
  *
  * $Log: binkp.c,v $
+ * Revision 1.22  2005/12/03 02:44:19  mitry
+ * Fixed session timeout between two qicos
+ *
+ * Revision 1.21  2005/09/06 20:42:04  mitry
+ * Added macros to qpreset() calls
+ *
  * Revision 1.20  2005/08/22 17:19:41  mitry
  * Changed names of functions to more proper form
  *
@@ -424,8 +430,6 @@ static int M_nul(BPS *bp, byte *arg)
 		} else {
 			write_log("Binkp: got bad VER message: %s", buf );
 		}
-		if ( BP_VER( bp ) <= 100 )
-			bp->delay_eob = 1;
 	} else if ( !strncmp( buf, "TRF ", 4 )) {
 		n = skip_blanks( buf + 4 );
 		if ( n && *n && isdigit( *n )) {
@@ -434,8 +438,6 @@ static int M_nul(BPS *bp, byte *arg)
 			if ( n && *n && isdigit( *n ))
 				rnode->files = atoi( n );
 		}
-		if ( rnode->netmail + rnode->files )
-			bp->delay_eob = 1;
 	} else if( !strncmp( buf, "FREQ", 4 )) {
 		bp->delay_eob = 1;
 	} else if( !strncmp( buf, "PHN ", 4 )) {
@@ -607,8 +609,6 @@ static int binkp_hsdone(BPS *bp)
 	if ( bp->opt_nd == O_WE || bp->opt_nd == O_THEY )
 		bp->opt_nd = O_NO;
 
-	if ( !rnode->phone || !*rnode->phone )
-		restrcpy( &rnode->phone, "-Unpublished-" );
 	if ( !( rnode->options & O_PWD ) || bp->opt_md != O_YES )
 		bp->opt_cr = O_NO;
 	if (( bp->opt_cr & O_WE ) && ( bp->opt_cr & O_THEY )) {
@@ -651,8 +651,7 @@ static int binkp_hsdone(BPS *bp)
 	else
 		bp->opt_mb = O_NO;
 
-	if ( BP_VER( bp ) > 100 )
-		bp->delay_eob = 0;
+	bp->delay_eob = ( BP_VER( bp ) < 101 );
 
 	snprintf( tmp, 255, "Binkp%s%s%s%s%s%s%s%s%s",
 		( rnode->options & O_LST ) ? "/LST" : "",
@@ -669,8 +668,8 @@ static int binkp_hsdone(BPS *bp)
     
 	title( "%sbound session %s", bp->to ? "Out" : "In", ftnaddrtoa( &rnode->addrs->addr ));
 	qemsisend( rnode );
-	qpreset( 0 );
-	qpreset( 1 );
+	qpreset( QPR_RECV );
+	qpreset( QPR_SEND );
 
 	sendf.allf = totaln;
 	sendf.ttot = totalf + totalm;
@@ -928,6 +927,8 @@ static int M_eob(BPS *bp, byte *arg)
 			bp->nofiles = 0;
 		}
 	}
+
+	qpreset( QPR_RECV );
 
 	DEBUG(('B',4,"cls=%d, sent_eob=%d, recv_eob=%d", bp->cls, bp->sent_eob, bp->recv_eob));
 
@@ -1447,11 +1448,12 @@ int binkpsession(int mode, ftnaddr_t *remaddr)
 	}
 
 	bps->remaddr = remaddr;
-	xfree( rnode->phone );
+	restrcpy( &rnode->phone, "-Unpublished-" );
 
 	rxstatus = 0;
 	totaln = totalf = totalm = 0;
 	got_req = 0;
+	emsi_lo = ( is_freq_available() == FR_NOTHANDLED ) ? O_NOFREQS : 0;
 	receive_callback = receivecb;
 
 	write_log( "starting %sbound Binkp session", mode ? "out" : "in" );
@@ -1510,15 +1512,17 @@ int binkpsession(int mode, ftnaddr_t *remaddr)
 		if ( !bps->init && bps->nofiles && !bps->wait_got && !bps->sent_eob && !bps->delay_eob ) {
 			msgs( BPM_EOB, NULL );
 			bps->sent_eob = 1;
+			qpreset( QPR_SEND );
 		}
 
 		bps->rc = S_OK;
 
 		if ( bps->sent_eob && bps->recv_eob ) {
 			DEBUG(('B',4,"mib=%d", bps->mib));
-			if ( bps->mib < 3 || BP_VER( bps ) <= 100 )
+			if ( bps->mib < 3 || BP_VER( bps ) < 101 )
 				break;
 			bps->mib = bps->sent_eob = bps->recv_eob = 0;
+			continue;
 		}
 
 		wd = ( bps->nmsgs || bps->tx_left || ( bps->send_file && txfd && !bps->wait_for_get));

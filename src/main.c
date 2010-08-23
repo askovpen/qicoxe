@@ -2,9 +2,12 @@
  * qico's main module.
  **********************************************************/
 /*
- * $Id: main.c,v 1.24 2005/08/11 19:15:14 mitry Exp $
+ * $Id: main.c,v 1.25 2005/11/28 06:55:41 mitry Exp $
  *
  * $Log: main.c,v $
+ * Revision 1.25  2005/11/28 06:55:41  mitry
+ * Fixed tty name detection if /dev/ttySX is linked to /dev/tts/X
+ *
  * Revision 1.24  2005/08/11 19:15:14  mitry
  * Changed code a bit
  *
@@ -140,21 +143,20 @@ static void usage(char *ex)
 
 void stopit(int rc)
 {
-    vidle();
-    qqreset();
-    IFPerl( perl_done( 0 ));
-    log_done();
-    log_init( cfgs( CFG_LOG ), rnode->tty );
-    write_log( "exiting with rc=%d", rc );
-    log_done();
-    cls_close( ssock );
-    cls_shutd( lins_sock );
-    cls_shutd( uis_sock );
-    /*
-    killconfig();
-    */
+	vidle();
+	qqreset();
+	IFPerl( perl_done( 0 ));
+	log_done();
+	log_init( cfgs( CFG_LOG ), rnode->tty );
+	write_log( "exiting with rc=%d", rc );
+	log_done();
+	nodelist_done();
+	cls_close( ssock );
+	cls_shutd( lins_sock );
+	cls_shutd( uis_sock );
+	/* killconfig(); */
 
-    exit( rc );
+	exit( rc );
 }
 
 
@@ -198,122 +200,132 @@ RETSIGTYPE sigerr(int sig)
 
 static void getsysinfo(void)
 {
-    struct utsname uts;
-    char tmp[ MAX_STRING + 1 ];
+	char		tmp[ MAX_STRING + 1 ];
+	struct utsname	uts;
 
-    if ( uname( &uts ))
-        return;
+	if ( uname( &uts ))
+		return;
 
-    snprintf( tmp, MAX_STRING, "%s-%s (%s)", uts.sysname, uts.release, uts.machine );
-    osname = xstrdup( tmp );
+	snprintf( tmp, MAX_STRING, "%s-%s (%s)", uts.sysname, uts.release, uts.machine );
+	osname = xstrdup( tmp );
 }
 
 
 static void answer_mode(int type)
 {
-    int rc, spd;
-    char *cs;
-    char host[ MAXHOSTNAMELEN + 1 ];
-    struct sockaddr_in sa;
-    socklen_t ss = sizeof( sa );
-    TIO tio;
-    sts_t sts;
+	int			rc, spd;
+	char			*cs;
+	char			host[ MAXHOSTNAMELEN + 1 ];
+	struct sockaddr_in	sa;
+	socklen_t		ss = sizeof( sa );
+	TIO			tio;
+	sts_t			sts;
 
-    if ( cfgs( CFG_ROOTDIR ) && ccs[0] )
-        chdir( ccs );
+	if ( cfgs( CFG_ROOTDIR ) && *ccs )
+		chdir( ccs );
 
-    rnode = xcalloc( 1, sizeof( ninfo_t ));
-    is_ip = !isatty( 0 );
+	rnode = xcalloc( 1, sizeof( ninfo_t ));
 
-    xstrcpy( ip_id, "ipline", 10 );
-    rnode->tty = xstrdup( is_ip ? ( bink ? "binkp" : "tcpip" ) : qbasename( ttyname( 0 )));
-    rnode->options |= O_INB;
+	is_ip = !isatty( 0 );
+	if ( is_ip ) {
+		rnode->tty = xstrdup( bink ? "binkp" : "tcpip" );
+	} else {
+		cs = getenv( "DEVICE" );
+		if ( !cs || !*cs ) {
+			cs = ttyname( 0 );
+		}
+		rnode->tty = xstrdup( qbasename( cs ));
+	}
 
-    if ( !log_init( cfgs( CFG_LOG ), rnode->tty )) {
-        printf( "can't open log %s!\n", ccs );
-        exit( S_FAILURE );
-    }
+	rnode->options |= O_INB;
+	xstrcpy( ip_id, "ipline", 10 );
 
-    signal( SIGINT, SIG_IGN );
-    signal( SIGTERM, sigerr );
-    signal( SIGSEGV, sigerr );
-    signal( SIGFPE, sigerr );
-    signal( SIGPIPE, SIG_IGN );
-    IFPerl( perl_init( cfgs( CFG_PERLFILE ), 0 ));
+	if ( !log_init( cfgs( CFG_LOG ), rnode->tty )) {
+		printf( "can't open log %s!\n", ccs );
+		exit( S_FAILURE );
+	}
 
-    __CLS_CONN
+	signal( SIGINT, SIG_IGN );
+	signal( SIGTERM, sigerr );
+	signal( SIGSEGV, sigerr );
+	signal( SIGFPE, sigerr );
+	signal( SIGPIPE, SIG_IGN );
 
-    __OUT_INIT
+	IFPerl( perl_init( cfgs( CFG_PERLFILE ), 0 ));
 
-    write_log( "answering incoming call" );
+	__CLS_CONN
+
+	__OUT_INIT
+
+	write_log( "answering incoming call" );
     
-    vidle();
+	vidle();
     
-    tty_fd = 0;
-    tty_online = TRUE;
-    if( is_ip && getpeername( 0, (struct sockaddr*) &sa, &ss ) == 0 ) {
-        get_hostname( &sa, host, sizeof( host ));
-        write_log( "remote is %s", host );
-        spd = TCP_SPEED;
-        tcp_setsockopts( tty_fd );
-    } else {
-        cs = getenv( "CONNECT" );
-        spd = cs ? atoi( cs ) : 0;
-        xfree( connstr );
-        connstr = xstrdup( cs );
-        if ( cs && spd )
-            strcpy( host, cs );
-        else {
-            strcpy( host, "Unknown" );
-            spd = DEFAULT_SPEED;
-        }
-        write_log( "*** CONNECT %s", host );
-        if (( cs = getenv( "CALLER_ID" )) && strcasecmp( cs, "none" ) && strlen( cs ) > 3 )
-            write_log( "caller-id: %s", cs );
+	tty_fd = 0;
+	tty_online = TRUE;
 
-        tio_get( tty_fd, &tty_stio );
-        memcpy( &tio, &tty_stio, sizeof( TIO ));
+	if( is_ip && getpeername( 0, (struct sockaddr*) &sa, &ss ) == 0 ) {
+		get_hostname( &sa, host, sizeof( host ));
+		write_log( "remote is %s", host );
+		spd = TCP_SPEED;
+		tcp_setsockopts( tty_fd );
+	} else {
+		cs = getenv( "CONNECT" );
+		spd = cs ? atoi( cs ) : 0;
+		xfree( connstr );
+		connstr = xstrdup( cs );
+		if ( cs && spd )
+			strcpy( host, cs );
+		else {
+			strcpy( host, "Unknown" );
+			spd = DEFAULT_SPEED;
+		}
+		write_log( "*** CONNECT %s", host );
+		if (( cs = getenv( "CALLER_ID" )) && strcasecmp( cs, "none" ) && strlen( cs ) > 3 )
+			write_log( "caller-id: %s", cs );
 
-        DEBUG(('M',4,"answering: tio_get_speed %d", tio_get_speed( &tio )));
+		tio_get( tty_fd, &tty_stio );
+		memcpy( &tio, &tty_stio, sizeof( TIO ));
 
-        tio_raw_mode( &tio );
-        tio_local_mode( &tio, FALSE );
-        /* tio_set_speed( &tio, spd ); */
+		DEBUG(('M',4,"answering: tio_get_speed %d", tio_get_speed( &tio )));
 
-        if ( tio_set( tty_fd, &tio ) == ERROR ) {
-            DEBUG(('M',1,"answering: tio_set error - %s", strerror( errno )));
-        }
-        fd_set_nonblock( tty_fd, true );
-    }
+		tio_raw_mode( &tio );
+		tio_local_mode( &tio, FALSE );
+		/* tio_set_speed( &tio, spd ); */
 
-    if ( !tty_gothup )
-        rc = session( SM_INBOUND, type, NULL, spd );
+		if ( tio_set( tty_fd, &tio ) == ERROR ) {
+			DEBUG(('M',1,"answering: tio_set error - %s", strerror( errno )));
+		}
+		fd_set_nonblock( tty_fd, true );
+	}
 
-    sline( "Hanging up..." );
-    if ( is_ip )
-        tcp_done();
-    else {
-        modem_done();
-    }
+	if ( !tty_gothup )
+		rc = session( SM_INBOUND, type, NULL, spd );
 
-    if(( S_OK == ( rc & S_MASK )) && cfgi( CFG_HOLDONSUCCESS )) {
-        log_done();
-        log_init( cfgs( CFG_MASTERLOG ), NULL );
-        outbound_getstatus( &rnode->addrs->addr, &sts );
-        sts.flags |= ( Q_WAITA | Q_WAITR | Q_WAITX );
-        sts.htime = MAX( timer_set( cci * 60 ), sts.htime );
-        write_log( "calls to %s delayed for %d min after successful incoming session",
-            ftnaddrtoa( &rnode->addrs->addr ), cci );
-        outbound_setstatus( &rnode->addrs->addr, &sts );
-        log_done();
-        log_init( cfgs( CFG_LOG ), rnode->tty );
-    }
+	sline( "Hanging up..." );
+	if ( is_ip ) {
+		tcp_done();
+	} else {
+		modem_done();
+	}
 
-    title( "Waiting..." );
-    vidle();
-    sline( "" );
-    outbound_done();
-    stopit( rc );
+	if(( S_OK == ( rc & S_MASK )) && cfgi( CFG_HOLDONSUCCESS )) {
+		log_done();
+		log_init( cfgs( CFG_MASTERLOG ), NULL );
+		outbound_getstatus( &rnode->addrs->addr, &sts );
+		sts.flags |= ( Q_WAITA | Q_WAITR | Q_WAITX );
+		sts.htime = MAX( timer_set( cci * 60 ), sts.htime );
+		write_log( "calls to %s delayed for %d min after successful incoming session",
+			ftnaddrtoa( &rnode->addrs->addr ), cci );
+		outbound_setstatus( &rnode->addrs->addr, &sts );
+		log_done();
+		log_init( cfgs( CFG_LOG ), rnode->tty );
+	}
+
+	title( "Waiting..." );
+	sline( "" );
+	outbound_done();
+	stopit( rc );
 }
 
 int main(int argc, char **argv, char **envp)

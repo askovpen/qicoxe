@@ -1,6 +1,6 @@
 /**********************************************************
  * common definitions
- * $Id: defs.h,v 1.5 2005/05/16 20:33:46 mitry Exp $
+ * $Id: defs.h,v 1.6 2005/09/06 19:46:05 mitry Exp $
  **********************************************************/
 #ifndef __DEFS_H__
 #define __DEFS_H__
@@ -51,5 +51,29 @@
 #define DM_NODELIST	2
 #define DM_CONFIG	3
 #define DM_CALL		12
+
+
+/* qcc */
+#define CLN_IPLINE	"ipline"
+#define CLN_IPLINE_LEN	7
+#define CLN_MASTER	"master"
+#define CLN_MASTER_LEN	7
+
+#define QPR_RECV	0
+#define QPR_SEND	1
+
+#ifdef HAVE_ATTR_PACKED
+#define PPACK		__attribute__ ((__packed__))
+#else
+#define PPACK
+#endif
+
+
+#ifdef MAXPATHLEN
+#  define MAX_PATH MAXPATHLEN
+#else
+#  define MAX_PATH 1024
+#endif
+
 
 #endif

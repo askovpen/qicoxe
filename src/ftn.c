@@ -2,9 +2,15 @@
  * ftn tools
  **********************************************************/
 /*
- * $Id: ftn.c,v 1.10 2005/08/18 16:21:25 mitry Exp $
+ * $Id: ftn.c,v 1.12 2005/11/27 01:41:11 mitry Exp $
  *
  * $Log: ftn.c,v $
+ * Revision 1.12  2005/11/27 01:41:11  mitry
+ * Recode From and To fields to local charset in showpkt().
+ *
+ * Revision 1.11  2005/10/31 17:21:10  mitry
+ * Fixed showpkt which didn't handle national characters in `to' and `from' pkt fields.
+ *
  * Revision 1.10  2005/08/18 16:21:25  mitry
  * Added debug messages
  *
@@ -221,32 +227,54 @@ int has_addr(const ftnaddr_t *a, falist_t *l)
 
 int showpkt(const char *fn)
 {
-	FILE *f;
-	int i,n=1;
-	pkthdr_t ph;
-	pktmhdr_t mh;
-	char from[36],to[36],a;
-	f=fopen(fn,"r");
-	if(!f){write_log("can't open '%s' for reading: %s",fn,strerror(errno));return 0;}
-	if(fread(&ph,sizeof(ph),1,f)!=1)write_log("packet read error");
-	    else if(I2H16(ph.phType)!=2)write_log("packet isn't 2+ format");
-		else {
-		    while(fread(&mh,sizeof(mh),1,f)==1) {
-			i=0;while(fgetc(f)>0&&i<30)i++;i=0;
-			if(i>=30)break;
-			while((a=fgetc(f))>0&&i<36)to[i++]=a;
-			if(i>=36)break;
-			to[i]=0;i=0;
-			while((a=fgetc(f))>0&&i<36)from[i++]=a;
-			if(i>=32)break;
-			from[i]=0;i=0;
-			while(fgetc(f)>0&&i<72)i++;
-			if(i>=72)break;
-			while(fgetc(f)>0);
-			write_log("*msg: %d from: \"%s\", to: \"%s\"",n++,from,to);
-		    }
+	int		i, n = 1, a;
+	char		from[36], to[36];
+	FILE		*f;
+	pkthdr_t	ph;
+	pktmhdr_t	mh;
+
+	f = fopen( fn, "r" );
+	if ( !f ) {
+		write_log( "can't open '%s' for reading: %s",
+			fn, strerror( errno ));
+		return 0;
 	}
-	fclose(f);
+
+	if ( fread( &ph, sizeof( ph ), 1, f ) != 1 )
+		write_log( "packet read error" );
+	else if ( I2H16( ph.phType ) != 2 )
+		write_log( "packet isn't 2+ format" );
+	else {
+		while( fread( &mh, sizeof( mh ), 1, f ) == 1 ) {
+			i = 0;
+			while( fgetc( f ) > 0 && i < 30 )
+				i++;
+			if ( i >= 30 )
+				break;
+			i = 0;
+			while(( a = fgetc( f )) > 0 && i < 36 )
+				to[i++] = a;
+			if ( i >= 36 )
+				break;
+			to[i] = '\0';
+			i = 0;
+			while(( a = fgetc( f )) > 0 && i < 36 )
+				from[i++] = a;
+			if ( i >= 36 )
+				break;
+			from[i] = '\0';
+			i = 0;
+			while( fgetc( f ) > 0 && i < 72 )
+				i++;
+			if ( i >= 72 )
+				break;
+			while( fgetc( f ) > 0 );
+			recode_to_local( from );
+			recode_to_local( to );
+			write_log( "*msg: %d from: \"%s\", to: \"%s\"", n++, from, to );
+		}
+	}
+	fclose( f );
 	return 0;
 }
 

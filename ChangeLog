@@ -1,3 +1,87 @@
+2006-03-11 05:17  mitry
+
+	* qico.passwd.sample:
+
+	Removed ^M at the end of lines.
+
+2006-03-11 05:07  mitry
+
+	* src/: md5q.c, md5q.h, types.h:
+
+	Fixed internal md5 stuff if size of long is 8 bytes.
+
+2006-03-11 03:59  mitry
+
+	* configure.in:
+
+	Added option to disable system-wide RSA Data Security library libmd (FreeBSD).
+
+2006-03-09 15:01  mitry
+
+	* src/Makefile.am:
+
+	Fix qcc linking under current AltLinux.
+
+2005-12-31 17:27  mitry
+
+	* src/flaglex.l:
+
+	Fixed date evaluation
+
+2005-12-03 04:44  mitry
+
+	* src/binkp.c:
+
+	Fixed session timeout between two qicos
+
+2005-12-03 04:25  mitry
+
+	* src/tcp.c:
+
+	Fixed socks5 authentication
+
+2005-11-28 08:55  mitry
+
+	* src/main.c:
+
+	Fixed tty name detection if /dev/ttySX is linked to /dev/tts/X
+
+2005-11-27 03:41  mitry
+
+	* src/ftn.c:
+
+	Recode From and To fields to local charset in showpkt().
+
+2005-11-27 03:32  mitry
+
+	* src/hydra.c:
+
+	Fixed hydra_send() if file to be sent is disappeared.
+
+2005-10-31 19:21  mitry
+
+	* src/ftn.c:
+
+	Fixed showpkt which didn't handle national characters in `to' and `from' pkt fields.
+
+2005-09-06 23:42  mitry
+
+	* src/: binkp.c, hydra.c, janus.c, session.c:
+
+	Added macros to qpreset() calls
+
+2005-09-06 22:46  mitry
+
+	* src/defs.h:
+
+	Added some defines
+
+2005-08-24 16:31  mitry
+
+	* qico.conf.sample:
+
+	Added T loglevel description
+
 2005-08-23 19:51  mitry
 
 	* src/config.c:

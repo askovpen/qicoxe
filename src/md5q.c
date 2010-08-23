@@ -24,9 +24,12 @@ documentation and/or software.
  */
 
 /*
- * $Id: md5q.c,v 1.1 2005/03/28 15:33:56 mitry Exp $
+ * $Id: md5q.c,v 1.2 2006/03/11 03:07:32 mitry Exp $
  *
  * $Log: md5q.c,v $
+ * Revision 1.2  2006/03/11 03:07:32  mitry
+ * Fixed internal md5 stuff if size of long is 8 bytes.
+ *
  * Revision 1.1  2005/03/28 15:33:56  mitry
  * MD5 logic now in separate files
  *
@@ -39,9 +42,9 @@ documentation and/or software.
 #ifndef HAVE_MEMMOVE
 
 static void Encode PROTO_LIST
-  ((unsigned char *, UINT4 *, unsigned int));
+  ((unsigned char *, UINT32 *, unsigned int));
 static void Decode PROTO_LIST
-  ((UINT4 *, unsigned char *, unsigned int));
+  ((UINT32 *, unsigned char *, unsigned int));
 
 static void MD5_memcpy PROTO_LIST ((POINTER, POINTER, unsigned int));
 #else
@@ -83,7 +86,7 @@ static void MD5_memset PROTO_LIST ((POINTER, int, unsigned int));
 #define S43 15
 #define S44 21
 
-static void MD5Transform PROTO_LIST ((UINT4 [4], unsigned char [64]));
+static void MD5Transform PROTO_LIST ((UINT32 [4], unsigned char [64]));
 
 static unsigned char PADDING[64] = {
     0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -106,22 +109,22 @@ static unsigned char PADDING[64] = {
 Rotation is separate from addition to prevent recomputation.
  */
 #define FF(a, b, c, d, x, s, ac) { \
-      (a) += F ((b), (c), (d)) + (x) + (UINT4)(ac); \
+      (a) += F ((b), (c), (d)) + (x) + (UINT32)(ac); \
       (a) = ROTATE_LEFT ((a), (s)); \
       (a) += (b); \
   }
 #define GG(a, b, c, d, x, s, ac) { \
-      (a) += G ((b), (c), (d)) + (x) + (UINT4)(ac); \
+      (a) += G ((b), (c), (d)) + (x) + (UINT32)(ac); \
       (a) = ROTATE_LEFT ((a), (s)); \
       (a) += (b); \
   }
 #define HH(a, b, c, d, x, s, ac) { \
-      (a) += H ((b), (c), (d)) + (x) + (UINT4)(ac); \
+      (a) += H ((b), (c), (d)) + (x) + (UINT32)(ac); \
       (a) = ROTATE_LEFT ((a), (s)); \
       (a) += (b); \
   }
 #define II(a, b, c, d, x, s, ac) { \
-      (a) += I ((b), (c), (d)) + (x) + (UINT4)(ac); \
+      (a) += I ((b), (c), (d)) + (x) + (UINT32)(ac); \
       (a) = ROTATE_LEFT ((a), (s)); \
       (a) += (b); \
   }
@@ -159,9 +162,9 @@ unsigned int inputLen;                     /* length of input block */
     index = (unsigned int)((context->count[0] >> 3) & 0x3F);
 
     /* Update number of bits */
-    if ((context->count[0] += ((UINT4)inputLen << 3)) < ((UINT4)inputLen << 3))
+    if ((context->count[0] += ((UINT32)inputLen << 3)) < ((UINT32)inputLen << 3))
         context->count[1]++;
-    context->count[1] += ((UINT4)inputLen >> 29);
+    context->count[1] += ((UINT32)inputLen >> 29);
 
     partLen = 64 - index;
 
@@ -214,10 +217,10 @@ MD5_CTX *context;                                       /* context */
 /* MD5 basic transformation. Transforms state based on block.
  */
 static void MD5Transform (state, block)
-UINT4 state[4];
+UINT32 state[4];
 unsigned char block[64];
 {
-    UINT4 a = state[0], b = state[1], c = state[2], d = state[3], x[16];
+    UINT32 a = state[0], b = state[1], c = state[2], d = state[3], x[16];
 
     Decode (x, block, 64);
 
@@ -304,12 +307,12 @@ unsigned char block[64];
 
 #ifndef HAVE_MEMMOVE
 
-/* Encodes input (UINT4) into output (unsigned char). Assumes len is
+/* Encodes input (UINT32) into output (unsigned char). Assumes len is
   a multiple of 4.
  */
 static void Encode (output, input, len)
 unsigned char *output;
-UINT4 *input;
+UINT32 *input;
 unsigned int len;
 {
     unsigned int i, j;
@@ -323,19 +326,19 @@ unsigned int len;
 }
 
 
-/* Decodes input (unsigned char) into output (UINT4). Assumes len is
+/* Decodes input (unsigned char) into output (UINT32). Assumes len is
   a multiple of 4.
  */
 static void Decode (output, input, len)
-UINT4 *output;
+UINT32 *output;
 unsigned char *input;
 unsigned int len;
 {
     unsigned int i, j;
 
     for (i = 0, j = 0; j < len; i++, j += 4)
-        output[i] = ((UINT4)input[j]) | (((UINT4)input[j+1]) << 8) |
-            (((UINT4)input[j+2]) << 16) | (((UINT4)input[j+3]) << 24);
+        output[i] = ((UINT32)input[j]) | (((UINT32)input[j+1]) << 8) |
+            (((UINT32)input[j+2]) << 16) | (((UINT32)input[j+3]) << 24);
 }
 
 
@@ -467,8 +470,9 @@ void md5_cram_get(const unsigned char *secret, const unsigned char *challenge,
 
 void md5_cram_set(const unsigned char *challenge)
 {
-	long rnd=(long)random(),utm=time(NULL);
-	long pid=((long)getpid())^((long)random());
+	UINT32 rnd = (UINT32)random(), utm = time(NULL);
+	UINT32 pid = ((UINT32)getpid())^((UINT32)random());
+
 	STORE32(challenge,rnd);
 	STORE16(challenge+4,pid)
 	STORE32(challenge+6,utm);

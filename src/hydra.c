@@ -5,9 +5,15 @@
                   COPYRIGHT (C) 1991-1993; ALL RIGHTS RESERVED
 =============================================================================*/
 /*
- * $Id: hydra.c,v 1.29 2005/06/10 20:56:25 mitry Exp $
+ * $Id: hydra.c,v 1.31 2005/11/27 01:32:39 mitry Exp $
  *
  * $Log: hydra.c,v $
+ * Revision 1.31  2005/11/27 01:32:39  mitry
+ * Fixed hydra_send() if file to be sent is disappeared.
+ *
+ * Revision 1.30  2005/09/06 20:42:04  mitry
+ * Added macros to qpreset() calls
+ *
  * Revision 1.29  2005/06/10 20:56:25  mitry
  * Changed exit from hydra_send()
  *
@@ -1493,8 +1499,8 @@ void hydra_deinit(void)
 {
     int i;
 
-    qpreset( 0 );
-    qpreset( 1 );
+    qpreset( QPR_RECV );
+    qpreset( QPR_SEND );
     for( i = 0; i < hytxb.npkts; i++ )
         if ( hytxb.pqueue[i].pkt )
             xfree( hytxb.pqueue[i].pkt );
@@ -1517,6 +1523,15 @@ int hydra_send(char *txpathname, char *txalias)
     struct timeval tv;
 
     DEBUG(('H',1,"hydra_batch: %s, %s", txpathname, txalias));
+
+    /*-------------------------------------------------------------------*/
+	if ( txpathname ) {
+		if ( !( txfd = txopen( txpathname, txalias )))
+			return XFER_SKIP;
+
+		txStart  = 0L;
+		txsyncid = 0L;
+	}
 
     rxstatus = 0;
 
@@ -1543,21 +1558,6 @@ int hydra_send(char *txpathname, char *txalias)
 
     txtimer   = h_timer_reset();
     txretries = 0;
-
-    /*-------------------------------------------------------------------*/
-    if ( txpathname ) {
-        if ( !( txfd = txopen( txpathname, txalias )))
-            return XFER_SKIP;
-
-        txStart  = 0L;
-        txsyncid = 0L;
-    }
-    /*
-    else {
-        txfd = NULL;
-        xstrcpy( txfname, "", 2 );
-    }
-    */
 
     /*-------------------------------------------------------------------*/
     do {
@@ -1650,7 +1650,7 @@ int hydra_send(char *txpathname, char *txalias)
                  else {
                      if (!txretries) {
                          DEBUG(('H',1,"HSend: End of batch"));
-                         qpreset(1);
+                         qpreset( QPR_SEND );
                      }
                      *txbufin = '\0';
                      i = 1;
@@ -1938,7 +1938,7 @@ int hydra_send(char *txpathname, char *txalias)
                      braindead = h_timer_set(H_BRAINDEAD);
                      if ( !rxBuf[0] ) {
                          DEBUG(('H',1,"HRecv: End of batch"));
-                         qpreset( 0 );
+                         qpreset( QPR_RECV );
                          rxPos = 0L;
                          rxState = HRX_DONE;
                          batchesdone++;

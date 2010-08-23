@@ -2,9 +2,12 @@
  * ip routines
  **********************************************************/
 /*
- * $Id: tcp.c,v 1.13 2005/08/16 10:32:19 mitry Exp $
+ * $Id: tcp.c,v 1.14 2005/12/03 02:25:03 mitry Exp $
  *
  * $Log: tcp.c,v $
+ * Revision 1.14  2005/12/03 02:25:03  mitry
+ * Fixed socks5 authentication
+ *
  * Revision 1.13  2005/08/16 10:32:19  mitry
  * Fixed broken calls of loginscript
  *
@@ -243,13 +246,14 @@ tcp_connect_socks(char *name)
 			buf[1] = i;
 			memcpy( buf + 2, auth, i );
 			i += 2;
-			if ( !n )
+			if ( !n ) {
 				buf[i++] = '\0';
-			else {
-				n++;
-				buf[i] = strlen( n );
-				xstrcpy( buf + i + 1, n, buf[i] );
-				i += buf[i] + 1;
+			} else {
+				n = skip_blanks( n );
+				rc = strlen( n );
+				buf[i++] = rc;
+				memcpy( buf + i, n, rc );
+				i += rc;
 			}
 
 			PUTBLK( (unsigned char*) buf, i );

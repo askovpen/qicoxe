@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.12 2005/08/22 17:21:32 mitry Exp $
+# $Id: Makefile.am,v 1.13 2006/03/09 13:01:43 mitry Exp $
 
 sbin_PROGRAMS = qico
 bin_PROGRAMS = qctl @QCC@
@@ -31,8 +31,7 @@ qctl_SOURCES = qctl.c clserv.c md5q.c qslib.c
 qctl_LDADD = @LIBOBJS@ @LIB_MALLOC@
 
 qcc_SOURCES = qcc.c clserv.c md5q.c qslib.c
-qcc_LDADD = @LIBOBJS@ @LIB_MALLOC@
-qcc_LDFLAGS = @QCCLIBS@
+qcc_LDADD = @LIBOBJS@ @LIB_MALLOC@ @QCCLIBS@
 
 AM_YFLAGS = -d
 

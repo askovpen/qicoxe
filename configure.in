@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT([qico],[0.57.1xe],[r45c at mail dot ru])
-AC_REVISION([$Id: configure.in,v 1.26 2005/08/23 10:15:55 mitry Exp $])
+AC_REVISION([$Id: configure.in,v 1.27 2006/03/11 01:59:01 mitry Exp $])
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR([src/main.c])
 AM_INIT_AUTOMAKE([qico],[0.57.1xe])
@@ -139,11 +139,8 @@ AC_CHECK_FUNC([setproctitle],
 		[AC_DEFINE(HAVE_SETPROCTITLE,1,[Define to 1 if system have setproctitle() call])])])
 
 
-AC_CHECK_LIB(md,[MD5Init])
-
-
 dnl Signal handling
-AC_MSG_CHECKING(for reliable signals)
+AC_MSG_CHECKING(whether system has reliable signals)
 AC_TRY_RUN([
 #include <sys/types.h>
 #include <signal.h>
@@ -191,6 +188,19 @@ AC_MSG_RESULT([$USE_MAINTAINER_MODE])
 
 
 dnl Enable optional modules
+AC_ARG_ENABLE(libmd,
+	AC_HELP_STRING([--disable-libmd],[disable system-wide RSA Data Security library libmd (FreeBSD)]),
+	enable_libmd=$enableval,
+	enable_libmd=yes)
+	
+if test "${enable_libmd}x" != "nox"; then
+	AC_CHECK_LIB(md,[MD5Init])
+else
+	AC_MSG_CHECKING([for libmd])
+	AC_MSG_RESULT([disabled, will use internal md5])
+fi
+
+
 AC_ARG_ENABLE(dlmalloc,
 	AC_HELP_STRING([--enable-dlmalloc],[Compile & use the malloc package by Doug Lea]),
 [
@@ -272,6 +282,7 @@ fi
 
 AC_SUBST(LIBDLMALLOC)
 AC_SUBST(LIB_MALLOC)
+
 
 dnl whether syslog.h and sys/syslog.h may both be included
 AC_CHECK_HEADER([sys/syslog.h],

@@ -1,11 +1,11 @@
 /**********************************************************
  * common types
- * $Id: types.h,v 1.8 2005/08/23 16:23:09 mitry Exp $
+ * $Id: types.h,v 1.9 2006/03/11 03:07:32 mitry Exp $
  **********************************************************/
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
-#include <config.h>
+#include "config.h"
 
 #if SIZEOF_CHAR==1
 typedef signed char	SINT8;
@@ -13,6 +13,7 @@ typedef signed char	INT8;
 typedef signed char	CHAR;
 typedef unsigned char	UINT8;
 typedef unsigned char	BYTE;
+#define _8BIT_DECLARED
 #else
 #	error "There is no 8-bit integer type in your compiler, sorry"
 #endif
@@ -22,12 +23,14 @@ typedef signed short	SINT16;
 typedef signed short	INT16;
 typedef unsigned short	UINT16;
 typedef unsigned short	WORD;
+#define _16BIT_DECLARED
 #else
 #    if SIZEOF_INT==2
 typedef signed int	SINT16;
 typedef signed int	INT16;
 typedef unsigned int	UINT16;
 typedef unsigned int	WORD;
+#define _16BIT_DECLARED
 #    else
 #        error "There is no 16-bit integer type in your compiler, sorry"
 #    endif
@@ -37,19 +40,21 @@ typedef unsigned int	WORD;
 typedef signed long	SINT32;
 typedef signed long	INT32;
 typedef unsigned long	UINT32;
-typedef unsigned long	DWORD;
+#define _32BIT_DECLARED
 #define LONGx1	( SIZEOF_LONG )
 #else
 #    if SIZEOF_INT==4
 typedef signed int	SINT32;
 typedef signed int	INT32;
 typedef unsigned int	UINT32;
-typedef unsigned int	DWORD;
+#define _32BIT_DECLARED
 #define LONGx1	( SIZEOF_INT )
 #    else
 #        error "There is no 32-bit integer type in your compiler, sorry"
 #    endif
 #endif
+
+typedef UINT32	DWORD;
 
 #ifndef false
 #define false 0

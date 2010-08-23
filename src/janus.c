@@ -10,9 +10,12 @@
  * - crc32 support
  ******************************************************************/
 /*
- * $Id: janus.c,v 1.7 2005/04/04 19:43:56 mitry Exp $
+ * $Id: janus.c,v 1.8 2005/09/06 20:42:04 mitry Exp $
  *
  * $Log: janus.c,v $
+ * Revision 1.8  2005/09/06 20:42:04  mitry
+ * Added macros to qpreset() calls
+ *
  * Revision 1.7  2005/04/04 19:43:56  mitry
  * Added timeout arg to BUFFLUSH() - tty_bufflush()
  *
@@ -261,7 +264,7 @@ int janus(void)
 							break;
 						} else {
 							rxstate=RDONE;
-							qpreset(0);
+							qpreset( QPR_RECV );
 						}
 					} else {
 						sscanf(p, "%u %lo %*o",
@@ -306,14 +309,14 @@ int janus(void)
 							txstate = XSENDBLK;
 						} else {
 							txclose(&txfd, FOP_SKIP);
-							qpreset(1);
+							qpreset( QPR_SEND );
 							flexecute(l);
 							l=l->next;
 							getfname(&l);
 							txstate = XSENDFNAME;
 						}
 					} else {
-						qpreset(1);
+						qpreset( QPR_SEND );
 						txstate = XDONE;
 					}
 				}
@@ -429,7 +432,8 @@ int janus(void)
 				  rxclose(&rxfd, FOP_ERROR);
 				  rc=1;
 			  }
-			  qpreset(0);qpreset(1);
+			  qpreset( QPR_RECV );
+			  qpreset( QPR_SEND );
 			  goto breakout;
 
 			}  /*  switch (pkttype)  */

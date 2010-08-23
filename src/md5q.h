@@ -24,9 +24,12 @@ documentation and/or software.
  */
 
 /*
- * $Id: md5q.h,v 1.1 2005/03/28 15:33:56 mitry Exp $
+ * $Id: md5q.h,v 1.2 2006/03/11 03:07:32 mitry Exp $
  *
  * $Log: md5q.h,v $
+ * Revision 1.2  2006/03/11 03:07:32  mitry
+ * Fixed internal md5 stuff if size of long is 8 bytes.
+ *
  * Revision 1.1  2005/03/28 15:33:56  mitry
  * MD5 logic now in separate files
  *
@@ -34,6 +37,7 @@ documentation and/or software.
 
 
 #include "config.h"
+#include "types.h"
 
 #ifndef HAVE_LIBMD
 
@@ -55,20 +59,6 @@ documentation and/or software.
 /* POINTER defines a generic pointer type */
 typedef unsigned char *POINTER;
 
-/* UINT2 defines a two byte word */
-#ifdef UINT16
-typedef UINT16 UINT2;
-#else
-typedef unsigned short int UINT2;
-#endif
-
-/* UINT4 defines a four byte word */
-#ifdef UINT16
-typedef UINT32 UINT4;
-#else
-typedef unsigned long int UINT4;
-#endif
-
 /* PROTO_LIST is defined depending on how PROTOTYPES is defined above.
 If using PROTOTYPES, then PROTO_LIST returns the list, otherwise it
   returns an empty list.
@@ -82,9 +72,9 @@ If using PROTOTYPES, then PROTO_LIST returns the list, otherwise it
 
 /* MD5 context. */
 typedef struct {
-  UINT4 state[4];                                   /* state (ABCD) */
-  UINT4 count[2];        /* number of bits, modulo 2^64 (lsb first) */
-  unsigned char buffer[64];                         /* input buffer */
+	UINT32		state[4];	/* state (ABCD) */
+	UINT32		count[2];	/* number of bits, modulo 2^64 (lsb first) */
+	unsigned char	buffer[64];	/* input buffer */
 } MD5_CTX;
 
 
@@ -95,9 +85,10 @@ typedef struct {
 
 typedef unsigned char md_caddr_t[MD5_DIGEST_LEN];
 
-extern void md5_cram_get(const unsigned char *secret, const unsigned char *challenge,
-         int challenge_length, unsigned char *digest);
-extern void md5_cram_set(const unsigned char *challenge);
+void		md5_cram_get(const unsigned char *, const unsigned char *,
+         		int, unsigned char *);
+void		md5_cram_set(const unsigned char *);
 
-extern unsigned char *md5_challenge(const unsigned char *buf);
-extern char *md5_digest(const char *pwd, const unsigned char *challenge);
+unsigned char	*md5_challenge(const unsigned char *);
+char		*md5_digest(const char *, const unsigned char *);
+
