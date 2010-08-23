@@ -2,9 +2,19 @@
  * work with nodelists
  **********************************************************/
 /*
- * $Id: nodelist.c,v 1.20 2005/08/22 19:41:53 mitry Exp $
+ * $Id: nodelist.c,v 1.23 2007/03/19 23:11:06 mitry Exp $
  *
  * $Log: nodelist.c,v $
+ * Revision 1.23  2007/03/19 23:11:06  mitry
+ * Fix core dump after internet flags implementation
+ *
+ * Revision 1.22  2007/03/07 01:01:27  mitry
+ * Check that IBN/IFC flags contain port if specified (not host)
+ * Add support for IP-only nodes phone style via phonetr
+ *
+ * Revision 1.21  2007/01/28 17:55:00  mitry
+ * Add support for INA flag and IBN/IFC optional port number.
+ *
  * Revision 1.20  2005/08/22 19:41:53  mitry
  * Fixed detection of stale index
  *
@@ -516,7 +526,7 @@ static int ndl_query(const ftnaddr_t *addr, ninfo_t **nl)
 	int		ptr;
 	char		ndl_str[MAX_STRING + 5], *p, *t;
 	idx_t		*ndl_i;
-	ninfo_t		*nlent;
+	ninfo_t		*nlent = NULL;
 	ndl_field_t	field = NDL_STATUS;
 
 	DEBUG(('N',1,"ndl_query"));
@@ -583,13 +593,27 @@ static int ndl_query(const ftnaddr_t *addr, ninfo_t **nl)
 
 		case NDL_FLAGS:
 		default:
-			if ( nlent->type == NT_PVT ) {
+
 #ifdef WITH_BINKP
-				if ( strstr( p, "IBN" ))
-					nlent->opt |= MO_BINKP;
+			if ( strncasecmp( p, "IBN", 3 ) == 0 )
+			{
+				nlent->opt |= MO_BINKP;
+				if ( strlen( p ) > 4 && p[3] == ':' && isdigit((int) p[4] ))
+				{
+					nlent->bp_port = atoi( p + 4 );
+				}
+				DEBUG(('N',4,"ndl_query: BINKP '%s:%d'",p,nlent->bp_port));
+			}
 #endif
-				if ( strstr( p, "IFC" ))
-					nlent->opt |= MO_IFC;
+
+			if ( strncasecmp( p, "IFC", 3 ) == 0 )
+			{
+				nlent->opt |= MO_IFC;
+				if ( strlen( p ) > 4 && p[3] == ':' && isdigit((int) p[4] ))
+				{
+					nlent->bp_port = atoi( p + 4 );
+				}
+				DEBUG(('N',4,"ndl_query: IFCICO '%s:%d'",p,nlent->ifc_port));
 			}
 
 			if (( p[0] == 'T' && strlen( p ) == 3 )
@@ -597,12 +621,21 @@ static int ndl_query(const ftnaddr_t *addr, ninfo_t **nl)
 			{
 				nlent->wtime = xstrdup( p );
 			}
+
+			if (( strncasecmp( p, "INA:", 4 ) == 0 )
+				&& ( strlen( p ) > 4 ))
+			{
+				nlent->host = xstrdup( p + 4 );
+				DEBUG(('N',4,"ndl_query: INA '%s'",nlent->host));
+			}
 		}
 		field++;
 	}
 
-	if ( nlent->opt )
+	if ( nlent->opt && nlent->host == NULL )
+	{
 		nlent->host = xstrdup( ftnaddrtoia( addr ));
+	}
 
 	*nl = nlent;
 	falist_add( &nlent->addrs, addr );
@@ -1342,7 +1375,7 @@ subst_t *parsesubsts(faslist_t *sbs)
 			q->nhids = 0;
 		}
 
-		d = xmalloc( sizeof( dialine_t ));
+		d = xcalloc( 1, sizeof( dialine_t ));
 
 		/* Insert ind _end_ of list */
 		c = q->hiddens;
@@ -1355,9 +1388,11 @@ subst_t *parsesubsts(faslist_t *sbs)
 		}
 
 		d->num = ++q->nhids;
+		/*
 		d->phone = d->timegaps = d->host = NULL;
 		d->next = NULL;
 		d->flags = 0;
+		*/
 
 		pstr = p = xstrdup( skip_blanks( sbs->str ));
 		while(( t = strsep( &p, " " ))) {
@@ -1387,9 +1422,9 @@ subst_t *parsesubsts(faslist_t *sbs)
 					else
 						ndl_log( "unknown subst flag: '%s'", t );
 
-					if ( d->flags ) {
-						d->host = xstrdup( d->phone ? d->phone : ftnaddrtoia( &sbs->addr ));
-						xfree( d->phone );
+					if ( d->flags && d->phone ) {
+						d->host = d->phone;
+						d->phone = NULL;
 						DEBUG(('N',3,"parsesubst: host '%s'", d->host ));
 					}
 					break;
@@ -1429,13 +1464,29 @@ int applysubst(ninfo_t *nl, subst_t *subs)
 		nl->phone = xstrdup( d->phone );
 	} else if ( from_nl && from_nl->phone ) {
 		xfree( nl->phone );
-		nl->phone = xstrdup( from_nl->phone );
-		phonetrans( &nl->phone, cfgsl( CFG_PHONETR ));
+		phonetrans( &from_nl->phone, cfgsl( CFG_PHONETR ));
+		if ( from_nl->phone && *from_nl->phone == '\0' )
+			nl->type = NT_PVT;
+		else
+			nl->phone = xstrdup( from_nl->phone );
 	}
 
-	if ( d->host ) {
+	if ( d->host )
+	{
 		xfree( nl->host );
 		nl->host = xstrdup( d->host );
+	}
+	else if ( from_nl && from_nl->host )
+	{
+		xfree( nl->host );
+		nl->host = xstrdup( from_nl->host );
+		nl->ifc_port = from_nl->ifc_port;
+		nl->bp_port = from_nl->bp_port;
+	}
+	else
+	{
+		xfree( nl->host );
+		nl->host = xstrdup( ftnaddrtoia( &nl->addrs->addr ));
 	}
 
 	if ( d->timegaps ) {

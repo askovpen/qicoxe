@@ -2,9 +2,12 @@
  * ip routines
  **********************************************************/
 /*
- * $Id: tcp.c,v 1.14 2005/12/03 02:25:03 mitry Exp $
+ * $Id: tcp.c,v 1.15 2007/01/28 17:55:00 mitry Exp $
  *
  * $Log: tcp.c,v $
+ * Revision 1.15  2007/01/28 17:55:00  mitry
+ * Add support for INA flag and IBN/IFC optional port number.
+ *
  * Revision 1.14  2005/12/03 02:25:03  mitry
  * Fixed socks5 authentication
  *
@@ -424,6 +427,7 @@ tcp_connect(char *name, char *proxy, int sp)
 	struct hostent		*he;
 	struct sockaddr_in	server;
 
+	memset( &server, 0, sizeof( server ));
 	server.sin_family = AF_INET;
 
 	if (( portname = strchr( proxy ? proxy : name, ':' ))) {
@@ -528,29 +532,29 @@ tcp_connect(char *name, char *proxy, int sp)
 int tcp_dial(ftnaddr_t *fa, char *host)
 {
 	int	fd, s = 0;
-	char	*p = NULL, *t = NULL;
+	char	*proxy = NULL, *t = NULL;
 
 	if ( cfgs( CFG_PROXY ))
-		p = xstrdup( ccs );
+		proxy = xstrdup( ccs );
 	else if( cfgs( CFG_SOCKS )) {
-		p = xstrdup( ccs );
+		proxy = xstrdup( ccs );
 		s = 1;
 	}
 
-	if ( p && ( t = strchr( p, ' ' )))
+	if ( proxy && ( t = strchr( proxy, ' ' )))
 		*t = '\0';
 
 	write_log("connecting to %s at %s%s%s%s [%s]",
 		ftnaddrtoa( fa ), host,
-		p ? " via " : "",
-		p ? ( s ? "socks " : "proxy " ) : "",
-		SS( p ),
+		proxy ? " via " : "",
+		proxy ? ( s ? "socks " : "proxy " ) : "",
+		SS( proxy ),
 		bink ? "binkp" : "ifcico" );
 	if ( t )
 		*t = ' ';
     
-	fd = tcp_connect( host, p, s );
-	xfree( p );
+	fd = tcp_connect( host, proxy, s );
+	xfree( proxy );
 	return fd;
 }
 

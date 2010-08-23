@@ -2,9 +2,15 @@
  * ftn tools
  **********************************************************/
 /*
- * $Id: ftn.c,v 1.12 2005/11/27 01:41:11 mitry Exp $
+ * $Id: ftn.c,v 1.14 2007/01/28 17:55:00 mitry Exp $
  *
  * $Log: ftn.c,v $
+ * Revision 1.14  2007/01/28 17:55:00  mitry
+ * Add support for INA flag and IBN/IFC optional port number.
+ *
+ * Revision 1.13  2006/04/14 18:45:25  mitry
+ * Added locked flag.
+ *
  * Revision 1.12  2005/11/27 01:41:11  mitry
  * Recode From and To fields to local charset in showpkt().
  *
@@ -48,6 +54,7 @@ void addr_cpy(ftnaddr_t *a, const ftnaddr_t *b)
 	a->n = b->n;
 	a->f = b->f;
 	a->p = b->p;
+	a->locked = b->locked;
 	if ( b->d && *b->d )
 		a->d = xstrdup( b->d );
 	else
@@ -180,6 +187,24 @@ char *ftnaddrtoia(const ftnaddr_t *a)
 	if(a->p)snprintf(s,64,"p%d.f%d.n%d.z%d." FTNDOMAIN,a->p,a->f,a->n,a->z);
 	    else snprintf(s,64,"f%d.n%d.z%d." FTNDOMAIN,a->f,a->n,a->z);
 	return s;
+}
+
+char *nodehostname(const ninfo_t *node, int isbinkp)
+{
+	static char	newhost[MAXHOSTNAMELEN + 10];
+	int		iport = 0;
+
+	xstrcpy( newhost, node->host, MAXHOSTNAMELEN + 10 );
+
+	iport = isbinkp ? node->bp_port : node->ifc_port;
+
+	if ( iport )
+	{
+		snprintf( newhost + strlen( newhost ), 9,
+			":%d", iport );
+	}
+
+	return newhost;
 }
 
 char *strip8(char *s)

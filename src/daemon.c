@@ -2,9 +2,15 @@
  * qico daemon
  **********************************************************/
 /*
- * $Id: daemon.c,v 1.18 2005/08/16 14:46:44 mitry Exp $
+ * $Id: daemon.c,v 1.20 2007/03/19 23:41:39 mitry Exp $
  *
  * $Log: daemon.c,v $
+ * Revision 1.20  2007/03/19 23:41:39  mitry
+ * Fixed longrescan
+ *
+ * Revision 1.19  2007/01/28 17:55:00  mitry
+ * Add support for INA flag and IBN/IFC optional port number.
+ *
  * Revision 1.18  2005/08/16 14:46:44  mitry
  * Changed DEBUG message
  *
@@ -591,9 +597,9 @@ void daemon_mode()
 			if ( rnum < 0 )
 				rnum = cfgi( CFG_LONGRESCAN ) - 1;
 			do_rescan = 0;
-			if ( !q_rescan( &current, rnum == 0 ))
+			if ( !q_rescan( &current, (int)(!rnum)))
 				write_log("can't rescan outbound");
-			rnum = rnum + 1;
+			rnum = rnum - 1;
 			t_rescan = 0;
 		}
 
@@ -653,10 +659,17 @@ void daemon_mode()
 					if(rnode->host) {
 						static struct stat s;
 						static char lckname[MAX_PATH];
+						char *newhost = NULL;
+
+						DEBUG(('Q',3,"host: '%s'",rnode->host));
 						snprintf(lckname,MAX_PATH,"%s.tcpip",cfgs(CFG_NODIAL));
 						if(!stat(lckname,&s))goto nlkil;
 						is_ip=1;
 						if(rnode->opt&MO_BINKP)bink=1;
+						newhost = nodehostname( rnode, bink );
+						xfree( rnode->host );
+						rnode->host = xstrdup( newhost );
+						DEBUG(('Q',3,"host: '%s'",rnode->host));
 						xstrcpy(ip_id,"ipline",10);
 						rnode->tty=xstrdup(bink?"binkp":"tcpip");
 					} else {
@@ -775,8 +788,7 @@ void daemon_mode()
 nlkil:				is_ip=0;bink=0;
 				DEBUG(('Q',1,"nlkill"));
 				nlkill(&rnode);
-				current=current->next;
-				if(!current)current=q_queue;
+				current = ( current->next ? current->next : q_queue );
 				i=i->next;
 			}
 		}

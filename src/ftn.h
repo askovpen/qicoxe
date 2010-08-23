@@ -1,7 +1,13 @@
 /*
- * $Id: ftn.h,v 1.11 2005/08/16 15:17:22 mitry Exp $
+ * $Id: ftn.h,v 1.13 2007/01/28 17:55:00 mitry Exp $
  *
  * $Log: ftn.h,v $
+ * Revision 1.13  2007/01/28 17:55:00  mitry
+ * Add support for INA flag and IBN/IFC optional port number.
+ *
+ * Revision 1.12  2006/04/14 18:45:25  mitry
+ * Added locked flag.
+ *
  * Revision 1.11  2005/08/16 15:17:22  mitry
  * Removed unused ninfo_t.haswtime field
  *
@@ -67,19 +73,21 @@
 #define ASO	2
 
 typedef struct {
-	int z, n, f, p;
-	char *d;
+	int	z, n, f, p;
+	int	locked;
+	char	*d;
 } ftnaddr_t;
 
-#define FTNADDR_T(a) ftnaddr_t (a)={0,0,0,0,NULL}
+#define FTNADDR_T(a)	ftnaddr_t (a)={0,0,0,0,0,NULL}
 
 #include "slists.h"
 
 typedef struct {
-	falist_t *addrs;
-	char *name,*place,*sysop,*phone,*wtime,*flags,*pwd,*mailer,*host,*tty;
-	int options,speed,realspeed,netmail,files,type,hidnum,holded,opt;
-	time_t time,starttime;
+	falist_t	*addrs;
+	char		*name,*place,*sysop,*phone,*wtime,*flags,*pwd,*mailer,*host,*tty;
+	int		options,speed,realspeed,netmail,files,type,hidnum,holded,opt;
+	int		ifc_port, bp_port;
+	time_t		time,starttime;
 } ninfo_t;
 
 typedef struct _qitem_t {
@@ -146,16 +154,16 @@ typedef struct {
 } pktmhdr_t;
 
 typedef struct {
-	int flags;
-	char *name;
-	size_t size;
-	time_t time;
+	int	flags;
+	char	*name;
+	size_t	size;
+	time_t	time;
 } bp_status_t;
 
 typedef struct {
-	int try,flags;
-	time_t htime,utime;
-	bp_status_t bp;
+	int		try, flags;
+	time_t		htime, utime;
+	bp_status_t	bp;
 } sts_t;
 
 typedef void (*qeach_t)(const char *, const ftnaddr_t *, int, int, int);
@@ -167,6 +175,7 @@ ftnaddr_t	*akamatch(const ftnaddr_t *, falist_t *);
 char	*ftnaddrtoa(const ftnaddr_t *);
 char	*ftnaddrtoda(const ftnaddr_t *);
 char	*ftnaddrtoia(const ftnaddr_t *);
+char	*nodehostname(const ninfo_t *, int);
 char	*strip8(char *);
 int	has_addr(const ftnaddr_t *, falist_t *);
 int	showpkt(const char *);
@@ -186,8 +195,8 @@ int	outbound_init(const char *, const char *, const char *, int);
 void	outbound_done(void);
 int	outbound_rescan(qeach_t, int);
 int	outbound_addr_busy(const ftnaddr_t *);
-int	outbound_locknode(const ftnaddr_t *, int);
-int	outbound_unlocknode(const ftnaddr_t *, int);
+int	outbound_locknode(ftnaddr_t *, int);
+int	outbound_unlocknode(ftnaddr_t *, int);
 int	outbound_flavor(char fl);
 int	outbound_attach(const ftnaddr_t *, int, slist_t *);
 int	outbound_request(const ftnaddr_t *, slist_t *);
