@@ -13,7 +13,8 @@ LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="x86 amd64"
 IUSE="+hydra8k +binkp +qcc +notify perl -winfs xinetd -debug"
-DEPEND="perl? ( dev-lang/perl )"
+DEPEND="perl? ( dev-lang/perl )
+	qcc? ( sys-libs/ncurses )"
 RDEPEND="${DEPEND}
 	xinetd? ( sys-apps/xinetd )"
 
