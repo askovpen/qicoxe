@@ -2,9 +2,12 @@
  * Modem routines.
  **********************************************************/
 /*
- * $Id: modem.c,v 1.18 2005/08/16 10:32:19 mitry Exp $
+ * $Id: modem.c,v 1.19 2006/03/31 19:38:30 mitry Exp $
  *
  * $Log: modem.c,v $
+ * Revision 1.19  2006/03/31 19:38:30  mitry
+ * Fixed typo error
+ *
  * Revision 1.18  2005/08/16 10:32:19  mitry
  * Fixed broken calls of loginscript
  *
@@ -314,7 +317,7 @@ writeit:
 
 static int modem_get_str(char *buf, size_t nbytes, int timeout)
 {
-    timer_t tout = timer_set( timeout );
+    time_t tout = timer_set( timeout );
     int rc = ERROR, ch = 0, ptr = 0;
 
     buf[0] = '\0';

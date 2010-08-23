@@ -1,6 +1,9 @@
-/* $Id: globals.h,v 1.6 2005/03/31 19:28:16 mitry Exp $
+/* $Id: globals.h,v 1.7 2006/07/22 13:13:01 mitry Exp $
  *
  * $Log: globals.h,v $
+ * Revision 1.7  2006/07/22 13:13:01  mitry
+ * Use file times in GMT on some protocols.
+ *
  * Revision 1.6  2005/03/31 19:28:16  mitry
  * Removed unused variable 'calling'
  *
@@ -48,6 +51,7 @@ extern qitem_t *q_queue;
 extern slist_t *ccsl;
 extern subst_t *psubsts;
 extern unsigned long totalf,totalm,totaln;
+extern int ftime_is_gmt;
 
 #endif
 #endif

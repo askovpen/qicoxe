@@ -2,9 +2,12 @@
  * client/server tools
  **********************************************************/
 /*
- * $Id: clserv.c,v 1.6 2005/08/22 17:12:45 mitry Exp $
+ * $Id: clserv.c,v 1.7 2006/07/18 22:22:09 mitry Exp $
  *
  * $Log: clserv.c,v $
+ * Revision 1.7  2006/07/18 22:22:09  mitry
+ * Make qico daemon to start on FreeBSD 4.6.2 :)
+ *
  * Revision 1.6  2005/08/22 17:12:45  mitry
  * Close socket fd if didn't make connection
  *
@@ -46,37 +49,49 @@ int cls_conn(int type, const char *port, const char *addr)
 	struct sockaddr_in	sa;
 	struct servent		*se;
 
+	memset( &sa, 0, sizeof sa);
 	sa.sin_family = AF_INET;
 
-        DEBUG(('I',1,"cls_conn: type=%d, port=%s, addr=%s", type, port, addr));
+	DEBUG(('I',1,"cls_conn: type=%d, port=%s, addr=%s", type, port, addr));
 
-	if ( port && atoi( port ))
-		sa.sin_port = htons( atoi( port ));
-	else if( port && ( se = getservbyname( port, (type & CLS_UDP ) ? "udp" : "tcp" )))
+	if ( port ) {
+		if ( atoi( port )) {
+			sa.sin_port = htons( atoi( port ));
+		}
+		else if (( se = getservbyname( port, ( type & CLS_UDP ) ? "udp" : "tcp" ))) {
+			sa.sin_port = se->s_port;
+		}
+		else {
+			DEBUG(('I',1,"cls_conn: can't parse port"));
+			errno = EINVAL;
+			return -1;
+		}
+	}
+	else if (( se = getservbyname( "qicoui", ( type & CLS_UDP ) ? "udp" : "tcp" ))) {
 		sa.sin_port = se->s_port;
-	else if( !port && ( se = getservbyname( "qicoui", ( type & CLS_UDP ) ? "udp" : "tcp" )))
-		sa.sin_port = se->s_port;
-	else if( !port )
-		sa.sin_port = htons( DEF_SERV_PORT );
+	}
 	else {
-		errno = EINVAL;
-		return -1;
+		sa.sin_port = htons( DEF_SERV_PORT );
 	}
 	
 	if ( addr ) {
 		int		a1;
 		struct hostent	*he;
 
-		if ( sscanf( addr, "%d.%d.%d.%d", &a1, &a1, &a1, &a1 ) == 4 )
+		if ( sscanf( addr, "%d.%d.%d.%d", &a1, &a1, &a1, &a1 ) == 4 ) {
 			sa.sin_addr.s_addr = inet_addr( addr );
-		else if (( he = gethostbyname( addr )))
+		}
+		else if (( he = gethostbyname( addr ))) {
 			memcpy( &sa.sin_addr, he->h_addr, he->h_length );
+		}
 		else {
 			DEBUG(('I',1,"cls_conn: unknown address: %s", addr));
 			return -1;
 		}
-	} else
+	}
+	else {
 		sa.sin_addr.s_addr = htonl(( type & CLS_UDP ) ? INADDR_LOOPBACK : INADDR_ANY );
+	}
 
 	rc = socket( AF_INET, type & CLS_UDP ? SOCK_DGRAM : SOCK_STREAM, 0 );
     	if ( rc < 0 ) {

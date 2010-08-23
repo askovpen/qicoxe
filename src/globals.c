@@ -2,9 +2,12 @@
  * global variables
  **********************************************************/
 /*
- * $Id: globals.c,v 1.10 2005/03/31 19:28:16 mitry Exp $
+ * $Id: globals.c,v 1.11 2006/07/22 13:13:00 mitry Exp $
  *
  * $Log: globals.c,v $
+ * Revision 1.11  2006/07/22 13:13:00  mitry
+ * Use file times in GMT on some protocols.
+ *
  * Revision 1.10  2005/03/31 19:28:16  mitry
  * Removed unused variable 'calling'
  *
@@ -53,3 +56,6 @@ qitem_t *q_queue=NULL;
 slist_t *ccsl;
 subst_t *psubsts;
 unsigned long totalf,totalm,totaln;
+
+int ftime_is_gmt = 0;
+

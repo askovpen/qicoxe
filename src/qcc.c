@@ -2,9 +2,12 @@
  * qico control center.
  **********************************************************/
 /*
- * $Id: qcc.c,v 1.16 2005/08/12 16:40:51 mitry Exp $
+ * $Id: qcc.c,v 1.17 2006/07/18 22:30:09 mitry Exp $
  *
  * $Log: qcc.c,v $
+ * Revision 1.17  2006/07/18 22:30:09  mitry
+ * Delayed cyrillization
+ *
  * Revision 1.16  2005/08/12 16:40:51  mitry
  * Added wktime_str()
  *
@@ -441,7 +444,7 @@ static char *timestr(time_t tim)
 	long int hr;
 	if(tim<0) tim=0;
 	hr=tim/3600;
-	snprintf(ts,10,"%02ld:%02ld:%02ld",hr,tim/60-hr*60,tim%60);
+	snprintf(ts,10,"%02ld:%02i:%02i",hr,(int)(tim/60-hr*60),tim%60);
 	return ts;
 }
 
@@ -1302,10 +1305,10 @@ int main(int argc, char **argv, char **envp)
 		fprintf(stderr,"can't connect to server: %s.\n",strerror(errno));
 		return 1;
 	}
+
 #ifdef HAVE_SETLOCALE
 	setlocale(LC_ALL, "C");
 #endif
-/*cyr*/	printf("\033(K");fflush(stdout);
 
 	signal(SIGALRM, sighup);
 	alarm(6);
@@ -1350,6 +1353,8 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT,sighup);
 	signal(SIGKILL,sighup);
 	srand(time(NULL));
+/*cyr*/	printf("\033(K");
+	fflush(stdout);
 	initscreen();
 	currslot=-1;
 	allslots=0;

@@ -2,9 +2,15 @@
  * Session control.
  **********************************************************/
 /*
- * $Id: session.c,v 1.26 2005/09/06 20:42:04 mitry Exp $
+ * $Id: session.c,v 1.28 2006/07/22 13:13:01 mitry Exp $
  *
  * $Log: session.c,v $
+ * Revision 1.28  2006/07/22 13:13:01  mitry
+ * Use file times in GMT on some protocols.
+ *
+ * Revision 1.27  2006/07/10 16:16:30  mitry
+ * Binkp: prevent infinite calling system if some files were suspended
+ *
  * Revision 1.26  2005/09/06 20:42:04  mitry
  * Added macros to qpreset() calls
  *
@@ -939,6 +945,8 @@ int session(int originator, int type, ftnaddr_t *calladdr, int speed)
     signal( SIGINT, tty_sighup );
     signal( SIGCHLD, SIG_DFL );
 
+    ftime_is_gmt = ( type == SESSION_BINKP );
+
     switch ( type ) {
         case SESSION_AUTO:
             write_log( "trying EMSI..." );
@@ -1044,5 +1052,6 @@ int session(int originator, int type, ftnaddr_t *calladdr, int speed)
 
     xfree( remote_id );
 
-    return ( rc & ~S_ADDTRY );
+    /* return ( rc & ~S_ADDTRY ); */
+    return rc;
 }

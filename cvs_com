@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cvs_com,v 1.4 2005/02/08 20:05:28 mitry Exp $
+# $Id: cvs_com,v 1.6 2007/03/19 23:48:21 mitry Exp $
 if(-e "ChangeLog") {
     open(X,"new")||die("can't open 'new'\n");
     open(F,"TodayFixes")||die("can't open TodayFixes\n");
@@ -18,7 +18,7 @@ if(-e "ChangeLog") {
     close(X,F);
     unlink("ChangeLog");
 }
-system("cvs2cl.pl -F trunk -I ChangeLog -I TodayFixes -I cvsdate.h --no-wrap -S");
+system("cvs2cl.pl -r -F trunk -I ChangeLog -I TodayFixes -I cvsdate.h -I 1234 -I cvs_com --no-wrap -S");
 exit if($?>>8);
 unlink("ChangeLog.bak");
 system('date +\'char cvsdate[]="%Y-%m-%d %H:%M";\' >src/cvsdate.h');

@@ -2,9 +2,21 @@
  * Binkp protocol implementation.
  ******************************************************************/
 /*
- * $Id: binkp.c,v 1.22 2005/12/03 02:44:19 mitry Exp $
+ * $Id: binkp.c,v 1.26 2007/03/19 23:58:06 mitry Exp $
  *
  * $Log: binkp.c,v $
+ * Revision 1.26  2007/03/19 23:58:06  mitry
+ * *** empty log message ***
+ *
+ * Revision 1.25  2007/03/19 23:39:41  mitry
+ * ND mode should be implemented
+ *
+ * Revision 1.24  2006/07/10 16:16:29  mitry
+ * Binkp: prevent infinite calling system if some files were suspended
+ *
+ * Revision 1.23  2006/04/14 18:55:10  mitry
+ * Drop session if secure aka is busy.
+ *
  * Revision 1.22  2005/12/03 02:44:19  mitry
  * Fixed session timeout between two qicos
  *
@@ -148,7 +160,10 @@ static int binkp_init(int to)
 			break;
 
 		case 'd':					/* No dupes mode */
+			break;
+#if 0
 			bps->opt_nd |= O_NO; /*mode?O_THEY:O_NO;*/
+#endif
 
 		case 'r':					/* Non-reliable mode */
 			bps->opt_nr |= to ? O_WANT : O_NO;
@@ -171,6 +186,7 @@ static int binkp_init(int to)
 		return ERROR;
 
 	bps->MD_chal = NULL;
+	bps->was_suspend = 0;
 
 	return OK;
 }
@@ -453,10 +469,12 @@ static int M_nul(BPS *bp, byte *arg)
 				bp->opt_nr |= O_WE;
 			else if ( !strcmp( p, "MB" ))
 				bp->opt_mb |= O_WE;
+#if 0
 			else if( !strcmp( p, "ND" ))
 				bp->opt_nd |= O_WE;
 			else if( !strcmp( p, "NDA" ))
 				bp->opt_nd |= O_EXT;
+#endif
 			else if( !strcmp( p, "CHAT" ))
 				bp->opt_cht |= O_WE;
 			else if( !strcmp( p, "CRYPT" ))
@@ -514,25 +532,34 @@ static int M_adr(BPS *bp, byte *arg)
 
 			/* Search for duplicated remote akas */
 			if ( !falist_find( rnode->addrs, &fa )) {
-				if ( outbound_locknode( &fa, LCK_s )) {
+				char		*rpwd = findpwd( &fa );
+				falist_t	*xfa;
+
+				xfa = falist_add( &rnode->addrs, &fa );
+				if ( outbound_locknode( &xfa->addr, LCK_s )) {
                     
 					DEBUG(('B',4,"locked: %s", rem_aka));
 
-					if ( !bp->to && !rem_pwd ) {
-						rem_pwd = findpwd( &fa );
-						if ( rem_pwd ) {
-							DEBUG(('B',4,"found pwd '%s' for %s", rem_pwd, rem_aka));
-						}
+					if ( !bp->to && !rem_pwd && rpwd ) {
+						rem_pwd = rpwd;
+						DEBUG(('B',4,"found pwd '%s' for %s", rem_pwd, rem_aka));
 					}
 
 					rc++;
-					falist_add( &rnode->addrs, &fa );
 					makeflist( &fl, &fa, bp->to );
 
 					DEBUG(('B',4,"totalm: %lu, totalf: %lu", totalm, totalf));
 
-				} else
-					write_log( "Can't lock outbound for %s", ftnaddrtoa( &fa ));
+				} else {
+					write_log( "Can't lock outbound for %saka %s",
+						(rpwd ? "secure " : ""), ftnaddrtoa( &fa ));
+					if ( rpwd ) {
+						log_rinfo( rnode );
+						msgs( BPM_BSY, "Secure aka is busy" );
+						bp->rc = ( bp->to ? S_REDIAL | S_ADDTRY : S_BUSY );
+						return 0;
+					}
+				}
 			} else
 				DEBUG(('B',4,"removed duplicated aka: %s", rem_aka));
 		} else {
@@ -853,7 +880,7 @@ static int M_pwd(BPS *bp, byte *arg)
 		( bp->opt_nd & O_THEY ) ? " ND" : "",
 		( bp->opt_mb & O_WANT ) ? " MB" : "",
 		( bp->opt_cht & O_WANT ) ? " CHAT" : "",
-		(( !( bp->opt_nd & O_WE )) != ( !( bp->opt_nd & O_THEY ))) ? " NDA": "",
+		/*(( !( bp->opt_nd & O_WE )) != ( !( bp->opt_nd & O_THEY ))) ? " NDA":*/ "",
 		(( bp->opt_cr & O_WE ) && ( bp->opt_cr & O_THEY )) ? " CRYPT" : "" );
 	if ( strlen( tmp ))
 		msgs( BPM_NUL, "OPT%s", tmp );
@@ -976,7 +1003,8 @@ static int M_bsy(BPS *bp, byte *arg)
 static int M_get(BPS *bp, byte *arg)
 {
 	char	*buf = (char *) arg, *fname;
-	long	fsize, ftime, foffs;
+	long	fsize, foffs;
+	time_t	ftime;
 
 	DEBUG(('B',3,"GET %s", buf));
     
@@ -1013,7 +1041,8 @@ static int M_gotskip(BPS *bp, byte *arg)
 	char 	*buf = (char *) arg;
 	char 	*fname;
 	int 	id = *bp->rx_buf;
-	long 	fsize, ftime;
+	long 	fsize;
+	time_t	ftime;
 
 	DEBUG(('B',3,"%s %s", mess[id], buf));
 
@@ -1021,14 +1050,17 @@ static int M_gotskip(BPS *bp, byte *arg)
         	if ( sendf.fname && !strncasecmp( fname, sendf.fname, MAX_PATH )
 			&& sendf.mtime == ftime && sendf.ftot == fsize )
 		{
+			int	is_skip = ( id == BPM_SKIP );
+
 			if ( bp->send_file ) {
 				DEBUG(('B',1,"file %s %s",
 					sendf.fname,
-					( id == BPM_GOT ) ? "skipped" : "suspended"));
+					is_skip ? "suspended" : "skipped"));
 
-				txclose( &txfd, ( id == BPM_GOT ) ? FOP_SKIP : FOP_SUSPEND );
-				bp->ticskip = ( id == BPM_GOT ) ? 1 : 2;
-				bp->oflist->suspend = ( id == BPM_SKIP );
+				txclose( &txfd, is_skip ? FOP_SUSPEND : FOP_SKIP );
+				bp->ticskip = is_skip + 1;
+				bp->oflist->suspend = is_skip;
+				bp->was_suspend += is_skip;
 				flexecute( bp->oflist );
 				bp->send_file = 0;
 				qpfsend();
@@ -1038,50 +1070,19 @@ static int M_gotskip(BPS *bp, byte *arg)
 			if ( bp->wait_got ) {
 				DEBUG(('B',1,"file %s %s",
 					sendf.fname,
-					( id == BPM_GOT ) ? "done" : "suspended"));
+					is_skip ? "suspended" : "done"));
 				
 				bp->wait_got = 0;
-				txclose( &txfd, ( id == BPM_GOT ) ? FOP_OK : FOP_SUSPEND );
+				txclose( &txfd, is_skip ? FOP_SUSPEND : FOP_OK );
             
-				bp->ticskip = ( id == BPM_GOT ) ? 0 : 2;
-				bp->oflist->suspend = ( id == BPM_SKIP );
+				bp->ticskip = is_skip ? 2 : 0;
+				bp->oflist->suspend = is_skip;
+				bp->was_suspend += is_skip;
 				flexecute( bp->oflist );
 				qpfsend();
 			} else
 				write_log( "Binkp: got M_%s for unknown file", mess[id] );
 		}
-#if 0        
-        if ( bp->send_file && sendf.fname && !strncasecmp( fname, sendf.fname, MAX_PATH )
-            && sendf.mtime == ftime && sendf.ftot == fsize ) {
-
-            DEBUG(('B',1,"file %s %s", sendf.fname, ( id == BPM_GOT ) ? "skipped" : "suspended"));
-            txclose( &txfd, ( id == BPM_GOT ) ? FOP_SKIP : FOP_SUSPEND );
-            if ( id == BPM_GOT ) {
-                flexecute( bp->oflist );
-                bp->ticskip = 1;
-            } else
-                bp->ticskip = 2;
-            bp->send_file = 0;
-            qpfsend();
-            return 1;
-        }
-
-        if ( bp->wait_got && sendf.fname && !strncasecmp( fname, sendf.fname, MAX_PATH )
-            && sendf.mtime == ftime && sendf.ftot == fsize ) {
-
-            DEBUG(('B',1,"file %s %s", sendf.fname, ( id == BPM_GOT ) ? "done" : "suspended"));
-            bp->wait_got = 0;
-            txclose( &txfd, ( id == BPM_GOT ) ? FOP_OK : FOP_SUSPEND );
-            
-            if ( id == BPM_GOT ) {
-                flexecute( bp->oflist );
-                bp->ticskip = 0;
-            } else
-                bp->ticskip = 2;
-            qpfsend();
-        } else
-            write_log( "Binkp: got M_%s for unknown file", mess[id] );
-#endif
 	} else
 		DEBUG(('B',1,"got unparsable fileinfo"));
 	return 1;
@@ -1147,9 +1148,10 @@ static int binkp_send(BPS *bp)
 		} else if ( bp->send_file && txfd && !bp->wait_for_get ) {
 			int blksz = MIN( BP_BLKSIZE, sendf.ftot - bp->txpos );
 
-			if (( rc = fread( bp->tx_buf + BLK_HDR_SIZE, 1, blksz, txfd )) < 0 ) {
+			if (( rc = fread( bp->tx_buf + BLK_HDR_SIZE, 1, blksz, txfd )) < blksz ) {
 				sline("Binkp: file read error at pos %lu", bp->txpos);
-				DEBUG(('B',1,"Binkp: file read error at pos %lu", bp->txpos));
+				write_log( "file read error at pos %lu: read %i, expected %i",
+					bp->txpos, rc, blksz );
 				txclose( &txfd, FOP_ERROR );
 				bp->send_file = 0;
 			} else {
@@ -1207,7 +1209,8 @@ static int store_data(BPS *bp)
 	DEBUG(('B',4,"got: data %d",bp->rx_size));
 	DEBUG(('B',4,"data: rxpos %lu, recvf.foff %lu", (long) bp->rxpos, (long) recvf.foff ));
 
-	snprintf( tmp, 511, "%s %lu %lu", bp->rfname, (long) recvf.ftot, bp->rmtime );
+	snprintf( tmp, 511, "%s %lu %lu", bp->rfname, (long) recvf.ftot,
+		(long unsigned) bp->rmtime );
 
 	if ( rxstatus ) {
 		msgs(( rxstatus == RX_SUSPEND ) ? BPM_SKIP : BPM_GOT, tmp );
@@ -1216,7 +1219,7 @@ static int store_data(BPS *bp)
 		return 1;
 	}
 
-	if (( n = fwrite( bp->rx_buf, 1, bp->rx_size, rxfd )) < 0 ) {
+	if (( n = fwrite( bp->rx_buf, 1, bp->rx_size, rxfd )) < bp->rx_size ) {
 		bp->recv_file = 0;
 		sline( "Binkp: file write error" );
 		write_log( "can't write to %s, suspended", recvf.fname );
@@ -1405,7 +1408,7 @@ static void binkp_hs(BPS *bp)
 	msgs( BPM_NUL, "VER %s %s", tmp, BP_PROT "/" BP_VERSION );
 
 	if ( bp->to ) {
-		msgs( BPM_NUL, "OPT NDA%s%s%s%s%s",
+		msgs( BPM_NUL, "OPT %s%s%s%s%s",
 			( bp->opt_nr  & O_WANT ) ? " NR"    : "",
 			( bp->opt_nd  & O_THEY ) ? " ND"    : "",
 			( bp->opt_mb  & O_WANT ) ? " MB"    : "",
@@ -1558,6 +1561,9 @@ int binkpsession(int mode, ftnaddr_t *remaddr)
 		DEBUG(('S',3,"Binkp chat autoclosed (%s)", timer_expired(chattimer) ? "timeout" : "hangup" ));
 		msgs( BPM_EOB, NULL );
 	}
+
+	if ( bps->to && bps->was_suspend )
+		bps->rc |= ( S_REDIAL | S_ADDTRY );
 
 	rc = bps->rc;
 	if ( bps->error == -1 )

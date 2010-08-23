@@ -2,9 +2,12 @@
  * common protocols' file management
  ******************************************************************/
 /*
- * $Id: protfm.c,v 1.18 2005/08/22 17:16:05 mitry Exp $
+ * $Id: protfm.c,v 1.19 2006/07/22 13:13:01 mitry Exp $
  *
  * $Log: protfm.c,v $
+ * Revision 1.19  2006/07/22 13:13:01  mitry
+ * Use file times in GMT on some protocols.
+ *
  * Revision 1.18  2005/08/22 17:16:05  mitry
  * Removed useless static function
  *
@@ -129,7 +132,7 @@ int rxopen(char *name, time_t rtime, off_t rsize, FILE **f)
  	recvf.start=time(NULL);
 	xfree(recvf.fname);
  	recvf.fname=xstrdup(bn);
-	recvf.mtime=rtime-gmtoff(recvf.start);
+	recvf.mtime = rtime - ( ftime_is_gmt ? 0 : gmtoff( recvf.start ));
 	recvf.ftot=rsize;
 	if(recvf.toff+rsize > recvf.ttot) recvf.ttot+=rsize;
 	recvf.nf++;if(recvf.nf>recvf.allf) recvf.allf++;
@@ -306,7 +309,7 @@ FILE *txopen(char *tosend, char *sendas)
 	sendf.ftot=sb.st_size;
 	sendf.foff=sendf.soff=0;
 	sendf.start=time(NULL);
-	sendf.mtime=sb.st_mtime+gmtoff(sendf.start);
+	sendf.mtime = sb.st_mtime + ( ftime_is_gmt ? 0 : gmtoff( sendf.start ));
 	if(sendf.toff+sb.st_size > sendf.ttot) sendf.ttot+=sb.st_size;
 	sendf.nf++;if(sendf.nf>sendf.allf) sendf.allf++;
 	IFPerl({char *p=perl_on_send(tosend);if(p&&!*p)return NULL;

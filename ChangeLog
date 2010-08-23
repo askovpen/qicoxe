@@ -1,460 +1,605 @@
+2007-03-20 01:58  mitry
+
+	* src/binkp.c (1.26):
+
+	[no log message]
+
+2007-03-20 01:44  mitry
+
+	* configure.in (1.29):
+
+	Changed config header parameter
+
+2007-03-20 01:43  mitry
+
+	* autogen.sh (1.8):
+
+	Add autoupdate call
+
+2007-03-20 01:41  mitry
+
+	* src/daemon.c (1.20):
+
+	Fixed longrescan
+
+2007-03-20 01:39  mitry
+
+	* src/binkp.c (1.25):
+
+	ND mode should be implemented
+
+2007-03-20 01:11  mitry
+
+	* src/nodelist.c (1.23):
+
+	Fix core dump after internet flags implementation
+
+2007-03-16 01:06  mitry
+
+	* configure.in (1.28):
+
+	Fixed typo error
+
+2007-03-14 02:04  mitry
+
+	* autogen.sh (1.7):
+
+	Add support for autoconf version 2.60 and 2.61
+	Add support for automake version 1.10
+
+2007-03-07 03:02  mitry
+
+	* qico.conf.sample (1.15):
+
+	[no log message]
+
+2007-03-07 03:01  mitry
+
+	* src/nodelist.c (1.22):
+
+	Check that IBN/IFC flags contain port if specified (not host)
+	Add support for IP-only nodes phone style via phonetr
+
+2007-01-28 19:55  mitry
+
+	* src/: daemon.c (1.19), ftn.c (1.14), ftn.h (1.13), nodelist.c
+	  (1.21), tcp.c (1.15):
+
+	Add support for INA flag and IBN/IFC optional port number.
+
+2006-07-22 16:13  mitry
+
+	* src/: globals.c (1.11), globals.h (1.7), protfm.c (1.19),
+	  session.c (1.28):
+
+	Use file times in GMT on some protocols.
+
+2006-07-19 01:30  mitry
+
+	* src/qcc.c (1.17):
+
+	Delayed cyrillization
+
+2006-07-19 01:22  mitry
+
+	* src/clserv.c (1.7):
+
+	Make qico daemon to start on FreeBSD 4.6.2 :)
+
+2006-07-10 19:16  mitry
+
+	* src/: binkp.c (1.24), binkp.h (1.8), session.c (1.27):
+
+	Binkp: prevent infinite calling system if some files were suspended
+
+2006-04-24 18:04  mitry
+
+	* src/tty.c (1.28):
+
+	Fixed typo error.
+
+2006-04-14 21:55  mitry
+
+	* src/binkp.c (1.23):
+
+	Drop session if secure aka is busy.
+
+2006-04-14 21:51  mitry
+
+	* src/outbound.c (1.22):
+
+	Changed a bit node (un)lock logic.
+
+2006-04-14 21:49  mitry
+
+	* src/: slists.c (1.4), slists.h (1.4):
+
+	Changed return types.
+
+2006-04-14 21:45  mitry
+
+	* src/: ftn.c (1.13), ftn.h (1.12):
+
+	Added locked flag.
+
+2006-03-31 22:41  mitry
+
+	* src/tools.c (1.13):
+
+	Don't ignore return value of unlink()
+
+2006-03-31 22:38  mitry
+
+	* src/modem.c (1.19):
+
+	Fixed typo error
+
 2006-03-11 05:17  mitry
 
-	* qico.passwd.sample:
+	* qico.passwd.sample (1.3):
 
 	Removed ^M at the end of lines.
 
 2006-03-11 05:07  mitry
 
-	* src/: md5q.c, md5q.h, types.h:
+	* src/: md5q.c (1.2), md5q.h (1.2), types.h (1.9):
 
 	Fixed internal md5 stuff if size of long is 8 bytes.
 
 2006-03-11 03:59  mitry
 
-	* configure.in:
+	* configure.in (1.27):
 
 	Added option to disable system-wide RSA Data Security library libmd (FreeBSD).
 
 2006-03-09 15:01  mitry
 
-	* src/Makefile.am:
+	* src/Makefile.am (1.13):
 
 	Fix qcc linking under current AltLinux.
 
 2005-12-31 17:27  mitry
 
-	* src/flaglex.l:
+	* src/flaglex.l (1.6):
 
 	Fixed date evaluation
 
 2005-12-03 04:44  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.22):
 
 	Fixed session timeout between two qicos
 
 2005-12-03 04:25  mitry
 
-	* src/tcp.c:
+	* src/tcp.c (1.14):
 
 	Fixed socks5 authentication
 
 2005-11-28 08:55  mitry
 
-	* src/main.c:
+	* src/main.c (1.25):
 
 	Fixed tty name detection if /dev/ttySX is linked to /dev/tts/X
 
 2005-11-27 03:41  mitry
 
-	* src/ftn.c:
+	* src/ftn.c (1.12):
 
 	Recode From and To fields to local charset in showpkt().
 
 2005-11-27 03:32  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.31):
 
 	Fixed hydra_send() if file to be sent is disappeared.
 
 2005-10-31 19:21  mitry
 
-	* src/ftn.c:
+	* src/ftn.c (1.11):
 
 	Fixed showpkt which didn't handle national characters in `to' and `from' pkt fields.
 
 2005-09-06 23:42  mitry
 
-	* src/: binkp.c, hydra.c, janus.c, session.c:
+	* src/: binkp.c (1.21), hydra.c (1.30), janus.c (1.8), session.c
+	  (1.26):
 
 	Added macros to qpreset() calls
 
 2005-09-06 22:46  mitry
 
-	* src/defs.h:
+	* src/defs.h (1.6):
 
 	Added some defines
 
 2005-08-24 16:31  mitry
 
-	* qico.conf.sample:
+	* qico.conf.sample (1.14):
 
 	Added T loglevel description
 
 2005-08-23 19:51  mitry
 
-	* src/config.c:
+	* src/config.c (1.10):
 
 	Stop running if can't reread config
 
 2005-08-23 19:50  mitry
 
-	* src/log.c:
+	* src/log.c (1.10):
 
 	Handle NULL-able logfile
 
 2005-08-23 19:23  mitry
 
-	* src/types.h:
+	* src/types.h (1.8):
 
 	Fixed compilation if true/false were defined elsewhere
 
 2005-08-23 19:21  mitry
 
-	* debian/: README.Debian, copyright, qico-common.dirs,
-	  qico-common.docs, qico-common.init, qico-common.install,
-	  qico-common.postrm:
+	* debian/: README.Debian (1.2), copyright (1.3), qico-common.dirs
+	  (1.2), qico-common.docs (1.2), qico-common.init (1.2),
+	  qico-common.install (1.2), qico-common.postrm (1.2):
 
 	Updated debian scripts
 
 2005-08-23 15:46  tren
 
-	* debian/changelog:
+	* debian/changelog (1.4):
 
 	fixed postinst
 
 2005-08-23 15:43  tren
 
-	* debian/qico-common.postinst:
+	* debian/qico-common.postinst (1.2):
 
 	fixed postinst
 
 2005-08-23 14:21  mitry
 
-	* Changes, README:
+	* Changes (1.26), README (1.7):
 
 	0.57.1 released
 
 2005-08-23 14:18  mitry
 
-	* Makefile.am:
+	* Makefile.am (1.6):
 
 	Updated debian/ file list
 
 2005-08-23 14:09  mitry
 
-	* debian/control:
+	* debian/control (1.4):
 
 	Updated conftrol file
 
 2005-08-23 13:53  tren
 
-	* debian/: rules, qcc.8, qctl.8, qico.8:
+	* debian/: rules (1.4), qcc.8 (1.4), qctl.8 (1.4), qico.8 (1.6):
 
 	Updated debian package build script
 
 2005-08-23 13:47  tren
 
-	* debian/: changelog, conffiles, control, copyright, dirs,
-	  examples, inetd.conf, init.d, qcc.files, qctl.files, rules,
-	  README.Debian, compat, qico-common.dirs, qico-common.docs,
-	  qico-common.init, qico-common.install, qico-common.postinst,
-	  qico-common.postrm, qico-qcc.dirs, qico-qcc.install, qico.dirs,
-	  qico.install, qcc.8, qctl.8, qico.8:
+	* debian/: changelog (1.3), conffiles (1.3), control (1.3),
+	  copyright (1.2), dirs (1.2), examples (1.2), inetd.conf (1.2),
+	  init.d (1.2), qcc.files (1.2), qctl.files (1.2), rules (1.3),
+	  README.Debian (1.1), compat (1.1), qico-common.dirs (1.1),
+	  qico-common.docs (1.1), qico-common.init (1.1),
+	  qico-common.install (1.1), qico-common.postinst (1.1),
+	  qico-common.postrm (1.1), qico-qcc.dirs (1.1), qico-qcc.install
+	  (1.1), qico.dirs (1.1), qico.install (1.1), qcc.8 (1.3), qctl.8
+	  (1.3), qico.8 (1.5):
 
 	Updated debian package build script
 
 2005-08-23 13:15  mitry
 
-	* Makefile.am, configure.in, debian/Makefile.am:
+	* Makefile.am (1.5), configure.in (1.26), debian/Makefile.am (1.3):
 
 	Preparing for debianization
 
 2005-08-22 22:41  mitry
 
-	* Changes, src/nodelist.c:
+	* Changes (1.25), src/nodelist.c (1.20):
 
 	Fixed detection of stale index
 
 2005-08-22 20:21  mitry
 
-	* configure.in, src/Makefile.am:
+	* configure.in (1.25), src/Makefile.am (1.12):
 
 	Change logic to include or don't of binkp and/or perl support accoirding to configure options.
 
 2005-08-22 20:19  mitry
 
-	* src/: binkp.c, binkp.h:
+	* src/: binkp.c (1.20), binkp.h (1.7):
 
 	Changed names of functions to more proper form
 
 2005-08-22 20:16  mitry
 
-	* src/: protfm.c, perl.c:
+	* src/: protfm.c (1.18), perl.c (1.8):
 
 	Removed useless static function
 
 2005-08-22 20:12  mitry
 
-	* src/clserv.c:
+	* src/clserv.c (1.6):
 
 	Close socket fd if didn't make connection
 
 2005-08-22 15:51  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.19):
 
 	Fixed syntax error
 
 2005-08-21 10:38  mitry
 
-	* configure.in:
+	* configure.in (1.24):
 
 	Fixed the whole file
 
 2005-08-21 09:11  mitry
 
-	* configure.in:
+	* configure.in (1.23):
 
 	Fixed lost binkp
 
 2005-08-21 07:16  mitry
 
-	* Makefile.am, README, autogen.sh, configure.in, qico.spec,
-	  man/Makefile.am:
+	* Makefile.am (1.4), README (1.6), autogen.sh (1.6), configure.in
+	  (1.22), qico.spec (1.4), man/Makefile.am (1.1):
 
 	Updated to 0.57.1
 
 2005-08-21 07:14  mitry
 
-	* stuff/Makefile.am:
+	* stuff/Makefile.am (1.2):
 
 	Removed freebsd stuff
 
 2005-08-21 07:13  mitry
 
-	* debian/: Makefile.am, changelog, conffiles, control:
+	* debian/: Makefile.am (1.2), changelog (1.2), conffiles (1.2),
+	  control (1.2):
 
 	Updated to 0.57.1
 
 2005-08-21 06:51  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.18):
 
 	Fixed stupid error
 
 2005-08-21 04:28  mitry
 
-	* qico.conf.sample:
+	* qico.conf.sample (1.13):
 
 	Splitted into 3 files
 
 2005-08-21 04:27  mitry
 
-	* qico.passwd.sample, qico.substs.sample:
+	* qico.passwd.sample (1.2), qico.substs.sample (1.2):
 
 	Extracted from qico.conf.sample
 
 2005-08-21 04:21  mitry
 
-	* man/: qcc.8, qctl.8, qico.8:
+	* man/: qcc.8 (1.4), qctl.8 (1.4), qico.8 (1.4):
 
 	Updated
 
 2005-08-21 04:17  mitry
 
-	* man/: qcc.8, qctl.8, qico.8:
+	* man/: qcc.8 (1.1), qctl.8 (1.1), qico.8 (1.1):
 
 	Moved from debian/
 
 2005-08-21 04:15  mitry
 
-	* debian/: qcc.8, qctl.8, qico.8, rules:
+	* debian/: qcc.8 (1.2), qctl.8 (1.2), qico.8 (1.4), rules (1.2):
 
 	Man files moved to root/man directory
 
 2005-08-21 04:11  mitry
 
-	* src/: binkp.c, binkp.h:
+	* src/: binkp.c (1.17), binkp.h (1.6):
 
 	Added more explanations for session errors (I hope)
 
 2005-08-21 04:08  mitry
 
-	* freebsd/: Makefile, pkg-descr, pkg-install, pkg-plist:
+	* freebsd/: Makefile (1.3), pkg-descr (1.3), pkg-install (1.3),
+	  pkg-plist (1.3):
 
 	Moved from stuff/ directory
 
 2005-08-19 16:37  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.19):
 
 	Fixed wrong detection of '-' sign
 
 2005-08-18 22:50  mitry
 
-	* Changes:
+	* Changes (1.24):
 
 	Updated
 
 2005-08-18 22:45  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.18):
 
 	Fixed 'unknown subst flag' on valid subst statement
 
 2005-08-18 22:06  mitry
 
-	* Changes:
+	* Changes (1.23):
 
 	Updated
 
 2005-08-18 21:19  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.17):
 
 	Fixed Txy flag handling
 
 2005-08-18 19:21  mitry
 
-	* src/: ftn.c, nodelist.c:
+	* src/: ftn.c (1.10), nodelist.c (1.16):
 
 	Added debug messages
 
 2005-08-18 19:11  mitry
 
-	* src/queue.c:
+	* src/queue.c (1.12):
 
 	Extended debug message
 
 2005-08-17 23:44  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.15):
 
 	Modified checktimegaps()
 
 2005-08-16 23:23  mitry
 
-	* Changes, src/call.c, src/tty.c:
+	* Changes (1.22), src/call.c (1.10), src/tty.c (1.27):
 
 	Pre 0.57.1: minor changes
 
 2005-08-16 22:15  mitry
 
-	* Changes, qico.conf.sample, src/Makefile.am, src/qconf.x:
+	* Changes (1.21), qico.conf.sample (1.12), src/Makefile.am (1.11),
+	  src/qconf.x (1.11):
 
 	Pre 0.57.1
 
 2005-08-16 20:11  mitry
 
-	* src/qconf.x:
+	* src/qconf.x (1.10):
 
 	Fixed needalllisted keyword broken in 0.56.2
 
 2005-08-16 18:54  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.14):
 
 	Added lost '{'
 
 2005-08-16 18:44  mitry
 
-	* README:
+	* README (1.5):
 
 	Changed cvs address
 
 2005-08-16 18:17  mitry
 
-	* src/: ftn.h, nodelist.c, perl.c:
+	* src/: ftn.h (1.11), nodelist.c (1.13), perl.c (1.7):
 
 	Removed unused ninfo_t.haswtime field
 
 2005-08-16 17:49  mitry
 
-	* src/protfm.c:
+	* src/protfm.c (1.17):
 
 	Replaced strncpy() with xstrcpy()
 
 2005-08-16 17:46  mitry
 
-	* src/daemon.c:
+	* src/daemon.c (1.18):
 
 	Changed DEBUG message
 
 2005-08-16 13:36  mitry
 
-	* src/qctl.c:
+	* src/qctl.c (1.12):
 
 	Removed unused print_worktime()
 
 2005-08-16 13:32  mitry
 
-	* src/: modem.c, tcp.c, tty.c:
+	* src/: modem.c (1.18), tcp.c (1.13), tty.c (1.26):
 
 	Fixed broken calls of loginscript
 
 2005-08-12 19:40  mitry
 
-	* src/: qcc.c, qctl.c, qslib.c, qslib.h:
+	* src/: qcc.c (1.16), qctl.c (1.11), qslib.c (1.12), qslib.h
+	  (1.14):
 
 	Added wktime_str()
 
 2005-08-12 19:39  mitry
 
-	* configure.in:
+	* configure.in (1.21):
 
 	Removed check for tm_gmtoff
 
 2005-08-12 18:36  mitry
 
-	* src/: binkp.c, emsi.c, nodelist.c, protfm.c, qcc.c, qctl.c,
-	  qslib.c, qslib.h:
+	* src/: binkp.c (1.16), emsi.c (1.24), nodelist.c (1.12), protfm.c
+	  (1.16), qcc.c (1.15), qctl.c (1.10), qslib.c (1.11), qslib.h
+	  (1.13):
 
 	Changed gmtoff()
 
 2005-08-11 22:20  mitry
 
-	* Changes, configure.in:
+	* Changes (1.20), configure.in (1.20):
 
 	0.57.1 started
 
 2005-08-11 22:15  mitry
 
-	* src/: config.c, main.c:
+	* src/: config.c (1.9), main.c (1.24):
 
 	Changed code a bit
 
 2005-08-11 22:14  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.11):
 
 	Added new macro MAILHOURS
 
 2005-08-11 22:13  mitry
 
-	* src/daemon.c:
+	* src/daemon.c (1.17):
 
 	Added new macro MAILHOURS.
 	Fixed core creation if got SIGTERM.
 
 2005-08-11 22:06  mitry
 
-	* src/: nodelist.h, session.c:
+	* src/: nodelist.h (1.4), session.c (1.25):
 
 	Added new macro MAILHOURS
 
 2005-08-10 22:45  mitry
 
-	* src/: outbound.c, tools.c, tools.h:
+	* src/: outbound.c (1.21), tools.c (1.12), tools.h (1.12):
 
 	Added param to qscandir() to return full path with file name
 
 2005-08-10 22:19  mitry
 
-	* src/ftn.c:
+	* src/ftn.c (1.9):
 
 	Changed strncasecmp() to strcasecmp() in whattype()
 
 2005-08-10 22:12  mitry
 
-	* src/daemon.c:
+	* src/daemon.c (1.16):
 
 	Added 'Connecting to' title on ip calls
 
 2005-08-10 21:24  mitry
 
-	* src/session.c:
+	* src/session.c (1.24):
 
 	Skip checking for mail hours on binkp session.
 	Removed commented out code.
@@ -462,57 +607,58 @@
 
 2005-08-10 19:15  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.15):
 
 	Changed time parsing logic on binkp session
 
 2005-08-03 14:34  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.14):
 
 	Changed timeout handling
 
 2005-06-13 21:30  mitry
 
-	* README:
+	* README (1.4):
 
 	Updated
 
 2005-06-13 21:19  mitry
 
-	* Changes, FAQ, qico.conf.sample, qico.spec:
+	* Changes (1.19), FAQ (1.3), qico.conf.sample (1.11), qico.spec
+	  (1.3):
 
 	Updated
 
 2005-06-13 20:51  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.23):
 
 	Speed up EMSI send with Argus clones.
 	Added emsi_log()
 
 2005-06-10 23:57  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.25):
 
 	Changed tty_bufblock()
 
 2005-06-10 23:56  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.29):
 
 	Changed exit from hydra_send()
 
 2005-06-10 23:54  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.22):
 
 	Added check for unexpected EMSI_DAT packet in emsi_send().
 	Stop showing 'intro:' after receiving second EMSI_REQ in emsi_init().
 
 2005-06-10 23:49  mitry
 
-	* src/queue.c:
+	* src/queue.c (1.11):
 
 	Updated q_each() to make qico to call a node if we have
 	empty FLOw file(s) or netmail packet(s) with callable
@@ -520,792 +666,811 @@
 
 2005-06-03 18:45  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.21):
 
 	Added check for expired timer in emsi_send()
 
 2005-06-03 17:13  mitry
 
-	* src/timer.h:
+	* src/timer.h (1.4):
 
 	Changed timer_expired()
 
 2005-06-03 17:12  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.20):
 
 	Misc changes in EMSI stages
 
 2005-06-03 17:08  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.17):
 
 	Added DCD check after hangup and modem_clean_line() before any input waiting
 
 2005-05-31 20:22  mitry
 
-	* src/: binkp.c, binkp.h:
+	* src/: binkp.c (1.13), binkp.h (1.5):
 
 	Added support for incoming FREQ on binkp/1.0
 
 2005-05-24 21:45  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.12):
 
 	Do not use crypt if got M_OK non-secure
 
 2005-05-17 23:01  mitry
 
-	* src/basename.c:
+	* src/basename.c (1.2):
 
 	Remove basename() replace
 
 2005-05-17 22:52  mitry
 
-	* configure.in, src/daemon.c, src/qcc.c:
+	* configure.in (1.19), src/daemon.c (1.15), src/qcc.c (1.14):
 
 	Added check for broken Sys5 signals
 
 2005-05-17 22:51  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.24):
 
 	Code cleaning
 
 2005-05-17 22:49  mitry
 
-	* src/main.c:
+	* src/main.c (1.23):
 
 	Included modem.h
 
 2005-05-17 22:49  mitry
 
-	* src/log.c:
+	* src/log.c (1.9):
 
 	Fixed strftime() arg broken by previous patch
 
 2005-05-17 21:17  mitry
 
-	* src/: binkp.c, freq.c, log.c, main.c, nodelist.c, outbound.c,
-	  protfm.c, replace.h, tools.c, tools.h, tty.c:
+	* src/: binkp.c (1.11), freq.c (1.7), log.c (1.8), main.c (1.22),
+	  nodelist.c (1.10), outbound.c (1.20), protfm.c (1.15), replace.h
+	  (1.5), tools.c (1.11), tools.h (1.11), tty.c (1.23):
 
 	Removed system basename() usage.
 	Added qbasename() implementation.
 
 2005-05-17 02:35  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.16):
 
 	Fixed doubled BUSY response
 
 2005-05-16 23:34  mitry
 
-	* Changes, configure.in, qico.conf.sample:
+	* Changes (1.18), configure.in (1.18), qico.conf.sample (1.10):
 
 	Snapshot
 
 2005-05-16 23:33  mitry
 
-	* src/: Makefile.am, defs.h, modem.h, nodelist.c, nodelist.h,
-	  outbound.c, tty.c, tty.h:
+	* src/: Makefile.am (1.10), defs.h (1.5), modem.h (1.1), nodelist.c
+	  (1.9), nodelist.h (1.3), outbound.c (1.19), tty.c (1.22), tty.h
+	  (1.16):
 
 	Code cleaning
 
 2005-05-16 23:33  mitry
 
-	* src/headers.h:
+	* src/headers.h (1.7):
 
 	Added more proper MAX_PATH define
 
 2005-05-16 23:31  mitry
 
-	* src/: ls_zmodem.c, main.c, hydra.c, protfm.c, session.c:
+	* src/: ls_zmodem.c (1.6), main.c (1.21), hydra.c (1.28), protfm.c
+	  (1.14), session.c (1.23):
 
 	Changed code a bit
 
 2005-05-16 23:28  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.19):
 
 	Changed EMSI stages
 
 2005-05-16 23:27  mitry
 
-	* src/: call.c, modem.c:
+	* src/: call.c (1.9), modem.c (1.15):
 
 	Changed code a bit
 
 2005-05-16 23:26  mitry
 
-	* src/qctl.c:
+	* src/qctl.c (1.9):
 
 	Added more proper MAX_PATH define
 
 2005-05-16 23:25  mitry
 
-	* src/qcc.c:
+	* src/qcc.c (1.13):
 
 	Fixed improper speed over 64K displaying
 
 2005-05-16 17:40  mitry
 
-	* src/tools.c:
+	* src/tools.c (1.10):
 
 	Added check for NULL fname in lunlink()
 
 2005-05-16 16:13  mitry
 
-	* src/: binkp.c, binkp.h:
+	* src/: binkp.c (1.10), binkp.h (1.4):
 
 	Added more rubust message handling
 
 2005-05-16 14:17  mitry
 
-	* src/: clserv.c, clserv.h, config.c, daemon.c, ftn.c, ftn.h,
-	  log.c, mailer.h, perl.c, qipc.c, qipc.h, queue.c, slists.c,
-	  slists.h, hydra.h, qslib.c, qslib.h, tools.c, tools.h:
+	* src/: clserv.c (1.5), clserv.h (1.3), config.c (1.8), daemon.c
+	  (1.14), ftn.c (1.8), ftn.h (1.10), log.c (1.7), mailer.h (1.12),
+	  perl.c (1.6), qipc.c (1.4), qipc.h (1.3), queue.c (1.10),
+	  slists.c (1.3), slists.h (1.3), hydra.h (1.12), qslib.c (1.10),
+	  qslib.h (1.12), tools.c (1.9), tools.h (1.10):
 
 	Updated function prototypes. Changed code a bit.
 
 2005-05-12 12:55  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.8):
 
 	Fixed nodelist compiling
 
 2005-05-11 23:26  mitry
 
-	* src/qslib.h:
+	* src/qslib.h (1.11):
 
 	Cosmetic change
 
 2005-05-11 23:18  mitry
 
-	* src/ftn.c:
+	* src/ftn.c (1.7):
 
 	Cosmetic change
 
 2005-05-11 23:17  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.18):
 
 	Changed int var; to size_t var; for strlen()
 
 2005-05-11 21:11  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.7):
 
 	Changed code with xrealloc()
 
 2005-05-11 21:08  mitry
 
-	* src/: qslib.c, qslib.h:
+	* src/: qslib.c (1.9), qslib.h (1.10):
 
 	Changed xrealloc() code
 
 2005-05-11 19:44  mitry
 
-	* src/queue.c:
+	* src/queue.c (1.9):
 
 	Changed a bit a call of outbound_rescan()
 
 2005-05-11 19:43  mitry
 
-	* src/daemon.c:
+	* src/daemon.c (1.13):
 
 	Changed a bit a call of q_rescan()
 
 2005-05-11 19:37  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.17):
 
 	Set initial values to static variables explicitly
 
 2005-05-11 19:35  mitry
 
-	* src/nodelist.c:
+	* src/nodelist.c (1.6):
 
 	Changed return code of ndl_read_entry()
 
 2005-05-11 19:34  mitry
 
-	* src/ftn.h:
+	* src/ftn.h (1.9):
 
 	Removed commented out typedefs
 
 2005-05-11 16:23  mitry
 
-	* configure.in:
+	* configure.in (1.17):
 
 	[no log message]
 
 2005-05-11 16:22  mitry
 
-	* src/: config.c, daemon.c, flaglex.l, freq.c, ftn.h, modem.c,
-	  nodelist.c, nodelist.h:
+	* src/: config.c (1.7), daemon.c (1.12), flaglex.l (1.5), freq.c
+	  (1.6), ftn.h (1.8), modem.c (1.14), nodelist.c (1.5), nodelist.h
+	  (1.2):
 
 	Snapshot
 
 2005-05-06 23:54  mitry
 
-	* Makefile.am, autogen.sh, configure.in, src/Makefile.am,
-	  src/qnlc.c, src/usleep.c:
+	* Makefile.am (1.3), autogen.sh (1.5), configure.in (1.16),
+	  src/Makefile.am (1.9), src/qnlc.c (1.5), src/usleep.c (1.2):
 
 	Snapshot
 
 2005-05-06 23:53  mitry
 
-	* src/: hydra.c, log.c, modem.c, qctl.c, replace.h, slists.h,
-	  tty.c, tty.h, types.h:
+	* src/: hydra.c (1.27), log.c (1.6), modem.c (1.13), qctl.c (1.8),
+	  replace.h (1.4), slists.h (1.2), tty.c (1.21), tty.h (1.15),
+	  types.h (1.7):
 
 	Changed misc code
 
 2005-05-06 23:47  mitry
 
-	* src/: tcp.c, tcp.h, tools.c, tools.h:
+	* src/: tcp.c (1.12), tcp.h (1.2), tools.c (1.8), tools.h (1.9):
 
 	Misc code cleanup
 
 2005-05-06 23:46  mitry
 
-	* src/: qcconst.h, queue.c:
+	* src/: qcconst.h (1.6), queue.c (1.8):
 
 	Empty FLOw file in outbound now can make a qico to poll node during mail hours.
 	Misc code cleanup.
 
 2005-05-06 23:41  mitry
 
-	* src/: qcc.c, qslib.c, qslib.h, qipc.c:
+	* src/: qcc.c (1.12), qslib.c (1.8), qslib.h (1.9), qipc.c (1.3):
 
 	Changed setproctitle() code
 
 2005-05-06 23:37  mitry
 
-	* src/protfm.c:
+	* src/protfm.c (1.13):
 
 	Fixed dangerous syntax BUG :)
 
 2005-05-06 23:36  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.16):
 
 	Major rewrite again
 
 2005-05-06 23:34  mitry
 
-	* src/ftn.c:
+	* src/ftn.c (1.6):
 
 	whattype() is slightly changed.
 	Misc code cleanup.
 
 2005-05-06 23:31  mitry
 
-	* src/flagexp.y:
+	* src/flagexp.y (1.3):
 
 	Changed strtok() to strsep()
 
 2005-05-06 23:30  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.18):
 
 	Have to send '\r' at least once in emsi_init
 
 2005-05-06 23:26  mitry
 
-	* src/: crc.c, crc.h:
+	* src/: crc.c (1.5), crc.h (1.6):
 
 	Misc changes
 
 2005-05-06 23:21  mitry
 
-	* src/: call.c, daemon.c, ftn.h, main.c, nodelist.c, nodelist.h,
-	  session.c:
+	* src/: call.c (1.8), daemon.c (1.11), ftn.h (1.7), main.c (1.20),
+	  nodelist.c (1.4), nodelist.h (1.1), session.c (1.22):
 
 	Changed nodelist handling
 
 2005-05-06 23:16  mitry
 
-	* src/: binkp.c, binkp.h:
+	* src/: binkp.c (1.9), binkp.h (1.3):
 
 	Changed end-of-session detection
 
 2005-05-05 22:20  mitry
 
-	* src/protfm.c:
+	* src/protfm.c (1.12):
 
 	Changed rxopen() and rxclose() a bit
 
 2005-04-14 21:04  mitry
 
-	* src/: outbound.c, tools.c, tools.h:
+	* src/: outbound.c (1.15), tools.c (1.7), tools.h (1.8):
 
 	Changed scandir() to qscandir()
 
 2005-04-14 18:13  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.12):
 
 	I'm tired of stupid errors
 
 2005-04-14 18:10  mitry
 
-	* src/: modem.c, tcp.c:
+	* src/: modem.c (1.11), tcp.c (1.11):
 
 	Fixed uninitialized tty_fd
 
 2005-04-14 17:48  mitry
 
-	* src/: modem.c, tcp.c, tty.c:
+	* src/: modem.c (1.10), tcp.c (1.10), tty.c (1.20):
 
 	Misc changes
 
 2005-04-12 02:08  mitry
 
-	* src/session.c:
+	* src/session.c (1.21):
 
 	Fixed crash on incoming session when cd is lost.
 
 2005-04-12 01:46  mitry
 
-	* src/session.c:
+	* src/session.c (1.20):
 
 	Fixed stupid typo
 
 2005-04-11 21:26  mitry
 
-	* src/daemon.c:
+	* src/daemon.c (1.10):
 
 	Changed check for daemon already running
 
 2005-04-11 21:24  mitry
 
-	* src/session.c:
+	* src/session.c (1.19):
 
 	Optimized session()
 
 2005-04-09 04:08  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.8):
 
 	Removed doubling total mail size send to remote
 
 2005-04-08 21:22  mitry
 
-	* Changes, configure.in, qico.conf.sample, src/Makefile.am:
+	* Changes (1.17), configure.in (1.15), qico.conf.sample (1.9),
+	  src/Makefile.am (1.8):
 
 	0.57xe pre-release 1
 
 2005-04-08 21:15  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.19):
 
 	More proper sighup handling
 
 2005-04-08 21:14  mitry
 
-	* src/tty.h:
+	* src/tty.h (1.14):
 
 	Insignificant changes of PUTxxx and BUFxxx defines
 
 2005-04-08 21:12  mitry
 
-	* src/protfm.c:
+	* src/protfm.c (1.11):
 
 	check_cps() sets tty_gothup to HUP_CPS
 
 2005-04-08 21:11  mitry
 
-	* src/: mailer.h, perl.c, qcconst.h, tools.c:
+	* src/: mailer.h (1.11), perl.c (1.5), qcconst.h (1.5), tools.c
+	  (1.6):
 
 	Insignificant changes
 
 2005-04-08 21:05  mitry
 
-	* src/: emsi.c, qconf.x, session.c:
+	* src/: emsi.c (1.17), qconf.x (1.9), session.c (1.18):
 
 	Added support for HydraRH1 option
 
 2005-04-07 23:59  mitry
 
-	* src/mailer.h:
+	* src/mailer.h (1.10):
 
 	Updated M_STAT
 
 2005-04-07 23:58  mitry
 
-	* src/: hydra.c, hydra.h:
+	* src/: hydra.c (1.26), hydra.h (1.11):
 
 	Cleaned code
 
 2005-04-07 16:05  mitry
 
-	* src/protfm.c:
+	* src/protfm.c (1.10):
 
 	Added check of nullable tosend arg
 
 2005-04-07 15:59  mitry
 
-	* src/main.c:
+	* src/main.c (1.19):
 
 	Removed mallopt call
 
 2005-04-07 15:58  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.7):
 
 	Changed TIME parsing and format to send
 
 2005-04-05 12:36  mitry
 
-	* src/ls_zmodem.c:
+	* src/ls_zmodem.c (1.5):
 
 	Updated BUFFLUSH() calls
 
 2005-04-05 12:36  mitry
 
-	* src/tcp.c:
+	* src/tcp.c (1.9):
 
 	Changed arg 2 of shutdown()
 
 2005-04-05 12:34  mitry
 
-	* src/main.c:
+	* src/main.c (1.18):
 
 	Removed commented out code
 
 2005-04-05 12:34  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.9):
 
 	New xstrcpy() and xstrcat()
 
 2005-04-05 12:33  mitry
 
-	* src/: log.c, tools.h:
+	* src/: log.c (1.5), tools.h (1.7):
 
 	Update write_debug_log() prototype
 
 2005-04-05 12:31  mitry
 
-	* src/: emsi.c, nodelist.c, outbound.c, qslib.c, qslib.h:
+	* src/: emsi.c (1.16), nodelist.c (1.3), outbound.c (1.14), qslib.c
+	  (1.7), qslib.h (1.8):
 
 	New xstrcpy() and xstrcat()
 
 2005-04-05 12:25  mitry
 
-	* src/: clserv.h, qcc.c, qipc.c:
+	* src/: clserv.h (1.2), qcc.c (1.11), qipc.c (1.2):
 
 	Fix for tty device name > 8 symbols
 
 2005-04-04 22:43  mitry
 
-	* src/: emsi.c, hydra.c, janus.c, tty.c, tty.h:
+	* src/: emsi.c (1.15), hydra.c (1.25), janus.c (1.7), tty.c (1.18),
+	  tty.h (1.13):
 
 	Added timeout arg to BUFFLUSH() - tty_bufflush()
 
 2005-04-04 22:37  mitry
 
-	* src/clserv.c:
+	* src/clserv.c (1.4):
 
 	Changed arg 2 of shutdown()
 
 2005-04-01 23:33  mitry
 
-	* src/qcc.c:
+	* src/qcc.c (1.10):
 
 	envp is back to main()
 
 2005-04-01 23:32  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.24):
 
 	Changed hydra_deinit()
 
 2005-03-31 23:40  mitry
 
-	* configure.in:
+	* configure.in (1.14):
 
 	Snapshot
 
 2005-03-31 23:39  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.17):
 
 	Added support for HUP_XXX and removed old code
 
 2005-03-31 23:34  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.8):
 
 	Removed code commented out and rewrote some functions
 
 2005-03-31 23:31  mitry
 
-	* src/call.c:
+	* src/call.c (1.7):
 
 	Added MC_CANCEL to modem_dial() result check
 
 2005-03-31 23:11  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.23):
 
 	Added check for tty_gothup's HUP_OPERATOR value
 
 2005-03-31 23:10  mitry
 
-	* src/timer.h:
+	* src/timer.h (1.3):
 
 	Changed timer_expired_in()
 
 2005-03-31 23:07  mitry
 
-	* src/session.c:
+	* src/session.c (1.17):
 
 	Changed tty_gothup value to HUP_SESLIMIT in sessalarm()
 
 2005-03-31 22:40  mitry
 
-	* src/: flagexp.y, ftn.h, hydra.h, janus.c, janus.h, log.c,
-	  ls_zmodem.c, ls_zmodem.h, ls_zreceive.c, ls_zsend.c, mailer.h,
-	  main.c, protfm.c, qcc.c, qctl.c, qipc.h, qslib.c, qslib.h,
-	  queue.c, tools.h, tty.h:
+	* src/: flagexp.y (1.2), ftn.h (1.6), hydra.h (1.10), janus.c
+	  (1.6), janus.h (1.2), log.c (1.4), ls_zmodem.c (1.4), ls_zmodem.h
+	  (1.3), ls_zreceive.c (1.4), ls_zsend.c (1.4), mailer.h (1.9),
+	  main.c (1.17), protfm.c (1.9), qcc.c (1.9), qctl.c (1.7), qipc.h
+	  (1.2), qslib.c (1.6), qslib.h (1.7), queue.c (1.7), tools.h
+	  (1.6), tty.h (1.12):
 
 	Update function prototypes and it's duplication
 
 2005-03-31 22:28  mitry
 
-	* src/: globals.c, globals.h:
+	* src/: globals.c (1.10), globals.h (1.6):
 
 	Removed unused variable 'calling'
 
 2005-03-29 23:41  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.16):
 
 	Restore saved tio settings before closing port
 
 2005-03-29 23:39  mitry
 
-	* src/strcasestr.c:
+	* src/strcasestr.c (1.2):
 
 	Changes in includes
 
 2005-03-29 23:38  mitry
 
-	* src/headers.h:
+	* src/headers.h (1.6):
 
 	Added four more underscores :)
 
 2005-03-29 23:37  mitry
 
-	* src/crc.h:
+	* src/crc.h (1.5):
 
 	Remove commented out code
 
 2005-03-29 23:35  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.22):
 
 	Check tx queue before sending next data block
 
 2005-03-28 23:17  mitry
 
-	* configure.in, src/modem.c, src/replace.h, src/strcasestr.c:
+	* configure.in (1.13), src/modem.c (1.7), src/replace.h (1.3),
+	  src/strcasestr.c (1.1):
 
 	Added new replace func strcasestr()
 
 2005-03-28 20:02  mitry
 
-	* Changes, debian/qico.8, src/Makefile.am, src/call.c,
-	  src/clserv.c, src/config.c, src/daemon.c, src/defs.h, src/emsi.c,
-	  src/freq.c, src/ftn.c, src/ftn.h, src/headers.h, src/ip_tools.c,
-	  src/ip_tools.h, src/janus.c, src/ls_zglue.c, src/ls_zmodem.c,
-	  src/ls_zreceive.c, src/ls_zsend.c, src/mailer.h, src/md5.c,
-	  src/protfm.c, src/qcc.c, src/qcconst.h, src/qctl.c, src/qnlc.c,
-	  src/qslib.h, src/queue.c, src/tools.c, src/tools.h, src/tty.c,
-	  src/tty.h, src/types.h:
+	* Changes (1.16), debian/qico.8 (1.3), src/Makefile.am (1.7),
+	  src/call.c (1.6), src/clserv.c (1.3), src/config.c (1.6),
+	  src/daemon.c (1.9), src/defs.h (1.4), src/emsi.c (1.14),
+	  src/freq.c (1.5), src/ftn.c (1.5), src/ftn.h (1.5), src/headers.h
+	  (1.5), src/ip_tools.c (1.5), src/ip_tools.h (1.4), src/janus.c
+	  (1.5), src/ls_zglue.c (1.3), src/ls_zmodem.c (1.3),
+	  src/ls_zreceive.c (1.3), src/ls_zsend.c (1.3), src/mailer.h
+	  (1.8), src/md5.c (1.2), src/protfm.c (1.8), src/qcc.c (1.8),
+	  src/qcconst.h (1.4), src/qctl.c (1.6), src/qnlc.c (1.4),
+	  src/qslib.h (1.6), src/queue.c (1.6), src/tools.c (1.5),
+	  src/tools.h (1.5), src/tty.c (1.15), src/tty.h (1.11),
+	  src/types.h (1.6):
 
 	Pre non-blocking i/o update. Mostly non working.
 
 2005-03-28 19:48  mitry
 
-	* src/: tcp.c, log.c:
+	* src/: tcp.c (1.8), log.c (1.3):
 
 	Code cleaning
 
 2005-03-28 19:47  mitry
 
-	* src/tcp.h:
+	* src/tcp.h (1.1):
 
 	New file
 
 2005-03-28 19:44  mitry
 
-	* src/session.c:
+	* src/session.c (1.16):
 
 	Changed HAT option handling
 
 2005-03-28 19:42  mitry
 
-	* src/qslib.c:
+	* src/qslib.c (1.5):
 
 	Moved common bin2strhex() and strhex2bin() funcs here
 
 2005-03-28 19:37  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.13):
 
 	Moved some code to mappath() function (see tools.c)
 
 2005-03-28 19:33  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.6):
 
 	Major code rewrite with non-blocking i/o support
 
 2005-03-28 19:25  mitry
 
-	* src/main.c:
+	* src/main.c (1.16):
 
 	Added non-blocking i/o support
 
 2005-03-28 19:15  mitry
 
-	* src/ftn.c:
+	* src/ftn.c (1.4):
 
 	Moved mapname() to tools.c
 
 2005-03-28 18:33  mitry
 
-	* src/: crc.c, crc.h, md5q.c, md5q.h:
+	* src/: crc.c (1.4), crc.h (1.4), md5q.c (1.1), md5q.h (1.1):
 
 	MD5 logic now in separate files
 
 2005-03-28 18:17  mitry
 
-	* src/: hydra.c, hydra.h:
+	* src/: hydra.c (1.21), hydra.h (1.9):
 
 	Added non-blocking i/o support
 
 2005-03-28 18:07  mitry
 
-	* src/: binkp.c, binkp.h:
+	* src/: binkp.c (1.6), binkp.h (1.2):
 
 	New non-blocking version of binkp
 
 2005-03-28 18:03  mitry
 
-	* Makefile.am, configure.in, lib/Makefile.am, lib/dlmalloc.c:
+	* Makefile.am (1.2), configure.in (1.12), lib/Makefile.am (1.1),
+	  lib/dlmalloc.c (1.1):
 
 	Added Doug Lea's malloc library support
 
 2005-02-25 18:53  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.13):
 
 	Fixed stupid syntax error
 
 2005-02-25 18:48  mitry
 
-	* Changes:
+	* Changes (1.15):
 
 	Snapshot
 
 2005-02-25 18:43  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.5):
 
 	Added ModemCheckDSR keyword logic
 
 2005-02-25 18:42  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.12):
 
 	Modified to support multi-line intro lines
 
 2005-02-25 18:41  mitry
 
-	* src/: tty.c, tty.h:
+	* src/: tty.c (1.14), tty.h (1.10):
 
 	Adding proper tio calls in progress
 	Changed some code
 
 2005-02-25 18:36  mitry
 
-	* src/qconf.x:
+	* src/qconf.x (1.8):
 
 	Added ModemCheckDSR keyword
 
 2005-02-25 18:29  mitry
 
-	* src/main.c:
+	* src/main.c (1.15):
 
 	Another fixing hangup after session
 
 2005-02-25 18:27  mitry
 
-	* src/binkp.c:
+	* src/binkp.c (1.5):
 
 	Revert last change
 
 2005-02-25 18:25  mitry
 
-	* qico.conf.sample:
+	* qico.conf.sample (1.8):
 
 	Added ModemCheckDSR keyword
 
 2005-02-23 23:58  mitry
 
-	* qico.spec, debian/qico.8:
+	* qico.spec (1.2), debian/qico.8 (1.2):
 
 	Pre-release again?
 
 2005-02-23 23:56  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.13):
 
 	Changed tty_carrier() code. To be rewritten
 
 2005-02-23 23:48  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.4):
 
 	Changed debug message
 
 2005-02-23 23:47  mitry
 
-	* src/protfm.c:
+	* src/protfm.c (1.7):
 
 	tty_online and tty_gothup logic
 
 2005-02-23 23:37  mitry
 
-	* src/queue.c:
+	* src/queue.c (1.5):
 
 	Added debug messages
 
 2005-02-23 23:36  mitry
 
-	* src/session.c:
+	* src/session.c (1.15):
 
 	Changed emsi_send() call
 	tty_online was removed from sig alarm handler
 
 2005-02-23 23:34  mitry
 
-	* src/main.c:
+	* src/main.c (1.14):
 
 	Changed checking of CARRIER() to tty_online
 
 2005-02-23 23:33  mitry
 
-	* src/mailer.h:
+	* src/mailer.h (1.7):
 
 	Changed emsi_send() prototype
 
 2005-02-23 23:31  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.11):
 
 	Rewrite emsi_send()
 	Modified emsi_init() and emsi_recv()
@@ -1313,137 +1478,138 @@
 
 2005-02-23 23:27  mitry
 
-	* src/qcc.c:
+	* src/qcc.c (1.7):
 
 	Changed '* Node' to '* Address'
 
 2005-02-23 23:26  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.20):
 
 	Removed commented code
 
 2005-02-22 18:38  mitry
 
-	* src/main.c:
+	* src/main.c (1.13):
 
 	Added experimental mallopt call to prevent seg fault
 	on buggy glibc library
 
 2005-02-22 18:17  mitry
 
-	* Changes, autogen.sh:
+	* Changes (1.14), autogen.sh (1.4):
 
 	0.56.5 pre-release snapshot
 
 2005-02-22 18:15  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.12):
 
 	Code rewrite
 
 2005-02-22 18:09  mitry
 
-	* src/session.c:
+	* src/session.c (1.14):
 
 	Added tty_gothup to sessalarm code
 
 2005-02-22 18:00  mitry
 
-	* src/tty.h:
+	* src/tty.h (1.9):
 
 	Changed M_STAT definition
 
 2005-02-22 17:50  mitry
 
-	* src/tcp.c:
+	* src/tcp.c (1.7):
 
 	Commit non-blocking mode. Code cleaning.
 
 2005-02-22 17:47  mitry
 
-	* src/: daemon.c, globals.c, globals.h, main.c:
+	* src/: daemon.c (1.8), globals.c (1.9), globals.h (1.5), main.c
+	  (1.12):
 
 	Added 'run in foreground' mode
 
 2005-02-22 15:56  mitry
 
-	* src/protfm.c:
+	* src/protfm.c (1.6):
 
 	Removed warning about difference in signedness
 
 2005-02-21 23:59  mitry
 
-	* src/tcp.c:
+	* src/tcp.c (1.6):
 
 	Added preliminary support for non-blocking I/O
 
 2005-02-21 23:58  mitry
 
-	* src/headers.h:
+	* src/headers.h (1.4):
 
 	Added #include <sys/ioctl.h>
 
 2005-02-21 23:00  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.10):
 
 	Fix logic for preventive EMSI_INQ
 
 2005-02-21 22:58  mitry
 
-	* src/main.c:
+	* src/main.c (1.11):
 
 	Added tty_online=TRUE on incoming call
 
 2005-02-21 20:14  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.11):
 
 	One more tty_hangedup rename
 
 2005-02-21 18:33  mitry
 
-	* src/: binkp.c, globals.c, globals.h, protfm.c, session.c, tcp.c,
-	  tty.c, tty.h:
+	* src/: binkp.c (1.4), globals.c (1.8), globals.h (1.4), protfm.c
+	  (1.5), session.c (1.13), tcp.c (1.5), tty.c (1.10), tty.h (1.8):
 
 	Changed tty_hangedup to tty_online
 
 2005-02-19 23:40  mitry
 
-	* Changes:
+	* Changes (1.13):
 
 	0.56.5 pre-release
 
 2005-02-19 23:34  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.19):
 
 	hydra_chat() is dynamically assigned now
 	Fixed debug log output on linux OS
 
 2005-02-19 23:32  mitry
 
-	* src/main.c:
+	* src/main.c (1.10):
 
 	Changed setlocale setting to "C"
 	Removed superfluous strncasecmp in session detection
 
 2005-02-19 23:30  mitry
 
-	* src/: qcc.c, qctl.c:
+	* src/: qcc.c (1.6), qctl.c (1.5):
 
 	Changed setlocale setting to "C"
 
 2005-02-19 23:29  mitry
 
-	* src/session.c:
+	* src/session.c (1.12):
 
 	Do not init chat if we do not want it.
 
 2005-02-18 22:39  mitry
 
-	* src/tty.c:
+	* src/tty.c (1.9):
 
 	tty_block() commented out
 	tty_close() now has parameter (may be temporarily) and rewritten
@@ -1451,13 +1617,13 @@
 
 2005-02-18 22:36  mitry
 
-	* src/tty.h:
+	* src/tty.h (1.7):
 
 	Reflect to rename of functions
 
 2005-02-18 22:34  mitry
 
-	* src/modem.c:
+	* src/modem.c (1.3):
 
 	Changed alive() to modem_alive()
 	Changed hangup() to modem_hangup()
@@ -1469,152 +1635,146 @@
 
 2005-02-18 22:29  mitry
 
-	* src/call.c:
+	* src/call.c (1.5):
 
 	Changed mdm_dial() to modem_dial(), mdm_done() to modem_done().
 
 2005-02-18 22:28  mitry
 
-	* src/main.c:
+	* src/main.c (1.9):
 
 	Changed hangup() to modem_hangup(), stat_collect() to modem_stat_collect()
 
 2005-02-16 23:42  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.12):
 
 	Check the value returned from scandir (n <= 0) for out_aso_rescan(), out_bso_scan_zone(), out_bso_rescan().
 
 2005-02-16 13:25  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.11):
 
 	Next fix for out_bso_scan_zone()
 
 2005-02-16 00:12  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.10):
 
 	Fix for out_bso_scan_zone()
 
 2005-02-15 13:34  mitry
 
-	* configure.in:
+	* configure.in (1.11):
 
 	Start of 0.56.5
 
 2005-02-15 13:17  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.9):
 
 	Another fix for out_bso_rescan()
 
 2005-02-12 21:40  mitry
 
-	* Changes:
+	* Changes (1.12):
 
 	Hydra4/8/16k and chat are back.
 
 2005-02-12 21:38  mitry
 
-	* src/tools.c:
+	* src/tools.c (1.4):
 
 	Remove superfluous log message.
 
 2005-02-12 21:03  mitry
 
-	* src/session.c:
+	* src/session.c (1.11):
 
 	/tmp/qpkt.xxxxxx files now should be removed after session.
 
 2005-02-12 21:01  mitry
 
-	* src/perl.c:
+	* src/perl.c (1.4):
 
 	Minor cosmetic changes.
 
 2005-02-12 20:59  mitry
 
-	* src/main.c:
+	* src/main.c (1.8):
 
 	Fixing hangup after session.
 
 2005-02-12 20:57  mitry
 
-	* src/: hydra.c, hydra.h:
+	* src/: hydra.c (1.18), hydra.h (1.8):
 
 	Hydra-4/8/16k and chat are back. Chat is still buggy. Oversized Hydra too.
 
 2005-02-12 20:54  mitry
 
-	* src/: freq.c, globals.c:
+	* src/: freq.c (1.4), globals.c (1.7):
 
 	Fixing lost /tmp/qrep.xxxx files.
 
 2005-02-12 20:48  mitry
 
-	* src/emsi.c:
+	* src/emsi.c (1.9):
 
 	Adde some code in emsi_init() to speed up ifcico connect with fckng T-Mail.
 
 2005-02-12 20:46  mitry
 
-	* configure.in:
+	* configure.in (1.10):
 
 	Re-enabling Hydra-4/8/16k
 
 2005-02-09 14:44  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.8):
 
 	Changed free() to xfree()
 	Changed out_bso_rescan() code
 
 2005-02-09 13:18  mitry
 
-	* src/qslib.h:
+	* src/qslib.h (1.5):
 
 	More proper writing for XBLANK
 
 2005-02-09 13:14  mitry
 
-	* src/config.c:
+	* src/config.c (1.5):
 
 	Add support to escape next character with backslash (\)
 
 2005-02-08 22:30  mitry
 
-	* FAQ:
+	* FAQ (1.2):
 
 	Added answer about missing qcc
 
 2005-02-08 22:07  mitry
 
-	* Changes:
+	* Changes (1.11):
 
 	Add new bugfix
 
-2005-02-08 22:05  mitry
-
-	* cvs_com:
-
-	Prevent to call address if it is being dialled on another line.
-
 2005-02-08 22:02  mitry
 
-	* src/qslib.c:
+	* src/qslib.c (1.4):
 
 	Some code cleaning
 
 2005-02-08 22:02  mitry
 
-	* src/qslib.h:
+	* src/qslib.h (1.4):
 
 	New define for SIZES and SIZEC
 
 2005-02-08 21:57  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.7):
 
 	Added outbound_addr_busy().
 	Wiped out old outbound_rescan code.
@@ -1622,25 +1782,25 @@
 
 2005-02-08 21:53  mitry
 
-	* src/ftn.h:
+	* src/ftn.h (1.4):
 
 	Added outbound_addr_busy()
 
 2005-02-08 21:50  mitry
 
-	* src/daemon.c:
+	* src/daemon.c (1.7):
 
 	Prevent to call address if it is being dialled on another line
 
 2005-02-08 21:45  mitry
 
-	* src/tools.c:
+	* src/tools.c (1.3):
 
 	islocked() is rewritten to reflect zero-sized .csy/.bsy files
 
 2005-02-07 22:44  mitry
 
-	* Changes, cvs_com, src/flaglex.l, src/perl.c:
+	* Changes (1.10), src/flaglex.l (1.4), src/perl.c (1.3):
 
 	Fix qico crash if bso dir was unspecified.
 	Extend tty device name length up to 32 characters.
@@ -1648,35 +1808,37 @@
 
 2005-02-07 22:34  mitry
 
-	* src/main.c:
+	* src/main.c (1.7):
 
 	Try to fix qico hang after incoming call.
 
 2005-02-07 22:30  mitry
 
-	* configure.in:
+	* configure.in (1.9):
 
 	Version was changed to 0.56.4xe.
 
 2005-02-07 22:27  mitry
 
-	* src/outbound.c:
+	* src/outbound.c (1.6):
 
 	Fixed qico crash if bso dir was not defined.
 
 2005-02-07 15:45  mitry
 
-	* src/qcc.c:
+	* src/qcc.c (1.5):
 
 	Extend tty name length to 32 symbols.
 
 2005-02-07 14:31  mitry
 
-	* Changes, qico.conf.sample, src/Makefile.am, src/config.c,
-	  src/daemon.c, src/emsi.c, src/have.h, src/headers.h, src/hydra.c,
-	  src/ip_tools.h, src/main.c, src/outbound.c, src/perl.c,
-	  src/qconf.x, src/queue.c, src/replace.h, src/session.c,
-	  src/tools.h, src/tty.c, src/types.h:
+	* Changes (1.9), qico.conf.sample (1.7), src/Makefile.am (1.6),
+	  src/config.c (1.4), src/daemon.c (1.6), src/emsi.c (1.8),
+	  src/have.h (1.1), src/headers.h (1.3), src/hydra.c (1.17),
+	  src/ip_tools.h (1.3), src/main.c (1.6), src/outbound.c (1.5),
+	  src/perl.c (1.2), src/qconf.x (1.7), src/queue.c (1.4),
+	  src/replace.h (1.2), src/session.c (1.10), src/tools.h (1.4),
+	  src/tty.c (1.8), src/types.h (1.5):
 
 	At last Hydra works fine with T-Mail.
 	EMSI was partially rewritten.
@@ -1686,139 +1848,151 @@
 
 2005-02-05 19:03  mitry
 
-	* src/: crc.c, crc.h, hydra.c, janus.c, outbound.c, qcc.c, qslib.h,
-	  session.c, timer.h, tty.c, tty.h:
+	* src/: crc.c (1.3), crc.h (1.3), hydra.c (1.16), janus.c (1.4),
+	  outbound.c (1.4), qcc.c (1.4), qslib.h (1.3), session.c (1.9),
+	  timer.h (1.2), tty.c (1.7), tty.h (1.6):
 
 	Major Hydra code revising.
 
 2005-02-03 17:45  mitry
 
-	* src/: emsi.c, globals.c, hydra.c, qconf.x, tty.c, tty.h:
+	* src/: emsi.c (1.7), globals.c (1.6), hydra.c (1.15), qconf.x
+	  (1.6), tty.c (1.6), tty.h (1.5):
 
 	Hydra and EMSI improvements.
 
 2005-02-01 23:12  mitry
 
-	* configure.in, src/emsi.c, src/globals.c, src/hydra.c,
-	  src/mailer.h, src/protfm.c, src/tty.c:
+	* configure.in (1.8), src/emsi.c (1.6), src/globals.c (1.5),
+	  src/hydra.c (1.14), src/mailer.h (1.6), src/protfm.c (1.4),
+	  src/tty.c (1.5):
 
 	Tuning EMSI and hydra timers.
 
 2005-01-29 02:02  mitry
 
-	* Changes, src/hydra.c, src/qconf.x:
+	* Changes (1.8), src/hydra.c (1.13), src/qconf.x (1.5):
 
 	Returned HydraCRC16 logic.
 
 2005-01-28 23:43  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.12):
 
 	Temporary removed hydracrc16 :(
 
 2005-01-28 22:22  mitry
 
-	* src/hydra.c, Changes:
+	* src/hydra.c (1.11), Changes (1.7):
 
 	Hydra session can't be established between two qicoxe.
 
 2005-01-28 09:55  mitry
 
-	* Changes, qico.conf.sample, src/call.c, src/config.c, src/hydra.c,
-	  src/qconf.x, src/tools.h:
+	* Changes (1.6), qico.conf.sample (1.6), src/call.c (1.4),
+	  src/config.c (1.3), src/hydra.c (1.10), src/qconf.x (1.4),
+	  src/tools.h (1.3):
 
 	New keyword 'loginscript'.
 
 2005-01-28 05:35  mitry
 
-	* qico.conf.sample, src/hydra.c:
+	* qico.conf.sample (1.5), src/hydra.c (1.9):
 
 	Now if remote node wants CRC32 on Hydra and hydracrc16 yes the session is CRC32.
 
 2005-01-28 05:30  mitry
 
-	* src/qcc.c:
+	* src/qcc.c (1.3):
 
 	Now current node has got '>' pointer. Useful on b/w terminals.
 
 2005-01-28 00:09  mitry
 
-	* src/: hydra.c, hydra.h:
+	* src/: hydra.c (1.8), hydra.h (1.7):
 
 	Change HydraCRC16 logic.
 
 2005-01-27 22:24  mitry
 
-	* configure.in, qico.conf.sample, src/hydra.c, src/hydra.h,
-	  src/qconf.x, src/session.c, src/tty.c, src/tty.h:
+	* configure.in (1.7), qico.conf.sample (1.4), src/hydra.c (1.7),
+	  src/hydra.h (1.6), src/qconf.x (1.3), src/session.c (1.8),
+	  src/tty.c (1.4), src/tty.h (1.4):
 
 	Add HydraHDX and HydraCRC16 keywords.
 	Add tty_send_break function to tty.c.
 
 2005-01-27 13:07  mitry
 
-	* src/hydra.c:
+	* src/hydra.c (1.6):
 
 	Disable HOPT_NFI code which was uncompletely implemented.
 
 2005-01-27 02:00  mitry
 
-	* src/: hydra.c, hydra.h, mailer.h, protfm.c, session.c:
+	* src/: hydra.c (1.5), hydra.h (1.5), mailer.h (1.5), protfm.c
+	  (1.3), session.c (1.7):
 
 	Current htdra flush.
 
 2005-01-26 22:37  mitry
 
-	* Changes:
+	* Changes (1.5):
 
 	Put a warning to Changes.
 
 2005-01-26 22:31  mitry
 
-	* Changes, src/hydra.c, src/hydra.h, src/session.c:
+	* Changes (1.4), src/hydra.c (1.4), src/hydra.h (1.4),
+	  src/session.c (1.6):
 
 	Cosmetic changes.
 
 2005-01-26 15:23  mitry
 
-	* Changes, README, configure.in, src/Makefile.am, src/crc.c,
-	  src/crc.h, src/emsi.c, src/ftn.h, src/globals.c, src/outbound.c,
-	  src/protfm.c, src/queue.c, src/session.c, src/types.h:
+	* Changes (1.3), README (1.3), configure.in (1.6), src/Makefile.am
+	  (1.5), src/crc.c (1.2), src/crc.h (1.2), src/emsi.c (1.5),
+	  src/ftn.h (1.3), src/globals.c (1.4), src/outbound.c (1.3),
+	  src/protfm.c (1.2), src/queue.c (1.3), src/session.c (1.5),
+	  src/types.h (1.4):
 
 	[Un]successful try to fix aso_rescan.
 	First hydra fix try. Intruduced several corrections to protocol by AGL.
 
 2005-01-26 15:01  mitry
 
-	* src/: binkp.c, daemon.c, headers.h, janus.c, main.c, modem.c,
-	  tcp.c, tty.c, tty.h:
+	* src/: binkp.c (1.3), daemon.c (1.5), headers.h (1.2), janus.c
+	  (1.3), main.c (1.5), modem.c (1.2), tcp.c (1.4), tty.c (1.3),
+	  tty.h (1.3):
 
 	Updated due to timer.h
 
 2005-01-26 14:41  mitry
 
-	* src/: hydra.c, hydra.h:
+	* src/: hydra.c (1.3), hydra.h (1.3):
 
 	Introduced several corrections from AGL
 
 2005-01-26 14:37  mitry
 
-	* src/timer.h:
+	* src/timer.h (1.1):
 
 	Excerpted from tty.h
 
 2005-01-21 00:06  mitry
 
-	* src/Makefile.am:
+	* src/Makefile.am (1.4):
 
 	Some fixes.
 
 2005-01-20 21:28  mitry
 
-	* configure.in, qico.conf.sample, src/Makefile.am, src/daemon.c,
-	  src/emsi.c, src/flaglex.l, src/freq.c, src/ftn.c, src/globals.c,
-	  src/globals.h, src/hydra.h, src/janus.c, src/mailer.h,
-	  src/qcconst.h, src/qnlc.c, src/qslib.c, src/session.c, src/tcp.c:
+	* configure.in (1.5), qico.conf.sample (1.3), src/Makefile.am
+	  (1.3), src/daemon.c (1.4), src/emsi.c (1.4), src/flaglex.l (1.3),
+	  src/freq.c (1.3), src/ftn.c (1.3), src/globals.c (1.3),
+	  src/globals.h (1.3), src/hydra.h (1.2), src/janus.c (1.2),
+	  src/mailer.h (1.4), src/qcconst.h (1.3), src/qnlc.c (1.3),
+	  src/qslib.c (1.3), src/session.c (1.4), src/tcp.c (1.3):
 
 	Mark hydra session as xHydra if RH1.
 	Fix traps if mapin/mapout is empty (commented out). Thanks to Rodion Lisitsyn (2:5030/289).
@@ -1826,14 +2000,18 @@
 
 2005-01-14 20:20  mitry
 
-	* Changes, README, autogen.sh, configure.in, qico.conf.sample,
-	  src/call.c, src/clserv.c, src/config.c, src/daemon.c, src/defs.h,
-	  src/emsi.c, src/ftn.c, src/globals.c, src/globals.h, src/hydra.c,
-	  src/log.c, src/ls_zglue.c, src/ls_zmodem.c, src/ls_zmodem.h,
-	  src/ls_zreceive.c, src/ls_zsend.c, src/mailer.h, src/main.c,
-	  src/nodelist.c, src/qcc.c, src/qcconst.h, src/qctl.c, src/qnlc.c,
-	  src/qslib.c, src/qslib.h, src/session.c, src/slists.c, src/tcp.c,
-	  src/types.h:
+	* Changes (1.2), README (1.2), autogen.sh (1.3), configure.in
+	  (1.4), qico.conf.sample (1.2), src/call.c (1.3), src/clserv.c
+	  (1.2), src/config.c (1.2), src/daemon.c (1.3), src/defs.h (1.3),
+	  src/emsi.c (1.3), src/ftn.c (1.2), src/globals.c (1.2),
+	  src/globals.h (1.2), src/hydra.c (1.2), src/log.c (1.2),
+	  src/ls_zglue.c (1.2), src/ls_zmodem.c (1.2), src/ls_zmodem.h
+	  (1.2), src/ls_zreceive.c (1.2), src/ls_zsend.c (1.2),
+	  src/mailer.h (1.3), src/main.c (1.4), src/nodelist.c (1.2),
+	  src/qcc.c (1.2), src/qcconst.h (1.2), src/qctl.c (1.4),
+	  src/qnlc.c (1.2), src/qslib.c (1.2), src/qslib.h (1.2),
+	  src/session.c (1.3), src/slists.c (1.2), src/tcp.c (1.2),
+	  src/types.h (1.3):
 
 	Config parser now accepts environment variables like defines
 	Bugfix: eliminate Segmentation Fault on FreeBSD 4.X / gcc 2.95.4
@@ -1841,85 +2019,92 @@
 
 2004-12-31 00:02  mitry
 
-	* src/flaglex.l:
+	* src/flaglex.l (1.2):
 
 	Extended date format adding the form mon[dd]
 
 2004-12-30 21:24  mitry
 
-	* .cvsignore, configure.in, debian/.cvsignore, src/.cvsignore,
-	  src/ip_tools.c, src/main.c, src/qctl.c, stuff/.cvsignore:
+	* .cvsignore (1.2), configure.in (1.3), debian/.cvsignore (1.2),
+	  src/.cvsignore (1.2), src/ip_tools.c (1.4), src/main.c (1.3),
+	  src/qctl.c (1.3), stuff/.cvsignore (1.2):
 
 	Changed version to 0.55xe (eXtended Edition)
 	Show incoming host name along with remote ip.
 
 2004-12-30 15:26  mitry
 
-	* src/ip_tools.c:
+	* src/ip_tools.c (1.3):
 
 	[no log message]
 
 2004-12-30 15:20  mitry
 
-	* src/: ip_tools.c, ip_tools.h, outbound.c:
+	* src/: ip_tools.c (1.2), ip_tools.h (1.2), outbound.c (1.2):
 
 	Learning CVS tags :)
 
 2004-12-30 00:03  mitry
 
-	* src/: ip_tools.c, ip_tools.h, outbound.c:
+	* src/: ip_tools.c (1.1), ip_tools.h (1.1), outbound.c (1.1):
 
 		Adding new files.
 
 2004-12-30 00:01  mitry
 
-	* src/: Makefile.am, aso.c, binkp.c, call.c, daemon.c, defs.h,
-	  emsi.c, freq.c, ftn.h, mailer.h, main.c, qconf.x, qctl.c,
-	  queue.c, session.c, tools.c, tools.h, tty.c, tty.h, types.h:
+	* src/: Makefile.am (1.2), aso.c (1.2), binkp.c (1.2), call.c
+	  (1.2), daemon.c (1.2), defs.h (1.2), emsi.c (1.2), freq.c (1.2),
+	  ftn.h (1.2), mailer.h (1.2), main.c (1.2), qconf.x (1.2), qctl.c
+	  (1.2), queue.c (1.2), session.c (1.2), tools.c (1.2), tools.h
+	  (1.2), tty.c (1.2), tty.h (1.2), types.h (1.2):
 
 		Miscellaneous cleaning.
 
 2004-12-29 23:59  mitry
 
-	* autogen.sh, configure.in:
+	* autogen.sh (1.2), configure.in (1.2):
 
 		* src/aso.c: removed.
 
-2004-12-29 23:28  mitry
-
-	* cvs_com:
-
-	Init.
-
 2004-12-29 23:23  mitry
 
-	* .cvsignore, Changes, FAQ, INSTALL, Makefile.am, README,
-	  autogen.sh, compile, configure.in, cvs_com, qico.conf.sample,
-	  qico.spec, stamp-h.in, debian/.cvsignore, debian/Makefile.am,
-	  debian/changelog, debian/conffiles, debian/control,
-	  debian/copyright, debian/dirs, debian/examples,
-	  debian/inetd.conf, debian/init.d, debian/qcc.8, debian/qcc.files,
-	  debian/qctl.8, debian/qctl.files, debian/qico.8, debian/rules,
-	  debian/services, src/.cvsignore, src/Makefile.am, src/aso.c,
-	  src/basename.c, src/binkp.c, src/binkp.h, src/call.c,
-	  src/charset.h, src/clserv.c, src/clserv.h, src/config.c,
-	  src/crc.c, src/crc.h, src/daemon.c, src/defs.h, src/emsi.c,
-	  src/flagexp.y, src/flaglex.l, src/freq.c, src/ftn.c, src/ftn.h,
-	  src/getsid.c, src/globals.c, src/globals.h, src/headers.h,
-	  src/hydra.c, src/hydra.h, src/janus.c, src/janus.h, src/log.c,
-	  src/ls_zglue.c, src/ls_zmodem.c, src/ls_zmodem.h,
-	  src/ls_zreceive.c, src/ls_zsend.c, src/mailer.h, src/main.c,
-	  src/malloc.c, src/md5.c, src/memcmp.c, src/modem.c,
-	  src/nodelist.c, src/perl.c, src/protfm.c, src/qcc.c,
-	  src/qcconst.h, src/qconf.x, src/qctl.c, src/qipc.c, src/qipc.h,
-	  src/qnlc.c, src/qslib.c, src/qslib.h, src/queue.c, src/replace.h,
-	  src/session.c, src/slists.c, src/slists.h, src/strcspn.c,
-	  src/strsep.c, src/tcp.c, src/tools.c, src/tools.h, src/tty.c,
-	  src/tty.h, src/types.h, src/usleep.c, src/x2c.awk,
-	  stuff/.cvsignore, stuff/Makefile.am, stuff/ftn,
-	  stuff/koi8r_866.cp, stuff/onchat, stuff/qhistory, stuff/qico.xpm,
-	  stuff/qlinks, stuff/sfreq, stuff/stat.run, stuff/synctime,
-	  stuff/test.pl, stuff/tossing:
+	* .cvsignore (1.1), Changes (1.1), FAQ (1.1), INSTALL (1.1),
+	  Makefile.am (1.1), README (1.1), autogen.sh (1.1), compile (1.1),
+	  configure.in (1.1), qico.conf.sample (1.1), qico.spec (1.1),
+	  stamp-h.in (1.1), debian/.cvsignore (1.1), debian/Makefile.am
+	  (1.1), debian/changelog (1.1), debian/conffiles (1.1),
+	  debian/control (1.1), debian/copyright (1.1), debian/dirs (1.1),
+	  debian/examples (1.1), debian/inetd.conf (1.1), debian/init.d
+	  (1.1), debian/qcc.8 (1.1), debian/qcc.files (1.1), debian/qctl.8
+	  (1.1), debian/qctl.files (1.1), debian/qico.8 (1.1), debian/rules
+	  (1.1), debian/services (1.1), src/.cvsignore (1.1),
+	  src/Makefile.am (1.1), src/aso.c (1.1), src/basename.c (1.1),
+	  src/binkp.c (1.1), src/binkp.h (1.1), src/call.c (1.1),
+	  src/charset.h (1.1), src/clserv.c (1.1), src/clserv.h (1.1),
+	  src/config.c (1.1), src/crc.c (1.1), src/crc.h (1.1),
+	  src/daemon.c (1.1), src/defs.h (1.1), src/emsi.c (1.1),
+	  src/flagexp.y (1.1), src/flaglex.l (1.1), src/freq.c (1.1),
+	  src/ftn.c (1.1), src/ftn.h (1.1), src/getsid.c (1.1),
+	  src/globals.c (1.1), src/globals.h (1.1), src/headers.h (1.1),
+	  src/hydra.c (1.1), src/hydra.h (1.1), src/janus.c (1.1),
+	  src/janus.h (1.1), src/log.c (1.1), src/ls_zglue.c (1.1),
+	  src/ls_zmodem.c (1.1), src/ls_zmodem.h (1.1), src/ls_zreceive.c
+	  (1.1), src/ls_zsend.c (1.1), src/mailer.h (1.1), src/main.c
+	  (1.1), src/malloc.c (1.1), src/md5.c (1.1), src/memcmp.c (1.1),
+	  src/modem.c (1.1), src/nodelist.c (1.1), src/perl.c (1.1),
+	  src/protfm.c (1.1), src/qcc.c (1.1), src/qcconst.h (1.1),
+	  src/qconf.x (1.1), src/qctl.c (1.1), src/qipc.c (1.1), src/qipc.h
+	  (1.1), src/qnlc.c (1.1), src/qslib.c (1.1), src/qslib.h (1.1),
+	  src/queue.c (1.1), src/replace.h (1.1), src/session.c (1.1),
+	  src/slists.c (1.1), src/slists.h (1.1), src/strcspn.c (1.1),
+	  src/strsep.c (1.1), src/tcp.c (1.1), src/tools.c (1.1),
+	  src/tools.h (1.1), src/tty.c (1.1), src/tty.h (1.1), src/types.h
+	  (1.1), src/usleep.c (1.1), src/x2c.awk (1.1), stuff/.cvsignore
+	  (1.1), stuff/Makefile.am (1.1), stuff/ftn (1.1),
+	  stuff/koi8r_866.cp (1.1), stuff/onchat (1.1), stuff/qhistory
+	  (1.1), stuff/qico.xpm (1.1), stuff/qlinks (1.1), stuff/sfreq
+	  (1.1), stuff/stat.run (1.1), stuff/synctime (1.1), stuff/test.pl
+	  (1.1), stuff/tossing (1.1):
 
 	Initial revision
 

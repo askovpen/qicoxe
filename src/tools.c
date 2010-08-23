@@ -2,9 +2,12 @@
  * Misc stuff.
  **********************************************************/
 /*
- * $Id: tools.c,v 1.12 2005/08/10 19:45:50 mitry Exp $
+ * $Id: tools.c,v 1.13 2006/03/31 19:41:37 mitry Exp $
  *
  * $Log: tools.c,v $
+ * Revision 1.13  2006/03/31 19:41:37  mitry
+ * Don't ignore return value of unlink()
+ *
  * Revision 1.12  2005/08/10 19:45:50  mitry
  * Added param to qscandir() to return full path with file name
  *
@@ -391,7 +394,7 @@ int lunlink(const char *fname)
 	int rc = 0;
 	
 	if ( fname && *fname )
-		unlink( fname );
+		rc = unlink( fname );
 
 	if ( rc < 0 && errno != ENOENT )
 		write_log("can't delete file %s: %s", fname, strerror( errno ));

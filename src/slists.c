@@ -2,9 +2,12 @@
  * work with various lists.
  **********************************************************/
 /*
- * $Id: slists.c,v 1.3 2005/05/16 11:17:30 mitry Exp $
+ * $Id: slists.c,v 1.4 2006/04/14 18:49:03 mitry Exp $
  *
  * $Log: slists.c,v $
+ * Revision 1.4  2006/04/14 18:49:03  mitry
+ * Changed return types.
+ *
  * Revision 1.3  2005/05/16 11:17:30  mitry
  * Updated function prototypes. Changed code a bit.
  *
@@ -117,7 +120,7 @@ void aslist_kill(aslist_t **l)
 }
 
 
-void falist_add(falist_t **l, const ftnaddr_t *a)
+falist_t *falist_add(falist_t **l, const ftnaddr_t *a)
 {
 	falist_t **t;
 
@@ -126,6 +129,8 @@ void falist_add(falist_t **l, const ftnaddr_t *a)
 	*t = (falist_t *) xmalloc( sizeof( falist_t ));
 	(*t)->next = NULL;
 	addr_cpy( &(*t)->addr, a );
+
+	return *t;
 }
 
 
@@ -151,7 +156,7 @@ void falist_kill(falist_t **l)
 }
 
 
-void faslist_add(faslist_t **l, const char *s, const ftnaddr_t *a)
+faslist_t *faslist_add(faslist_t **l, const char *s, const ftnaddr_t *a)
 {
 	faslist_t **t;
 
@@ -161,6 +166,8 @@ void faslist_add(faslist_t **l, const char *s, const ftnaddr_t *a)
 	(*t)->next = NULL;
 	(*t)->str = xstrdup( s );
 	addr_cpy( &(*t)->addr, a );
+
+	return *t;
 }
 
 

@@ -1,6 +1,6 @@
 /******************************************************************
  * BinkP protocol
- * $Id: binkp.h,v 1.7 2005/08/22 17:19:41 mitry Exp $
+ * $Id: binkp.h,v 1.8 2006/07/10 16:16:30 mitry Exp $
  ******************************************************************/
 
 #ifdef WITH_BINKP
@@ -124,6 +124,8 @@ struct _BP_SESSION {
     
     char *rfname;		/* Receiving file name */
     time_t rmtime;		/* ... mtime */
+
+    byte was_suspend;		/* Remote suspended some files */
 
     int ticskip;
     int nofiles;

@@ -2,9 +2,12 @@
  * for work with various lists.
  **********************************************************/
 /*
- * $Id: slists.h,v 1.3 2005/05/16 11:17:30 mitry Exp $
+ * $Id: slists.h,v 1.4 2006/04/14 18:49:03 mitry Exp $
  *
  * $Log: slists.h,v $
+ * Revision 1.4  2006/04/14 18:49:03  mitry
+ * Changed return types.
+ *
  * Revision 1.3  2005/05/16 11:17:30  mitry
  * Updated function prototypes. Changed code a bit.
  *
@@ -52,10 +55,10 @@ void		slist_killn(slist_t **);
 aslist_t	*aslist_add(aslist_t **, const char *, const char *);
 aslist_t	*aslist_find(aslist_t *, const char *);
 void		aslist_kill(aslist_t **);
-void		falist_add(falist_t **, const ftnaddr_t *);
+falist_t	*falist_add(falist_t **, const ftnaddr_t *);
 falist_t	*falist_find(falist_t *, const ftnaddr_t *);
 void		falist_kill(falist_t **);
-void		faslist_add(faslist_t **, const char *, const ftnaddr_t *);
+faslist_t	*faslist_add(faslist_t **, const char *, const ftnaddr_t *);
 void		faslist_kill(faslist_t **);
 
 #endif
