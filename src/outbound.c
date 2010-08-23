@@ -2,12 +2,9 @@
  * Outbound management.
  **********************************************************/
 /*
- * $Id: outbound.c,v 1.22 2006/04/14 18:51:45 mitry Exp $
+ * $Id: outbound.c,v 1.21 2005/08/10 19:45:50 mitry Exp $
  *
  * $Log: outbound.c,v $
- * Revision 1.22  2006/04/14 18:51:45  mitry
- * Changed a bit node (un)lock logic.
- *
  * Revision 1.21  2005/08/10 19:45:50  mitry
  * Added param to qscandir() to return full path with file name
  *
@@ -74,220 +71,212 @@ static int _rslow;
 
 
 static char *ext_lo[] = {
-	".pnt", ".req",
-	".ilo", ".clo", ".dlo", ".flo", ".hlo",
-	NULL
+    ".pnt", ".req",
+    ".ilo", ".clo", ".dlo", ".flo", ".hlo",
+    NULL
 };
 
 static char *ext_ut[] = {
-	".iut", ".cut", ".dut", ".out", ".hut",
-	NULL
+    ".iut", ".cut", ".dut", ".out", ".hut",
+    NULL
 };
 
 
 int outbound_init(const char *asopath, const char *bsopath,
 	const char *stspath, int def_zone)
 {
-	int	rc = 0;
-	size_t	len = 0;
+    int		rc = 0;
+    size_t	len = 0;
 
-	outbound_done();
+    outbound_done();
 
-	if ( bsopath && *bsopath ) {
-		char *p;
+    if ( bsopath && *bsopath ) {
+        char *p;
         
-		len = strlen( bsopath ) - 1;
-		xstrcpy( out_internal_tmp, bsopath, MAX_PATH );
-		len = chopc( out_internal_tmp, '/' );
+        len = strlen( bsopath ) - 1;
+        xstrcpy( out_internal_tmp, bsopath, MAX_PATH );
+        len = chopc( out_internal_tmp, '/' );
 
-		if ( len ) {
-			p = strrchr( out_internal_tmp, '/' );
+        if ( len ) {
+            p = strrchr( out_internal_tmp, '/' );
 
-			if ( p ) {
-				p_domain = xstrdup( p + 1 );
-				pd_len = strlen( p_domain );
+            if ( p ) {
+                p_domain = xstrdup( p + 1 );
+                pd_len = strlen( p_domain );
 
-				if ( p == out_internal_tmp )
-					*(p + 1) = '\0';
-				else
-					*p = '\0';
+                if ( p == out_internal_tmp )
+                    *(p + 1) = '\0';
+                else
+                    *p = '\0';
+                bso_base = xstrdup( out_internal_tmp );
+                bso_defzone = def_zone;
+                rc |= BSO;
+            } else
+                len = 0;
+        }
+    }
 
-				bso_base = xstrdup( out_internal_tmp );
-				bso_defzone = def_zone;
-				rc |= BSO;
-			} else
-				len = 0;
-		}
-	}
+    if ( !len ) {
+        xfree( bso_base );
+        xfree( p_domain );
+    }
 
-	if ( !len ) {
-		xfree( bso_base );
-		xfree( p_domain );
-	}
+    len = 0;
 
-	len = 0;
+    if ( asopath && *asopath ) {
+        len = strlen( asopath ) - 1;
+        xstrcpy( out_internal_tmp, asopath, MAX_PATH );
+        len = chopc( out_internal_tmp, '/' );
 
-	if ( asopath && *asopath ) {
-		len = strlen( asopath ) - 1;
-		xstrcpy( out_internal_tmp, asopath, MAX_PATH );
-		len = chopc( out_internal_tmp, '/' );
+        if ( !len )
+            aso_base = xstrdup( "/" );
+        else
+            aso_base = xstrdup( out_internal_tmp );
+        rc |= ASO;
+    }
 
-		if ( !len )
-			aso_base = xstrdup( "/" );
-		else
-			aso_base = xstrdup( out_internal_tmp );
-		
-		rc |= ASO;
-	}
+    if ( !rc )
+        return 0;    
 
-	if ( !rc )
-		return 0;    
+    if ( stspath && *stspath ) {
+        xstrcpy( out_internal_tmp, stspath, MAX_PATH );
+        len = chopc( out_internal_tmp, '/' );
+        if ( !len )
+            sts_base = xstrdup( "/" );
+        else
+            sts_base = xstrdup( stspath );
+    } else if ( bsopath )
+        sts_base = xstrdup( bsopath );
+    else if ( asopath )
+        sts_base = xstrdup( asopath );
 
-	if ( stspath && *stspath ) {
-		xstrcpy( out_internal_tmp, stspath, MAX_PATH );
-		len = chopc( out_internal_tmp, '/' );
-
-		if ( !len )
-			sts_base = xstrdup( "/" );
-		else
-			sts_base = xstrdup( stspath );
-	} else if ( bsopath ) {
-		sts_base = xstrdup( bsopath );
-	} else if ( asopath ) {
-		sts_base = xstrdup( asopath );
-	}
-
-	return rc;
+    return rc;
 }
 
 
 void outbound_done(void)
 {
-	xfree( bso_base );
-	xfree( p_domain );
-	xfree( aso_base );
-	xfree( sts_base );
-	pd_len = 0;
+    xfree( bso_base );
+    xfree( p_domain );
+    xfree( aso_base );
+    xfree( sts_base );
+    pd_len = 0;
 }
 
 
 static char *get_outbound_name(int type, const ftnaddr_t *fa)
 {
-	out_internal_tmp[0] = '\0';
+    out_internal_tmp[0] = '\0';
 
-	switch( type ) {
-	case ASO:
-		if ( aso_base )
-			snprintf( out_internal_tmp, MAX_PATH, "%s/%d.%d.%d.%d.", aso_base, fa->z, fa->n, fa->f, fa->p) ;
-		break;
+    switch( type ) {
+    case ASO:
+        if ( aso_base )
+            snprintf( out_internal_tmp, MAX_PATH, "%s/%d.%d.%d.%d.", aso_base, fa->z, fa->n, fa->f, fa->p) ;
+        break;
 
-	case BSO:
-		if ( bso_base ) {
-			char t[30];
+    case BSO:
+        if ( bso_base ) {
+            char t[30];
 
-			snprintf( out_internal_tmp, MAX_PATH, "%s/%s", bso_base, p_domain );
-			if ( fa->z != bso_defzone ) {
-				snprintf( t, 30, ".%03x", fa->z );
-				xstrcat( out_internal_tmp, t, MAX_PATH );
-			}
-			snprintf( t, 30, "/%04x%04x.", fa->n, fa->f );
-			xstrcat( out_internal_tmp, t, MAX_PATH );
-			if( fa->p ) {
-				snprintf( t, 30, "pnt/%08x.", fa->p );
-				xstrcat( out_internal_tmp, t, MAX_PATH );
-			}
-		}
-		break;
+            snprintf( out_internal_tmp, MAX_PATH, "%s/%s", bso_base, p_domain );
+            if ( fa->z != bso_defzone ) {
+                snprintf( t, 30, ".%03x", fa->z );
+                xstrcat( out_internal_tmp, t, MAX_PATH );
+            }
+            snprintf( t, 30, "/%04x%04x.", fa->n, fa->f );
+            xstrcat( out_internal_tmp, t, MAX_PATH );
+            if( fa->p ) {
+                snprintf( t, 30, "pnt/%08x.", fa->p );
+                xstrcat( out_internal_tmp, t, MAX_PATH );
+            }
+        }
+        break;
 
-	default:
-		return NULL;
-	}
+    default:
+        return NULL;
+    }
 
-	if ( *out_internal_tmp )
-		return out_internal_tmp;
+    if ( *out_internal_tmp )
+        return out_internal_tmp;
 
-	return NULL;
+    return NULL;
 }
 
 
 static char *get_pkt_name(int type, const ftnaddr_t *fa, int fl)
 {
-	char	e[] = "eut";
-	char	*name = get_outbound_name( type, fa );
+    char e[] = "eut";
+    char *name = get_outbound_name( type, fa );
 
-	if ( name ) {
-		switch( fl ) {
-		case F_NORM:
-		case F_REQ:  *e = 'o'; break;
-		case F_DIR:  *e = 'd'; break;
-		case F_CRSH: *e = 'c'; break;
-		case F_HOLD: *e = 'h'; break;
-		case F_IMM:  *e = 'i'; break;
-		}
+    if ( name ) {
+        switch( fl ) {
+            case F_NORM:
+            case F_REQ:  *e = 'o'; break;
+            case F_DIR:  *e = 'd'; break;
+            case F_CRSH: *e = 'c'; break;
+            case F_HOLD: *e = 'h'; break;
+            case F_IMM:  *e = 'i'; break;
+        }
+        xstrcat( name, e, MAX_PATH );
+    }
 
-		xstrcat( name, e, MAX_PATH );
-	}
-
-	return name;
+    return name;
 }
 
 
 static char *get_flo_name(int type, const ftnaddr_t *fa, int fl)
 {
-	char	e[] = "elo";
-	char	*name = get_outbound_name( type, fa );
+    char e[] = "elo";
+    char *name = get_outbound_name( type, fa );
 
-	if ( name ) {
-		switch( fl ) {
-		case F_NORM:
-		case F_REQ:  *e = 'f'; break;
-		case F_DIR:  *e = 'd'; break;
-		case F_CRSH: *e = 'c'; break;
-		case F_HOLD: *e = 'h'; break;
-		case F_IMM:  *e = 'i'; break;
-		}
+    if ( name ) {
+        switch( fl ) {
+            case F_NORM:
+            case F_REQ:  *e = 'f'; break;
+            case F_DIR:  *e = 'd'; break;
+            case F_CRSH: *e = 'c'; break;
+            case F_HOLD: *e = 'h'; break;
+            case F_IMM:  *e = 'i'; break;
+        }
+        xstrcat( name, e, MAX_PATH );
+    }
 
-		xstrcat( name, e, MAX_PATH );
-	}
-
-	return name;
+    return name;
 }
 
 
 static char *get_req_name(int type, const ftnaddr_t *fa)
 {
-	char	*name = get_outbound_name( type, fa );
+    char *name = get_outbound_name( type, fa );
 
-	if ( name )
-		xstrcat( name, "req", MAX_PATH );
+    if ( name )
+        xstrcat( name, "req", MAX_PATH );
 
-	return name;
+    return name;
 }
 
 
 static char *get_busy_name(int type, const ftnaddr_t *fa, char b)
 {
-	char	bn[] = "esy";
-	char	*name = get_outbound_name( type, fa );
+    char bn[] = "esy";
+    char *name = get_outbound_name( type, fa );
 
-	if ( name ) {
-		*bn = b;
-		xstrcat( name, bn, MAX_PATH );
-	}
+    if ( name ) {
+        *bn = b;
+        xstrcat( name, bn, MAX_PATH );
+    }
 
-	return name;
+    return name;
 }
 
 
 static char *get_status_name(const ftnaddr_t *fa)
 {
-	if ( sts_base ) {
-		snprintf( out_internal_tmp, MAX_PATH, "%s/%d.%d.%d.%d.qst",
-			sts_base, fa->z, fa->n, fa->f, fa->p);
-		return out_internal_tmp;
-	}
-
-	return NULL;
+    if ( sts_base ) {
+        snprintf( out_internal_tmp, MAX_PATH, "%s/%d.%d.%d.%d.qst", sts_base, fa->z, fa->n, fa->f, fa->p);
+        return out_internal_tmp;
+    }
+    return NULL;
 }
 
 
@@ -583,16 +572,6 @@ static int out_lock(int type, const ftnaddr_t *adr, int l)
 }
 
 
-static void out_unlock(int type, const ftnaddr_t *adr, int l)
-{
-	if ( l == LCK_s || l == LCK_x )
-		lunlink( get_busy_name( type, adr, 'b' ));
-
-	if ( l == LCK_c || l == LCK_x )
-		lunlink( get_busy_name( type, adr, 'c' ));
-}
-
-
 /*
  * Returns whether the address is busy. 0 == free, 1 == busy.
  */
@@ -614,55 +593,39 @@ int outbound_addr_busy(const ftnaddr_t *addr)
 }
 
 
-int outbound_locknode(ftnaddr_t *addr, int l)
+int outbound_locknode(const ftnaddr_t *addr, int l)
 {
-	int rc = 0, x = 0;
+	int rc = 0;
 
-	if ( aso_base ) {
-		x |= ASO;
-		if ( out_lock( ASO, addr, l ))
-			rc |= ASO;
-	}
+	if ( aso_base && out_lock( ASO, addr, l ))
+		rc |= ASO;
 	
-	if ( x != rc )
-		return 0;
-
-	if ( bso_base ) {
-		if ( out_lock( BSO, addr, l )) {
-			rc |= BSO;
-		} else if ( x ) {
-			out_unlock( ASO, addr, l );
-			rc = 0;
-		}
-	}
+	if ( bso_base && out_lock( BSO, addr, l ))
+		rc |= BSO;
 	
-	addr->locked = rc;
-	
-	DEBUG(('S',1,"outbound_locknode: %d:%d/%d.%d, locked: %d",
-		addr->z, addr->n, addr->f, addr->p, addr->locked));
 	return rc;
 }
 
 
-int outbound_unlocknode(ftnaddr_t *addr, int l)
+int outbound_unlocknode(const ftnaddr_t *addr, int l)
 {
-	DEBUG(('S',1,"outbound_unlocknode: %d:%d/%d.%d, locked: %d",
-		addr->z, addr->n, addr->f, addr->p, addr->locked));
-
-	if ( !addr->locked )
-		return 1;
-
-        addr->locked = 0;
-
 	if ( l == LCK_t )
 		return 1;
 
 	if ( aso_base ) {
-		out_unlock( ASO, addr, l );
+		if ( get_busy_name( ASO, addr, 'b' ))
+			lunlink( out_internal_tmp );
+
+		if ( get_busy_name( ASO, addr, 'c' ))
+			lunlink( out_internal_tmp );
 	}
 
 	if ( bso_base ) {
-		out_unlock( BSO, addr, l );
+		if ( get_busy_name( BSO, addr, 'b' ))
+			lunlink( out_internal_tmp );
+
+		if ( get_busy_name( BSO, addr, 'c' ))
+			lunlink( out_internal_tmp );
 
 		if ( addr->z != bso_defzone )
 			rmdirs( out_internal_tmp );
@@ -746,7 +709,7 @@ int outbound_setstatus(const ftnaddr_t *fa, sts_t *st)
 	FILE *f;
 	char *name = get_status_name( fa );
 
-	if ((f = mdfopen( name, "wt" ))) {
+	if((f = mdfopen( name, "wt" ))) {
 		fprintf( f, "%d %d %lu %lu", st->try, st->flags, st->htime, st->utime );
 		if ( st->bp.name && st->bp.flags )
 			fprintf( f, " %d %d %lu %s", st->bp.flags, st->bp.size, st->bp.time, st->bp.name );
@@ -759,10 +722,10 @@ int outbound_setstatus(const ftnaddr_t *fa, sts_t *st)
 
 int outbound_getstatus(const ftnaddr_t *fa, sts_t *st)
 {
-	int 	rc;
-	char	*name = get_status_name( fa );
-	char	tmp[MAX_PATH + 5];
-	FILE	*f;
+	int rc;
+	FILE *f;
+	char *name = get_status_name( fa );
+	char tmp[MAX_PATH + 5];
 
 	tmp[0] = '\0';
 
@@ -777,20 +740,15 @@ int outbound_getstatus(const ftnaddr_t *fa, sts_t *st)
 				tmp );
 			fclose( f );
 
-#define	RESMASK		( 0x0004 | 0x0008 )
+			if ( rc < 8 )
+				memset( &st->bp, 0, sizeof( st->bp ));
+			else if ( *tmp )
+				st->bp.name = xstrdup( tmp );
 
-			if ( rc & RESMASK ) {
-				if ( rc == 4 )
-					memset( &st->bp, 0, sizeof( st->bp ));
-				else if ( *tmp )
-					st->bp.name = xstrdup( tmp );
-
+			if ( rc == 4 || rc == 8 )
 				return 1;
-			}
-			write_log( "status file %s is corrupted!", name );
-
-#undef	RESMASK
-		
+			write_log( "status file %s corrupted", name );
+        		xfree( st->bp.name );
 		}
 	}
 	memset( st, 0, sizeof( sts_t ));
