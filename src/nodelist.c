@@ -2,7 +2,7 @@
  * work with nodelists
  **********************************************************/
 /*
- * $Id: nodelist.c,v 1.23 2007/03/19 23:11:06 mitry Exp $
+ * $Id$
  *
  * $Log: nodelist.c,v $
  * Revision 1.23  2007/03/19 23:11:06  mitry

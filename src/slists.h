@@ -2,7 +2,7 @@
  * for work with various lists.
  **********************************************************/
 /*
- * $Id: slists.h,v 1.4 2006/04/14 18:49:03 mitry Exp $
+ * $Id$
  *
  * $Log: slists.h,v $
  * Revision 1.4  2006/04/14 18:49:03  mitry

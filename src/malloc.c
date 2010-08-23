@@ -15,7 +15,7 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-/* $Id: malloc.c,v 1.1.1.1 2004/12/29 21:23:34 mitry Exp $ */
+/* $Id$ */
 /* written by Jim Meyering */
 
 #include <config.h>

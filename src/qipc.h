@@ -1,5 +1,5 @@
 /*
- * $Id: qipc.h,v 1.3 2005/05/16 11:17:30 mitry Exp $
+ * $Id$
  *
  * $Log: qipc.h,v $
  * Revision 1.3  2005/05/16 11:17:30  mitry

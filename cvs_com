@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cvs_com,v 1.6 2007/03/19 23:48:21 mitry Exp $
+# $Id$
 if(-e "ChangeLog") {
     open(X,"new")||die("can't open 'new'\n");
     open(F,"TodayFixes")||die("can't open TodayFixes\n");

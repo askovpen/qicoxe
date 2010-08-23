@@ -1,6 +1,6 @@
 /**********************************************************
  * lexical parser
- * $Id: flaglex.l,v 1.6 2005/12/31 15:27:14 mitry Exp $
+ * $Id$
  **********************************************************/
 %option noyywrap case-insensitive never-interactive nounput
 %{

@@ -2,7 +2,7 @@
  * outgoing call implementation
  **********************************************************/
 /*
- * $Id: call.c,v 1.10 2005/08/16 20:23:23 mitry Exp $
+ * $Id$
  *
  * $Log: call.c,v $
  * Revision 1.10  2005/08/16 20:23:23  mitry

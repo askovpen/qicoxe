@@ -1,5 +1,5 @@
 /*
- * $Id: tools.h,v 1.12 2005/08/10 19:45:50 mitry Exp $
+ * $Id$
  *
  * $Log: tools.h,v $
  * Revision 1.12  2005/08/10 19:45:50  mitry

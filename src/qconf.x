@@ -1,6 +1,6 @@
 #**********************************************************
 #* config keywords definition
-#* $Id: qconf.x,v 1.11 2005/08/16 19:15:05 mitry Exp $
+#* $Id$
 #**********************************************************
 address,C_ADDRL,1,NULL
 aftermail,C_STR,0,NULL

@@ -2,7 +2,7 @@
  * work with various lists.
  **********************************************************/
 /*
- * $Id: slists.c,v 1.4 2006/04/14 18:49:03 mitry Exp $
+ * $Id$
  *
  * $Log: slists.c,v $
  * Revision 1.4  2006/04/14 18:49:03  mitry

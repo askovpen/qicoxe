@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.13 2006/03/09 13:01:43 mitry Exp $
+# $Id$
 
 sbin_PROGRAMS = qico
 bin_PROGRAMS = qctl @QCC@

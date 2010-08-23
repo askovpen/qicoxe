@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.6 2005/08/23 11:18:18 mitry Exp $
+# $Id$
 AUTOMAKE_OPTIONS = foreign dist-bzip2 1.5
 
 SUBDIRS = lib src man stuff

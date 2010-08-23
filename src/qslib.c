@@ -2,7 +2,7 @@
  * functions for all qico related programs
  **********************************************************/
 /*
- * $Id: qslib.c,v 1.12 2005/08/12 16:40:51 mitry Exp $
+ * $Id$
  *
  * $Log: qslib.c,v $
  * Revision 1.12  2005/08/12 16:40:51  mitry

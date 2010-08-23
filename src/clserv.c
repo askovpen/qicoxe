@@ -2,7 +2,7 @@
  * client/server tools
  **********************************************************/
 /*
- * $Id: clserv.c,v 1.7 2006/07/18 22:22:09 mitry Exp $
+ * $Id$
  *
  * $Log: clserv.c,v $
  * Revision 1.7  2006/07/18 22:22:09  mitry

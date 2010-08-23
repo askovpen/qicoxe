@@ -2,7 +2,7 @@
  * common protocols' file management
  ******************************************************************/
 /*
- * $Id: protfm.c,v 1.19 2006/07/22 13:13:01 mitry Exp $
+ * $Id$
  *
  * $Log: protfm.c,v $
  * Revision 1.19  2006/07/22 13:13:01  mitry

@@ -1,5 +1,5 @@
 /*
- * $Id: ftn.h,v 1.13 2007/01/28 17:55:00 mitry Exp $
+ * $Id$
  *
  * $Log: ftn.h,v $
  * Revision 1.13  2007/01/28 17:55:00  mitry

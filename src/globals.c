@@ -2,7 +2,7 @@
  * global variables
  **********************************************************/
 /*
- * $Id: globals.c,v 1.11 2006/07/22 13:13:00 mitry Exp $
+ * $Id$
  *
  * $Log: globals.c,v $
  * Revision 1.11  2006/07/22 13:13:00  mitry
@@ -22,6 +22,7 @@ char *configname=CONFIG;
 char *connstr=NULL;
 char *devnull="/dev/null";
 char ip_id[10];
+char *syslog_name=NULL;
 char *log_name=NULL;
 char *log_tty=NULL;
 char *tty_port=NULL;

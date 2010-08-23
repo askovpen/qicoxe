@@ -2,7 +2,7 @@
  * Session control.
  **********************************************************/
 /*
- * $Id: session.c,v 1.28 2006/07/22 13:13:01 mitry Exp $
+ * $Id$
  *
  * $Log: session.c,v $
  * Revision 1.28  2006/07/22 13:13:01  mitry

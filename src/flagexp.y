@@ -2,7 +2,7 @@
  * expression parser
  **********************************************************/
 /*
- * $Id: flagexp.y,v 1.3 2005/05/06 20:31:58 mitry Exp $
+ * $Id$
  *
  * $Log: flagexp.y,v $
  * Revision 1.3  2005/05/06 20:31:58  mitry

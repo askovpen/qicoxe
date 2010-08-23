@@ -1,5 +1,5 @@
 /*
- * $Id: modem.h,v 1.1 2005/05/16 20:33:46 mitry Exp $
+ * $Id$
  *
  * $Log: modem.h,v $
  * Revision 1.1  2005/05/16 20:33:46  mitry

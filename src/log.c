@@ -2,7 +2,7 @@
  * work with log file
  **********************************************************/
 /*
- * $Id: log.c,v 1.10 2005/08/23 16:50:43 mitry Exp $
+ * $Id$
  *
  * $Log: log.c,v $
  * Revision 1.10  2005/08/23 16:50:43  mitry
@@ -123,7 +123,7 @@ static int parsefacorprio(char *f, SLNCODE *names)
 int log_init(const char *logname, const char *ttyname)
 {
 	FILE	*log_f;
-	char	*n, fac[30], *prio;
+	char	fac[30], *prio, *ln;
 	int	fc;
 	size_t	len;
 
@@ -143,36 +143,38 @@ int log_init(const char *logname, const char *ttyname)
 		return 0;
 	}
 
+
 	if ( ttyname ) {
 		len = strlen( progname ) + 2 + strlen( ttyname );
-		n = malloc( len );
-		if ( !n ) {
+		syslog_name = malloc( len );
+		if ( !syslog_name ) {
 			fprintf( stderr, "can't malloc() %d bytes of memory\n", len );
 			abort();
 			exit(1);
 		}
-		xstrcpy( n, progname, len );
-		xstrcat( n, ".", len );
-		xstrcat( n, ttyname, len );
+		xstrcpy( syslog_name, progname, len );
+		xstrcat( syslog_name, ".", len );
+		xstrcat( syslog_name, ttyname, len );
 	} else
-		n = xstrdup( progname );
+		syslog_name = xstrdup( progname );
 
-	prio = strchr( logname + 1, ':' );
+	ln = xstrdup( logname + 1 );
+	prio = strchr( ln, ':' );
 	if ( prio ) {
-		prio++;
-		xstrcpy( fac, logname + 1, 30 );
+		*prio++ = '\0';
+		xstrcpy( fac, ln, 30 );
 		if (( syslog_priority = parsefacorprio( prio, (SLNCODE *) prioritynames )) < 0 )
 			syslog_priority = LOG_INFO;
 	} else
-		xstrcpy( fac, logname + 1, 30);
+		xstrcpy( fac, ln, 30);
 
 	if (( fc = parsefacorprio( fac, (SLNCODE *) facilitynames )) < 0 )
 		return 0;
 
 	log_type = LT_SYSLOG;
 	log_name = NULL;
-	openlog( n, LOG_PID, fc );
-	xfree( n );
+	openlog( syslog_name, LOG_PID, fc );
+	xfree( ln );
 	return 1;
 }
 
@@ -287,7 +289,10 @@ void write_debug_log(unsigned char facility, int level, const char *fmt, ...)
 void log_done(void)
 {
 	if ( log_type == LT_SYSLOG )
+	{
 		closelog();
+		xfree( syslog_name );
+	}
 	xfree( log_name );
 	xfree( log_tty );
 	log_type = LT_STDERR;

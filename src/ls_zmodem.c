@@ -4,7 +4,7 @@
    Global variables, common functions.
 */
 /*
- * $Id: ls_zmodem.c,v 1.6 2005/05/16 20:31:07 mitry Exp $
+ * $Id$
  *
  * $Log: ls_zmodem.c,v $
  * Revision 1.6  2005/05/16 20:31:07  mitry

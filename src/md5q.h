@@ -24,7 +24,7 @@ documentation and/or software.
  */
 
 /*
- * $Id: md5q.h,v 1.2 2006/03/11 03:07:32 mitry Exp $
+ * $Id$
  *
  * $Log: md5q.h,v $
  * Revision 1.2  2006/03/11 03:07:32  mitry

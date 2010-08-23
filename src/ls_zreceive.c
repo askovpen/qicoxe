@@ -4,7 +4,7 @@
    Receiver logic.
 */
 /*
- * $Id: ls_zreceive.c,v 1.4 2005/03/31 19:40:38 mitry Exp $
+ * $Id$
  *
  * $Log: ls_zreceive.c,v $
  * Revision 1.4  2005/03/31 19:40:38  mitry

@@ -2,7 +2,7 @@
  * qico daemon
  **********************************************************/
 /*
- * $Id: daemon.c,v 1.20 2007/03/19 23:41:39 mitry Exp $
+ * $Id$
  *
  * $Log: daemon.c,v $
  * Revision 1.20  2007/03/19 23:41:39  mitry
@@ -77,7 +77,7 @@ static cls_cl_t *cl = NULL;
 static cls_ln_t *ln = NULL;
 static volatile int t_dial = 0;
 static volatile int c_delay;
-static volatile int rnum;
+static volatile signed int rnum;
 static volatile int reread_config = 0;
 
 #ifdef HAVE_DNOTIFY
@@ -594,12 +594,12 @@ void daemon_mode()
 
 		title( "Queue manager [%d]", rescanperiod - t_rescan );
 		if ( t_rescan >= rescanperiod || do_rescan ) {
-			if ( rnum < 0 )
-				rnum = cfgi( CFG_LONGRESCAN ) - 1;
-			do_rescan = 0;
 			if ( !q_rescan( &current, (int)(!rnum)))
 				write_log("can't rescan outbound");
-			rnum = rnum - 1;
+			rnum = ( rnum < 1 ) ?
+				(cfgi( CFG_LONGRESCAN ) > 0 ? cci - 1 : 0) :
+				rnum - 1;
+			do_rescan = 0;
 			t_rescan = 0;
 		}
 
@@ -656,7 +656,7 @@ void daemon_mode()
 				    && !outbound_addr_busy( &current->addr )) {
 
 					xfree(rnode->tty);
-					if(rnode->host) {
+					if((rnode->opt&(MO_BINKP|MO_IFC)) && rnode->host) {
 						static struct stat s;
 						static char lckname[MAX_PATH];
 						char *newhost = NULL;

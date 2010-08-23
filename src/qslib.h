@@ -1,5 +1,5 @@
 /*
- * $Id: qslib.h,v 1.14 2005/08/12 16:40:51 mitry Exp $
+ * $Id$
  *
  * $Log: qslib.h,v $
  * Revision 1.14  2005/08/12 16:40:51  mitry

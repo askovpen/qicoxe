@@ -4,7 +4,7 @@
 #
 # This is a script for RedHat's startup process.
 #
-# $Id: ftn,v 1.1.1.1 2004/12/29 21:23:34 mitry Exp $
+# $Id$
 # chkconfig: 345 86 14
 # description: FTN services
 #

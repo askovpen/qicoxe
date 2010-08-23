@@ -2,7 +2,7 @@
  * Binkp protocol implementation.
  ******************************************************************/
 /*
- * $Id: binkp.c,v 1.26 2007/03/19 23:58:06 mitry Exp $
+ * $Id$
  *
  * $Log: binkp.c,v $
  * Revision 1.26  2007/03/19 23:58:06  mitry

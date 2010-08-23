@@ -1,4 +1,4 @@
-/* $Id: globals.h,v 1.7 2006/07/22 13:13:01 mitry Exp $
+/* $Id$
  *
  * $Log: globals.h,v $
  * Revision 1.7  2006/07/22 13:13:01  mitry
@@ -19,6 +19,7 @@ extern char *configname;
 extern char *connstr;
 extern char *devnull;
 extern char ip_id[10];
+extern char *syslog_name;
 extern char *log_name;
 extern char *log_tty;
 extern char *tty_port;

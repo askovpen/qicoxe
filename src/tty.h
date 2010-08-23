@@ -1,4 +1,4 @@
-/* $Id: tty.h,v 1.16 2005/05/16 20:33:46 mitry Exp $ */
+/* $Id$ */
 /*
  * $Log: tty.h,v $
  * Revision 1.16  2005/05/16 20:33:46  mitry

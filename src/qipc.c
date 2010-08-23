@@ -2,7 +2,7 @@
  * helper stuff for client/server iface.
  **********************************************************/
 /*
- * $Id: qipc.c,v 1.4 2005/05/16 11:17:30 mitry Exp $
+ * $Id$
  *
  * $Log: qipc.c,v $
  * Revision 1.4  2005/05/16 11:17:30  mitry

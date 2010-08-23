@@ -2,7 +2,7 @@
  * All common headers are included here
  **********************************************************/
 /*
- * $Id: headers.h,v 1.7 2005/05/16 20:33:14 mitry Exp $
+ * $Id$
  *
  * $Log: headers.h,v $
  * Revision 1.7  2005/05/16 20:33:14  mitry

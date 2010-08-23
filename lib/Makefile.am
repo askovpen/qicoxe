@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.1 2005/03/28 15:03:44 mitry Exp $
+# $Id$
 
 EXTRA_LIBRARIES = libdlmalloc.a
 

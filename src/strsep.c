@@ -1,4 +1,4 @@
-/* $Id: strsep.c,v 1.1.1.1 2004/12/29 21:23:34 mitry Exp $
+/* $Id$
  *
  * Copyright (c) 1990, 1993
  *	The Regents of the University of California.  All rights reserved.

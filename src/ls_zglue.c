@@ -3,7 +3,7 @@
    Support CRC16, CRC32, variable header, ZedZap (big blocks) and DirZap.
    Global variables, common functions.
 
-   $Id: ls_zglue.c,v 1.3 2005/03/28 17:02:52 mitry Exp $
+   $Id$
 */
 #include "headers.h"
 #include "ls_zmodem.h"

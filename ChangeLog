@@ -1,3 +1,10 @@
+2007-08-06 00:56  mitry
+
+	* src/: daemon.c (1.21), globals.c (1.12), globals.h (1.8), log.c
+	  (1.11):
+
+	Fix logging to syslog.
+
 2007-03-20 01:58  mitry
 
 	* src/binkp.c (1.26):

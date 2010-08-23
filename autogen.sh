@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# $Id: autogen.sh,v 1.8 2007/03/19 23:43:08 mitry Exp $
+# $Id$
 #
 # Run this to update & generate all the automatic things
 # (thanks spamass-milter for idea)

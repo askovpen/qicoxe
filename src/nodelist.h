@@ -1,5 +1,5 @@
 /*
- * $Id: nodelist.h,v 1.4 2005/08/11 19:06:53 mitry Exp $
+ * $Id$
  *
  * $Log: nodelist.h,v $
  * Revision 1.4  2005/08/11 19:06:53  mitry

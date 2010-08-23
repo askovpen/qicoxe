@@ -1,5 +1,5 @@
 # test and info perl script for qicosi.
-# $Id: test.pl,v 1.1.1.1 2004/12/29 21:23:34 mitry Exp $
+# $Id$
 
 # available qico functions:
 #  sub wlog([level,]string): write string to log.

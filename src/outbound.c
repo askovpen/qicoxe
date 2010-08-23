@@ -2,7 +2,7 @@
  * Outbound management.
  **********************************************************/
 /*
- * $Id: outbound.c,v 1.22 2006/04/14 18:51:45 mitry Exp $
+ * $Id$
  *
  * $Log: outbound.c,v $
  * Revision 1.22  2006/04/14 18:51:45  mitry
