@@ -11,7 +11,7 @@ ESVN_REPO_URI="https://icelan.ru/svn/qicoxe/trunk/"
 
 LICENSE="LGPL-2"
 SLOT="0"
-KEYWORDS="x86 amd64"
+KEYWORDS=""
 IUSE="+hydra8k +binkp +qcc +notify perl -winfs xinetd -debug"
 DEPEND="perl? ( dev-lang/perl )
 	qcc? ( sys-libs/ncurses )"
