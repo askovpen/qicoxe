@@ -78,7 +78,7 @@ src_compile() {
 
 pkg_preinst() {
 	enewgroup fido
-	enewuser fido -1 /bin/false /dev/null fido
+	enewuser fido -1 -1 /dev/null fido
 }
 
 src_install() {
