@@ -9,6 +9,6 @@
       <email>panevin@box.vsi.ru</email>
       <name><![CDATA[Semen Panevin]]></name>
     </owner>
-    <source type="svn">https://icelan.ru/svn/qico/trunk/gentoo/portage</source>
+    <source type="svn">https://icelan.ru/svn/qicoxe/trunk/gentoo/portage</source>
   </repo>
 </repositories>
