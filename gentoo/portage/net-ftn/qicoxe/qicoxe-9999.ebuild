@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit eutils subversion
+inherit eutils autotools subversion
 
 DESCRIPTION="FTN mailer Qico (xe)"
 HOMEPAGE="http://www.sf.net/project/qico"
@@ -62,8 +62,11 @@ src_unpack() {
 	sed -e "s:/var/spool/ftn:${SPOOLDIR}:" -i qico.conf.sample
 }
 
-src_compile() {
-	./autogen.sh
+src_prepare() {
+	eautoreconf || die "eautoreconf failed"
+}
+
+src_configure() {
 	econf \
 		--with-config=${CONFDIR}/qico.conf \
 		$(use_enable debug debug) \
@@ -72,7 +75,11 @@ src_compile() {
 		$(use_enable qcc qcc) \
 		$(use_enable notify notify) \
 		$(use_enable perl perl) \
-		$(useq winfs && echo "--with-lock-style=open")
+		$(useq winfs && echo "--with-lock-style=open") \
+		|| die "econf failed"
+}
+
+src_compile() {
 	emake || die "emake failed"
 }
 
