@@ -23,8 +23,7 @@ qico_SOURCES = call.c clserv.c config.c crc.c daemon.c \
 
 EXTRA_qico_SOURCES = binkp.c perl.c
 
-qico_LDADD = @LIBOBJS@ @LIB_MALLOC@ @BINKP_O@ @PERL_O@
-qico_LDFLAGS = @PERLLDFLAGS@
+qico_LDADD = @LIBOBJS@ @LIB_MALLOC@ @BINKP_O@ @PERL_O@ @PERLLDFLAGS@
 qico_DEPENDENCIES = @BINKP_O@ @PERL_O@
 
 qctl_SOURCES = qctl.c clserv.c md5q.c qslib.c
