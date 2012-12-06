@@ -34,6 +34,9 @@ static slist_t		*condlist = NULL, *curcond;
 
 #define IS_COMMENT( t ) ( *t == ';' || *t == '#' || ( *t== '/' && t[1] == '/' ))
 
+#define REQUIRED_PARAM (1)
+#define NONIF_PARAM (2)
+#define CONFIGURED_PARAM (8)
 
 static int getstr(char **to, const char *from)
 {
@@ -240,7 +243,7 @@ static int parsekeyword(const char *kw, const char *arg, const char *cfgname, in
 		return 0;
 	}
 
-        if ( curcond && ( configtab[i].flags & 2 )) {
+        if ( curcond && ( configtab[i].flags & NONIF_PARAM )) {
 		write_log( "%s:%d: keyword '%s' can't be defined inside if-expression",
 			cfgname, line, kw );
 		return 0;
@@ -264,9 +267,9 @@ static int parsekeyword(const char *kw, const char *arg, const char *cfgname, in
         }
 
 	if ( setvalue( ci, arg, configtab[i]. type )) {
-		if ( !( configtab[i].flags & 8 )) {
+		if ( !( configtab[i].flags & CONFIGURED_PARAM )) {
 			if ( !curcond )
-				configtab[i].flags |= 8;
+				configtab[i].flags |= CONFIGURED_PARAM;
 			else
 				configtab[i].flags |= 4;
 		}
@@ -491,23 +494,24 @@ int readconfig(const char *cfgname)
         rc=0;
     }
     if(!rc)return 0;
-    for(i=0;i<CFG_NNN;i++)
-        if(!(configtab[i].flags&8)) {
-        if(configtab[i].flags&1) {
-            write_log("required keyword '%s' not defined",configtab[i].keyword);
-            rc=0;
+    for(i=0;i<CFG_NNN;i++) {
+            if(!(configtab[i].flags & CONFIGURED_PARAM)) {
+            if(configtab[i].flags & REQUIRED_PARAM) {
+                write_log("required keyword '%s' not defined",configtab[i].keyword);
+                rc=0;
+            }
+            ci=xcalloc(1,sizeof(cfgitem_t));
+            if(configtab[i].def_val)
+                setvalue(ci,configtab[i].def_val,configtab[i].type);
+            else memset(&ci->value,0,sizeof(ci->value));
+            ci->condition=NULL;ci->next=NULL;
+            if(configtab[i].flags&12) {
+                cfgitem_t *cia=configtab[i].items;
+                for(;cia&&cia->next;cia=cia->next);
+                if(cia)cia->next=ci;
+            }
+            if(!configtab[i].items)configtab[i].items=ci;
         }
-        ci=xcalloc(1,sizeof(cfgitem_t));
-        if(configtab[i].def_val)
-            setvalue(ci,configtab[i].def_val,configtab[i].type);
-        else memset(&ci->value,0,sizeof(ci->value));
-        ci->condition=NULL;ci->next=NULL;
-        if(configtab[i].flags&12) {
-            cfgitem_t *cia=configtab[i].items;
-            for(;cia&&cia->next;cia=cia->next);
-            if(cia)cia->next=ci;
-        }
-        if(!configtab[i].items)configtab[i].items=ci;
     }
     if(rc) { /* read tables */
         recode_to_local(NULL);
@@ -589,7 +593,9 @@ void killconfig(void)
             xfree(c);
         }
         configtab[i].items=NULL;
-        configtab[i].flags=0;
+//        fprintf(stderr,"%i '%s' 0x%x -> ", i, configtab[i].keyword, configtab[i].flags);
+        configtab[i].flags &= (REQUIRED_PARAM | NONIF_PARAM);
+//        fprintf(stderr,"0x%x\n",configtab[i].flags);
     }
 }
 
