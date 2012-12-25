@@ -1,6 +1,7 @@
 #!/sbin/runscript
 
-extra_started_commands="reload checkconfig"
+extra_started_commands="reload"
+extra_commands="checkconfig"
 description="qico is an FTN mailer"
 description_start="Start qico daemon"
 description_stop="Stop qico daemon"
