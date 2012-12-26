@@ -9,7 +9,7 @@
 # hack because some OSes (cough RedHat cough) default to 2.13 even
 # though a perfectly good 2.5x is available
 AC=
-for i in 261 -2.61 260 -2.60 259 -2.59 258 -2.58 257 -2.57 256 -2.56 255 -2.55 2.55 254 -2.54 2.54 253 -2.53 2.53
+for i in -2.69 261 -2.61 260 -2.60 259 -2.59 258 -2.58 257 -2.57 256 -2.56 255 -2.55 2.55 254 -2.54 2.54 253 -2.53 2.53
 do
     if type autoconf$i >/dev/null 2>&1 ; then 
         AC=$i ; echo detected autoconf$AC ; break

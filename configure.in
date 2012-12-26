@@ -77,7 +77,17 @@ AC_CHECK_SIZEOF([int],[4])
 AC_CHECK_SIZEOF([long],[4])
 AC_CHECK_TYPE([socklen_t],
 	,
-	AC_DEFINE(socklen_t,[unsigned int],[Define to `unsigned int' if <sys/types.h> does not define it]))
+	AC_DEFINE(socklen_t,[unsigned int],[Define to `unsigned int' if it is missing]),
+	[
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_SOCKET_H
+# include <sys/socket.h>
+#endif
+#ifdef HAVE_NETDB_H
+# include <netdb.h>
+#endif])
 
 
 AC_CHECK_MEMBER([struct statfs.f_bavail],[AC_DEFINE(STATFS_HAVE_F_BAVAIL,1,[Define to 1 if 'struct statfs' has 'f_bavail' field])],,[#include <sys/statfs.h>])
