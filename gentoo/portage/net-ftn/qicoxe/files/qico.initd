@@ -1,64 +1,43 @@
 #!/sbin/runscript
 
-extra_started_commands="reload"
-extra_commands="checkconfig"
-description="qico is an FTN mailer"
-description_start="Start qico daemon"
-description_stop="Stop qico daemon"
-description_reload="Reload qico configuration"
-description_checkconfig="Check qico configuration"
+runas_user=${runas_user:-fido:fido}
+
+control_command="/usr/bin/qctl"
+
+command="/usr/sbin/qico"
+command_args="-d"
+start_stop_daemon_args="--user ${runas_user}"
+name="qico daemon"
 
 rundir=${rundir:-/var/run/ftn}
 pidfile=${pidfile:-${rundir}/qico.pid}
-runas_user=${runas_user:-fido:fido}
 
-SSD_OPTIONS=""
+description="qico is an FTN mailer"
+extra_commands="checkconfig"
+extra_started_commands="reload"
+description_reload="Reload qico configuration"
+description_checkconfig="Check qico configuration"
 
 depend() {
 	need net
 }
 
-check_config() {
-	if [ ! -d "${rundir}" ]; then
-		mkdir "${rundir}"
-		if [ -n "${runas_user}" ]; then
-			chown -R ${runas_user} "${rundir}"
-		fi
-	fi
-
-	if [ -n "${runas_user}" ]; then
-		if [ -f /etc/init.d/sysfs ]; then
-			SSD_OPTIONS="${SSD_OPTIONS} --user ${runas_user}"
-		else
-			SSD_OPTIONS="${SSD_OPTIONS} --chuid ${runas_user}"
-		fi
-	fi
+start_pre() {
+	checkpath --directory --owner ${runas_user} --mode 0775 ${rundir}
 }
 
-start() {
-	check_config
-
-	ebegin "Starting qico daemon"
-	start-stop-daemon --start --pidfile ${pidfile} ${SSD_OPTIONS} \
-		--exec /usr/sbin/qico -- -d
-	eend $?
-}
-
-stop() {
-	ebegin "Stopping qico daemon"
-	start-stop-daemon --stop --pidfile ${pidfile} \
-		--exec /usr/bin/qctl -- -q
-	eend $?
+stop_pre() {
+	start_stop_daemon_args="--exec ${control_command} -- -q"
 }
 
 reload() {
-	ebegin "Reloading qico configuration"
-	/usr/bin/qctl -R
+	ebegin "Reloading ${name} configuration"
+	${control_command} -R
 	eend $?
 }
 
 checkconfig() {
 	ebegin "Checking qico configuration"
-	/usr/sbin/qico -t
+	${command} -t
 	eend $?
 }
