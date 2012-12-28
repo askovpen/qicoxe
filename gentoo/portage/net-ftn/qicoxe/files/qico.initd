@@ -9,7 +9,7 @@ command_args="-d"
 start_stop_daemon_args="--user ${runas_user}"
 name="qico daemon"
 
-rundir=${rundir:-/var/run/ftn}
+rundir=${rundir:-/run/ftn}
 pidfile=${pidfile:-${rundir}/qico.pid}
 
 description="qico is an FTN mailer"

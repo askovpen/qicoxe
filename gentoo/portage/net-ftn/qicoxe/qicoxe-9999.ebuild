@@ -41,7 +41,7 @@ pkg_setup() {
 	elog "LOGDIR=${LOGDIR}"
 
 	if [ -z ${PIDDIR} ] ; then
-		PIDDIR="/var/run/ftn"
+		PIDDIR="/run/ftn"
 		ewarn "PIDDIR is undefined, setting default to ${PIDDIR}"
 	fi
 	elog "PIDDIR=${PIDDIR}"
@@ -102,7 +102,7 @@ src_install() {
 	insinto "${CONFDIR}"
 	doins -r ${S}/qico.*.sample || die
 	newinitd ${FILESDIR}/qico.initd qico
-	sed -e "s:/var/run/ftn:${PIDDIR}:g" -i ${D}/etc/init.d/qico
+	sed -e "s:/run/ftn:${PIDDIR}:g" -i ${D}/etc/init.d/qico
 	if use xinetd ; then
 		insinto /etc/xinetd.d
 		use binkp && newins "${FILESDIR}/binkp.xinetd" binkp
