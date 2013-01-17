@@ -75,7 +75,7 @@ src_configure() {
 		$(use_enable qcc qcc) \
 		$(use_enable notify notify) \
 		$(use_enable perl perl) \
-		$(useq winfs && echo "--with-lock-style=open") \
+		$(use winfs && echo "--with-lock-style=open") \
 		|| die "econf failed"
 }
 
