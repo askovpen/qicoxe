@@ -48,7 +48,7 @@ pkg_setup() {
 
 	if [ -z ${SPOOLDIR} ] ; then
 		SPOOLDIR="/var/spool/ftn"
-		ewarn "SPOOLDIR is undefined, setting default to ${PIDDIR}"
+		ewarn "SPOOLDIR is undefined, setting default to ${SPOOLDIR}"
 	fi
 	elog "SPOOLDIR=${SPOOLDIR}"
 }
