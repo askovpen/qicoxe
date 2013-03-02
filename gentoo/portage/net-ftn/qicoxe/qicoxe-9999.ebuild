@@ -8,7 +8,7 @@ inherit eutils autotools subversion
 
 DESCRIPTION="FTN mailer Qico (xe)"
 HOMEPAGE="http://www.sf.net/project/qico"
-ESVN_REPO_URI="https://icelan.ru/svn/qicoxe/trunk/"
+ESVN_REPO_URI="http://icelan.ru/svn/qicoxe/trunk/"
 
 LICENSE="LGPL-2"
 SLOT="0"
