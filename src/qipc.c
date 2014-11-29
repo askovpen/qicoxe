@@ -48,7 +48,7 @@ void qsendpkt(char what, const char *line, const char *buff, size_t len)
 			buf[5] = 'T';
 		}
 	}
-	memcpy( buf + 4 + linelen, buff, len );
+	memmove( buf + 4 + linelen, buff, len );
 	if ( xsend_cb( ssock, buf, 4 + linelen + len ) < 0 ) {
 		if ( errno == ECONNREFUSED )
 			xsend_cb = NULL;

@@ -198,7 +198,7 @@ static void daemon_evt(int chld,char *buf,int rc,int mode)
 				if(rc>4&&buf[2]==QC_EMSID)lins->emsi=xrealloc(lins->emsi,rc);
 				    else xfree(lins->emsi);
 				DEBUG(('I',4,"got emsi (%d)",lins->emsi?rc:0));
-				if(lins->emsi)memcpy(lins->emsi,buf,rc);
+				if(lins->emsi)memmove(lins->emsi,buf,rc);
 				lins->emsilen=rc;
 			} else DEBUG(('I',1,"got emsi from unknown line %d",FETCH16(buf)));
 		}
@@ -845,7 +845,7 @@ nlkil:				is_ip=0;bink=0;
 							lins=xmalloc(sizeof(cls_ln_t));
 							lins->id=FETCH16(buf);
 							lins->addr=xmalloc(salen);
-							memcpy(lins->addr,&sa,salen);
+							memmove(lins->addr,&sa,salen);
 							lins->emsi=NULL;
 							lins->emsilen=0;
 							lins->next=NULL;

@@ -560,7 +560,7 @@ void emsi_makedat(ftnaddr_t *remaddr, unsigned long mail, unsigned long files,
 
 	/* Calculate emsi length */
 	snprintf( tmp, TMP_LEN, "%04X", strlen( emsi_dat ) - 14 );
-	memcpy( emsi_dat + 10, tmp, 4 );
+	memmove( emsi_dat + 10, tmp, 4 );
 
 	/* EMSI crc16 */
 	snprintf( tmp, TMP_LEN, "%04X", crc16usds( (UINT8 *) emsi_dat + 2 ));
@@ -924,7 +924,7 @@ step4:
 					rew = strstr( emsi_dat + 1, EMSI_BEG );
 					if ( rew && rew != emsi_dat ) {
 						DEBUG(('E',1,"got EMSI_DAT at offset %d", p - rew));
-						memcpy( emsi_dat, rew, p - rew );
+						memmove( emsi_dat, rew, p - rew );
 						p -= rew - emsi_dat;
 					} else {
 						p = emsi_dat;

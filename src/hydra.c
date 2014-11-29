@@ -971,7 +971,7 @@ static void txpkt(register word len, int type)
     hytxb.pqueue = xrealloc( hytxb.pqueue, sizeof( HYPKT ) * ( hytxb.npkts + 1 ));
     hytxb.pqueue[hytxb.npkts].len = (out - txBuf);
     hytxb.pqueue[hytxb.npkts].pkt = (byte *) xmalloc( hytxb.pqueue[hytxb.npkts].len );
-    memcpy( hytxb.pqueue[hytxb.npkts].pkt, txBuf, hytxb.pqueue[hytxb.npkts].len );
+    memmove( hytxb.pqueue[hytxb.npkts].pkt, txBuf, hytxb.pqueue[hytxb.npkts].len );
     hytxb.npkts++;
     hytxb.prefix_done = false;
 
@@ -992,7 +992,7 @@ static int hydra_txpkt(void)
                     if ( hytxb.pqueue[i].len + hytxb.tx_left > hytxb.tx_size )
                         break;
 
-                    memcpy( (void *) (hytxb.tx_buf + hytxb.tx_left),
+                    memmove( (void *) (hytxb.tx_buf + hytxb.tx_left),
                         hytxb.pqueue[i].pkt, hytxb.pqueue[i].len );
                     hytxb.tx_left += hytxb.pqueue[i].len;
                     xfree( hytxb.pqueue[i].pkt );
@@ -1574,7 +1574,7 @@ int hydra_send(char *txpathname, char *txalias)
                     xstrcpy( p, devtxdev, 1020 );
 #endif
                     p += H_FLAGLEN + 1;
-                    memcpy(p,devtxbuf,devtxlen);
+                    memmove(p,devtxbuf,devtxlen);
                     txpkt((word) ((LONGx1) + H_FLAGLEN + 1 + devtxlen), HPKT_DEVDATA);
                     devtxtimer = h_timer_set((!rxState && txState == HTX_REND) ?
                          timeOut >> 1 : 

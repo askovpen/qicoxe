@@ -925,7 +925,7 @@ static int ndl_compile(void)
 				lasteq = k + 1;
 				k++;
 			} else if ( firsteq >= 0 ) {
-				memcpy( &ies[firsteq + 1], &ies[lasteq + 1],
+				memmove( &ies[firsteq + 1], &ies[lasteq + 1],
 					sizeof( *ies ) * (total - lasteq - 1));
 				firsteq = lasteq = -1;
 				deleted++;

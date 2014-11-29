@@ -346,10 +346,10 @@ time_t gmtoff(time_t tt)
 	struct tm	gt;
 	time_t		gmt;
 
-	memcpy( &gt, gmtime( &tt ), sizeof( struct tm ));
+	memmove( &gt, gmtime( &tt ), sizeof( struct tm ));
 	gt.tm_isdst = 0;
 	gmt = mktime( &gt );
-	memcpy( &gt, localtime( &tt ), sizeof( struct tm ));
+	memmove( &gt, localtime( &tt ), sizeof( struct tm ));
 	gt.tm_isdst = 0;
 	return mktime( &gt ) - gmt;
 }

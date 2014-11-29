@@ -155,8 +155,8 @@ char *mappath(const char *fname)
 			if ( !strncasecmp( mappath->str, fname, lenf )) {
 				size_t lent = strlen( mapto );
 
-				memcpy( newfn, mapto, lent );
-				memcpy( newfn + lent, fname + lenf,
+				memmove( newfn, mapto, lent );
+				memmove( newfn + lent, fname + lenf,
 					MAX_PATH - lent - strlen( fname + lenf ));
 				break;
 			}

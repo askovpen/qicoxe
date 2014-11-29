@@ -140,7 +140,7 @@ static int modem_init_device(char *dev)
 		return ME_ATTRS;
 	}
 
-	memcpy( &tio, &tty_stio, sizeof( TIO ));
+	memmove( &tio, &tty_stio, sizeof( TIO ));
 	tio_raw_mode( &tio );
 	tio_local_mode( &tio, TRUE );
 	tio_set_speed( &tio, speed );
@@ -741,7 +741,7 @@ void modem_done(void)
 	signal( SIGPIPE, SIG_IGN );
 	tty_gothup = FALSE;
     
-        memcpy( &tio, &tty_stio, sizeof( TIO ));
+        memmove( &tio, &tty_stio, sizeof( TIO ));
 
         tio_raw_mode( &tio );
 	tio_set_flow_control( tty_fd, &tio, FLOW_NONE );

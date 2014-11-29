@@ -246,7 +246,7 @@ tcp_connect_socks(char *name)
 				i = n - auth;
             
 			buf[1] = i;
-			memcpy( buf + 2, auth, i );
+			memmove( buf + 2, auth, i );
 			i += 2;
 			if ( !n ) {
 				buf[i++] = '\0';
@@ -254,7 +254,7 @@ tcp_connect_socks(char *name)
 				n = skip_blanks( n );
 				rc = strlen( n );
 				buf[i++] = rc;
-				memcpy( buf + i, n, rc );
+				memmove( buf + i, n, rc );
 				i += rc;
 			}
 
@@ -291,7 +291,7 @@ tcp_connect_socks(char *name)
 			return (FALSE);
 		}
 
-		memcpy( buf + 4, he->h_addr, 4 );
+		memmove( buf + 4, he->h_addr, 4 );
 		buf[8] = '\0';
 		PUTBLK( (unsigned char*) buf, 9);
 	} else {
@@ -301,13 +301,13 @@ tcp_connect_socks(char *name)
         
 		if ( isdigit( *name ) && (da.s_addr = inet_addr( name )) != -1 ) {
 			buf[3] = 1;
-			memcpy( buf + 4, &da, 4 );
+			memmove( buf + 4, &da, 4 );
 			n = buf + 8;
 		} else {
 			buf[3] = 3;
 			i = strlen( name );
 			buf[4] = (unsigned char) i;
-			memcpy( buf + 5, name, i );
+			memmove( buf + 5, name, i );
 			n = buf + 5 + i;
 		}
 

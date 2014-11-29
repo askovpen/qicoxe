@@ -285,7 +285,7 @@ static void answer_mode(int type)
 			write_log( "caller-id: %s", cs );
 
 		tio_get( tty_fd, &tty_stio );
-		memcpy( &tio, &tty_stio, sizeof( TIO ));
+		memmove( &tio, &tty_stio, sizeof( TIO ));
 
 		DEBUG(('M',4,"answering: tio_get_speed %d", tio_get_speed( &tio )));
 

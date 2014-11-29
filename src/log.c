@@ -191,7 +191,7 @@ void vwrite_log(const char *str, int dbg)
 	IFPerl( perl_on_log( newstr ));
     
 	gettimeofday( &tv, NULL );
-	memcpy( &t, localtime( &tv.tv_sec ), sizeof(struct tm));
+	memmove( &t, localtime( &tv.tv_sec ), sizeof(struct tm));
 
 #ifdef NEED_DEBUG
 	if ( facilities_levels['G'] >= 1 )
@@ -335,7 +335,7 @@ int chatlog_init(const char *remname, const ftnaddr_t *ra, int side)
 		write_log( "can't open chat log %s", ccs );
 
 	tt = time( NULL );
-	memcpy( &t, localtime( &tt ), sizeof(struct tm));
+	memmove( &t, localtime( &tt ), sizeof(struct tm));
 
 	snprintf( str, MAX_STRING, "[Chat with: %s (%u:%u/%u.%u) opened by %s at ",
 		remname, ra->z, ra->n, ra->f, ra->p, side ? "remote" : "me" );

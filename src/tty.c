@@ -676,14 +676,14 @@ int tty_bufblock(const void *data, size_t nbytes)
 				tty_bufflush( 5 );
 				if ( tty_status == TTY_SUCCESS ) {
 					size_t n = MIN( (size_t) tty_tx_free, nbytes);
-					memcpy( tty_tx_buf, nptr, n );
+					memmove( tty_tx_buf, nptr, n );
 					tty_tx_free -= n;
 					nbytes -= n;
 					nptr += n;
 				}
 			} while ( tty_status != TTY_SUCCESS );
 		} else {
-			memcpy( (void *) (tty_tx_buf + txptr), nptr, nbytes );
+			memmove( (void *) (tty_tx_buf + txptr), nptr, nbytes );
 			tty_tx_free -= nbytes;
 			nbytes = 0;
 		}

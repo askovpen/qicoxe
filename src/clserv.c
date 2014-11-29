@@ -82,7 +82,7 @@ int cls_conn(int type, const char *port, const char *addr)
 			sa.sin_addr.s_addr = inet_addr( addr );
 		}
 		else if (( he = gethostbyname( addr ))) {
-			memcpy( &sa.sin_addr, he->h_addr, he->h_length );
+			memmove( &sa.sin_addr, he->h_addr, he->h_length );
 		}
 		else {
 			DEBUG(('I',1,"cls_conn: unknown address: %s", addr));
@@ -169,7 +169,7 @@ int xsendto(int sock, const char *buf, size_t len, struct sockaddr *to)
 		return 0;
 	b = xmalloc( len + 2 );
 	STORE16( b, l );
-	memcpy( b + 2, buf, len );
+	memmove( b + 2, buf, len );
 	rc = sendto( sock, b, len + 2, 0, to, sizeof( struct sockaddr ));
 	xfree( b );
 	return rc;
@@ -222,7 +222,7 @@ int xrecv(int sock, char *buf, size_t len, int wait)
 		if ( rc < 1 )
 			return 0;
 		if ( rc >= len ) rc = len - 2;
-		memcpy( buf, buf + 2, rc );
+		memmove( buf, buf + 2, rc );
 		return rc;
 	}
 	return 0;

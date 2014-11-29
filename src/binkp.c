@@ -350,7 +350,7 @@ static int M_nul(BPS *bp, byte *arg)
 
 		ti = time( NULL );
 		TZOFFSET = gmtoff( ti );
-		memcpy( &tt, localtime( &ti ), sizeof( struct tm ));
+		memmove( &tt, localtime( &ti ), sizeof( struct tm ));
 
 #define BMALTL ((size_t)((byte *) buf - (byte *) arg ) < len )
 
@@ -1133,7 +1133,7 @@ static int binkp_send(BPS *bp)
 					if ( (unsigned int) (bp->mqueue[i].len + bp->tx_left) > MAX_BLKSIZE )
 						break;
 
-					memcpy( (void *) (bp->tx_buf + bp->tx_left),
+					memmove( (void *) (bp->tx_buf + bp->tx_left),
 						bp->mqueue[i].msg, bp->mqueue[i].len );
 					bp->tx_left += bp->mqueue[i].len;
 					xfree( bp->mqueue[i].msg );

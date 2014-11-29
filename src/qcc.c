@@ -1026,7 +1026,7 @@ static int getmessages(char *bbx)
 	if(rc>0)write_log("recv: [%d,%d] '%s','%s'",buf[2],rc,buf+3,buf+4+strlen(buf+3));
 #endif
 	if(bbx&&rc>=3&&buf[2]<8) {
-		memcpy(bbx,buf,rc);
+		memmove(bbx,buf,rc);
 		return 0;
 	}
 	if(bbx&&allslots==-9)return 1;
@@ -1201,7 +1201,7 @@ static int getmessages(char *bbx)
 					    xstrcpy(slots[rc]->cl,(char*)p,MH*CHH-1);
 					else slots[rc]->chats++;
 				} else if(strlen(slots[rc]->cl)>=(MH*(CHH-1))) {
-					memcpy(slots[rc]->cl,slots[rc]->cl+CHH,strlen(slots[rc]->cl)-(CHH-2));
+					memmove(slots[rc]->cl,slots[rc]->cl+CHH,strlen(slots[rc]->cl)-(CHH-2));
 					slots[rc]->chats=MH;
 				}
 				break;
@@ -1340,7 +1340,7 @@ int main(int argc, char **argv, char **envp)
 	STORE16(buf,0);
 	buf[2]=QR_STYPE;
 	buf[3]='e';/*events*/
-	memcpy(buf+4,digest,16);
+	memmove(buf+4,digest,16);
 	snprintf(buf+20,MSG_BUFFER-21,"qcc-%s",version);
 	xcmd(buf,QR_STYPE,strlen(buf+20)+20);
 	tim=time(NULL)+6;buf[2]=1;

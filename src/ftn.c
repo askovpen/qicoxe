@@ -332,7 +332,7 @@ FILE *openpktmsg(const ftnaddr_t *fa, const ftnaddr_t *ta,
 	ph.phPCodeHi=1;
 	ph.phPRevMinor=2;
 	ph.phCaps=H2I16(1);
-	if(pwd)memcpy(ph.phPass,pwd,MAX(strlen(pwd),8));
+	if(pwd)memmove(ph.phPass,pwd,MAX(strlen(pwd),8));
 	ph.phQOZone=H2I16(fa->z);
 	ph.phQDZone=H2I16(ta->z);
 	ph.phOZone=H2I16(fa->z);
