@@ -1,4 +1,4 @@
-#!/sbin/runscript
+#!/sbin/openrc-run
 
 runas_user=${runas_user:-fido:fido}
 
