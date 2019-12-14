@@ -4,7 +4,7 @@
 
 EAPI="4"
 
-inherit eutils autotools subversion
+inherit user eutils autotools subversion flag-o-matic
 
 DESCRIPTION="FTN mailer Qico (xe)"
 HOMEPAGE="http://www.sf.net/project/qico"
@@ -63,6 +63,7 @@ src_unpack() {
 }
 
 src_prepare() {
+	append-libs -ltinfo
 	eautoreconf || die "eautoreconf failed"
 }
 
